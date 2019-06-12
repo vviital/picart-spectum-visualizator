@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {isValidElement} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,8 +15,10 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: theme.palette.common.white,
         },
     },
+
+
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(25),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -27,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
     form: {
         width: '100%',
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(2),
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
