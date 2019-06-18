@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="12838d8b-9a62-451c-9da5-dcf6a69254b8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-    </list>
+    <list default="true" id="12838d8b-9a62-451c-9da5-dcf6a69254b8" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -61,7 +58,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-44">
+            <state relative-caret-position="145">
               <caret line="109" column="44" lean-forward="true" selection-start-line="109" selection-start-column="44" selection-end-line="109" selection-end-column="44" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
@@ -242,7 +239,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51056000" />
+    <option name="totallyTimeSpent" value="51247000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -255,9 +252,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="1107" width="1869" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24647887" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24647887" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -272,7 +268,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32795697" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5016251" side_tool="true" visible="true" weight="0.27906978" />
       <window_info anchor="bottom" id="Inspection Results" order="10" weight="0.29678848" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49837488" visible="true" weight="0.27906978" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49837488" visible="true" weight="0.27906978" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -406,7 +402,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-44">
+        <state relative-caret-position="145">
           <caret line="109" column="44" lean-forward="true" selection-start-line="109" selection-start-column="44" selection-end-line="109" selection-end-column="44" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
