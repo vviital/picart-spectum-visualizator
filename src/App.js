@@ -8,31 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Formik, Field} from 'formik';
-import * as Yup from 'yup';
-
-class App extends  React.Component{
-render() {
-    return (
-        <Formik
-        initialValues={{
-            email:'',
-            password:''
-        }}
-        validationSchema={Yup.object().shape({
-            email:Yup.string()
-                .email('Email is invalid')
-                .required('Email is required'),
-            password:Yup.string()
-                .min(6,'Password must be at least 6 characters')
-                .required('Confirm Password is required')
-        })}
-        onSubmit={fields => {
-            alert('SUCCESS!!' + JSON.stringify(fields,null,4))
-        }}
-        />
-    )
-}
-}
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -83,11 +58,27 @@ const CustomInputEmail = ({
         />
       )
 };
-
+const CustomInputPassword = ({
+                                 field, // { name, value, onChange, onBlur }
+                                 form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+                                 ...props
+                             }) => {
+    return (
+    <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="Введите пароль"
+        type="password"
+        className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')}
+        onChange={field.onChange}
+    />
+    )
+};
 export default function SignIn() {
     const classes = useStyles();
-
-
 
     return (
         <Container component="main" maxWidth="xs">
@@ -101,7 +92,8 @@ export default function SignIn() {
                 </Typography>
                 <Formik
                     initialValues={{
-                        email: ''
+                        email: '',
+                        password:''
                     }}
                     onSubmit={values => {
                         // same shape as initial values
@@ -110,7 +102,7 @@ export default function SignIn() {
                     className={classes.form}
                 >
                     {(formikProps) => {
-                        const {errors, touched, handleSubmit} = formikProps;
+                        const {handleSubmit} = formikProps;
                         console.log(formikProps);
                     return (
                         <>
@@ -118,26 +110,18 @@ export default function SignIn() {
                                 name="email"
                                 component={CustomInputEmail}
                                 placeholder="Email" />
+                            <Field
+                                name="password"
+                                component={CustomInputPassword}
+                                placeholder="Password"/>
 
-
-                            <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Введите пароль"
-                        type="password"
-                        className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')}
-                    />
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={handleSubmit}
-                    >
+                        onClick={handleSubmit}>
                         Войти
                     </Button>
                     </>
