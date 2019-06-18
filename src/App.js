@@ -1,13 +1,38 @@
-import React, {isValidElement} from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {Formik, Field} from 'formik';
+import * as Yup from 'yup';
+
+class App extends  React.Component{
+render() {
+    return (
+        <Formik
+        initialValues={{
+            email:'',
+            password:''
+        }}
+        validationSchema={Yup.object().shape({
+            email:Yup.string()
+                .email('Email is invalid')
+                .required('Email is required'),
+            password:Yup.string()
+                .min(6,'Password must be at least 6 characters')
+                .required('Confirm Password is required')
+        })}
+        onSubmit={fields => {
+            alert('SUCCESS!!' + JSON.stringify(fields,null,4))
+        }}
+        />
+    )
+}
+}
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -24,7 +49,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     },
     avatar: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2),
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
@@ -37,8 +62,32 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const CustomInputEmail = ({
+                                  field, // { name, value, onChange, onBlur }
+                                  form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+                                  ...props
+                              }) => {
+    return (
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Ваша e-mail почта"
+            autoComplete="email"
+            autoFocus
+            type="text"
+            className={`form-control ${(errors.email && touched.email?'is-invalid':'')}`}
+            onChange={field.onChange}
+        />
+      )
+};
+
 export default function SignIn() {
     const classes = useStyles();
+
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -50,19 +99,28 @@ export default function SignIn() {
                 <Typography component="h1" variant="h5">
                     PicArt
                 </Typography>
-                <form className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Ваша e-mail почта"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
+                <Formik
+                    initialValues={{
+                        email: ''
+                    }}
+                    onSubmit={values => {
+                        // same shape as initial values
+                        console.log(values);
+                    }}
+                    className={classes.form}
+                >
+                    {(formikProps) => {
+                        const {errors, touched, handleSubmit} = formikProps;
+                        console.log(formikProps);
+                    return (
+                        <>
+                            <Field
+                                name="email"
+                                component={CustomInputEmail}
+                                placeholder="Email" />
+
+
+                            <TextField
                         variant="outlined"
                         margin="normal"
                         required
@@ -70,8 +128,7 @@ export default function SignIn() {
                         name="password"
                         label="Введите пароль"
                         type="password"
-                        id="password"
-                        autoComplete="current-password"
+                        className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')}
                     />
                     <Button
                         type="submit"
@@ -79,14 +136,14 @@ export default function SignIn() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={handleSubmit}
                     >
                         Войти
                     </Button>
-                </form>
+                    </>
+                    )}}
+                </Formik>
             </div>
-            <Box mt={5}>
-                <helpText />
-            </Box>
         </Container>
     );
 }
