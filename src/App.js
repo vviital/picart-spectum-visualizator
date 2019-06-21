@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Formik, Field} from 'formik';
+import axios  from 'axios'
+
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -77,6 +79,18 @@ const CustomInputPassword = ({
     />
     )
 };
+axios({
+    method:'post',
+    url:'https://9bh21qott4.execute-api.us-east-1.amazonaws.com/dev/user',
+    data:{
+        email: 'email',
+        password: 'password'
+    },
+    headers:{
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+    }
+});
 export default function SignIn() {
     const classes = useStyles();
 
