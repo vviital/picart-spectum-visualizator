@@ -81,13 +81,12 @@ const CustomInputPassword = ({
 };
 axios({
     method:'post',
-    url:'https://9bh21qott4.execute-api.us-east-1.amazonaws.com/dev/user',
+    url:'https://9bh21qott4.execute-api.us-east-1.amazonaws.com/dev/user/token',
     data:{
         email: 'email',
         password: 'password'
     },
     headers:{
-        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
     }
 });
