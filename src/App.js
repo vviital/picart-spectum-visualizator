@@ -79,17 +79,7 @@ const CustomInputPassword = ({
     />
     )
 };
-axios({
-    method:'post',
-    url:'https://9bh21qott4.execute-api.us-east-1.amazonaws.com/dev/user/token',
-    data:{
-        email: 'email',
-        password: 'password'
-    },
-    headers:{
-        'Content-Type': 'application/json',
-    }
-});
+
 export default function SignIn() {
     const classes = useStyles();
 
@@ -108,9 +98,18 @@ export default function SignIn() {
                         email: '',
                         password:''
                     }}
-                    onSubmit={values => {
-                        // same shape as initial values
-                        console.log(values);
+                    onSubmit={() => {axios({
+                        method:'post',
+                        url:'https://9bh21qott4.execute-api.us-east-1.amazonaws.com/dev/user/token',
+                        data:{
+                            email: 'email',
+                            password: 'password'
+                        },
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin':'*',
+                        }
+                    });
                     }}
                     className={classes.form}
                 >
