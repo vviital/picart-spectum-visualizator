@@ -9,8 +9,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Formik, Field} from 'formik';
 import axios  from 'axios'
+import * as Yup from 'yup'
 
-
+const SignInSchema =Yup.object().shape({
+    email:Yup.string()
+        .email('Invalid')
+        .required('Required')
+});
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
@@ -98,6 +103,7 @@ export default function SignIn() {
                         email: '',
                         password:''
                     }}
+                    validationSchema={SignInSchema}
                     onSubmit={() => {axios({
                         method:'post',
                         url:'https://9bh21qott4.execute-api.us-east-1.amazonaws.com/dev/user/token',
@@ -106,8 +112,7 @@ export default function SignIn() {
                             password: 'password'
                         },
                         headers:{
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin':'*',
+                            'Content-Type': 'application/json'
                         }
                     });
                     }}
