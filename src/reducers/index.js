@@ -1,9 +1,7 @@
-const reducer = (state = {}, action) => {
-    switch (action.type) {
-        case 'SET_TOKEN':
-            return { ...state, token: action.payload.token };
-        default:
-            return state;
-    }
-};
-export default reducer;
+import { combineReducers } from 'redux';
+
+import auth from './auth';
+
+export default combineReducers({
+    auth,
+});

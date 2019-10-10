@@ -1,4 +1,4 @@
-export const getToken = (email, password) => ({
+export const getTokenAsync = (email, password) => ({
     type: 'GET_TOKEN_ASYNC',
     payload: {
         email,

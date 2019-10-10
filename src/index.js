@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from "react-redux";
-import Auth from './Auth';
 import store from "./store";
-
+import App from './components/App'
 
 ReactDOM.render(
-    <Provider store={store}>
-        <Auth />
-    </Provider>,
+    <Router>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </Router>,
     document.getElementById('root')
 );
