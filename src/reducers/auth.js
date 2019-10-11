@@ -2,7 +2,7 @@ const defaultState = {
     id: '',
     email: '',
     login: '',
-    authorized: false,
+    authorized: false
 };
 
 const authReducer = (state = defaultState, action) => {
@@ -12,7 +12,14 @@ const authReducer = (state = defaultState, action) => {
                 id: action.payload.id,
                 email: action.payload.email,
                 login: action.payload.login,
-                authorized: true
+                authorized: action.payload.authorized
+            });
+        case 'SYNC_STORAGE':
+            return Object.assign({}, state, {
+                id: action.payload.id,
+                email: action.payload.email,
+                login: action.payload.login,
+                authorized: action.payload.authorized
             });
         default:
             return state;

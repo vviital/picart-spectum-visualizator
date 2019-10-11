@@ -15,14 +15,13 @@ class Auth extends Component {
         this.state = {
             email: '',
             password: '',
-            authorized: false,
         };
         this.handleFormChange = this.handleFormChange.bind(this);
     }
 
     render() {
-        if (this.props.auth.authorized) {
-            return (<Redirect to='/success'/>)
+        if (this.props.auth.authorized === true) {
+            return (<Redirect to='/'/>)
         } else {
             return (
                 <div className="Auth">

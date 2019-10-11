@@ -1,18 +1,27 @@
 import React from 'react';
 import { Component } from 'react';
+import {connect} from "react-redux";
 import { Switch, Route } from 'react-router-dom'
 import Auth from "./Auth";
-import Success from "./Success";
+import Main from "./Main";
+import {getLocalStorage} from "../actions";
+
 
 class App extends Component {
     render() {
+        this.props.syncStorage();
         return (
             <Switch>
-                <Route exact path='/' component={Auth}/>
-                <Route exact path='/success' component={Success}/>
+                <Route exact path='/auth' component={Auth}/>
+                <Route exact path='/' component={Main}/>
             </Switch>
         );
     }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        syncStorage: () => dispatch(getLocalStorage())
+    }
+};
+export default connect(null, mapDispatchToProps)(App);
