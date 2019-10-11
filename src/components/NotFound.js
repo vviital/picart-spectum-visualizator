@@ -23,6 +23,7 @@ class NotFound extends Component{
                         >
                             <img src='images/404.png'
                                  alt='Not found'
+                                 align='top'
                                  width='80%'
                                  height='80%'
                             />
