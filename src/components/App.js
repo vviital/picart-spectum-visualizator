@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import { Switch, Route } from 'react-router-dom'
 import Auth from "./Auth";
 import Main from "./Main";
+import NotFound from "./NotFound";
 import {getLocalStorage} from "../actions";
 
 
@@ -14,6 +15,7 @@ class App extends Component {
             <Switch>
                 <Route exact path='/auth' component={Auth}/>
                 <Route exact path='/' component={Main}/>
+                <Route component={NotFound}/>
             </Switch>
         );
     }
