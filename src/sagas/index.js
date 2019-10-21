@@ -1,31 +1,60 @@
-import { put, all, call, takeEvery } from 'redux-saga/effects';
+import {all, call, put, takeEvery} from 'redux-saga/effects';
 import axios from "axios";
 import jwt from 'jwt-decode';
 
 const ls = window.localStorage;
+
+// // HTTPClient.js
+//
+// class HTTPClient {
+//     constructor() {
+//     }
+//
+//     post() {
+//     }
+//
+//     postWithAuth(url, body, headers = {}) {
+//         const token = localStorage.getItem('token');
+//
+//         return this.post(url, body, { ...headers, Authorization: `Bearer ${token}` })
+//     }
+// }
+//
+//
+// // api.js
+//
+// class API {
+//     getToken() {
+//         return axios.post.bind(axios);
+//     }
+// }
+//
+//
+// import API from './api';
 
 function* getToken(action) {
     const { payload } = action;
     try {
         const res = yield call(axios.post.bind(axios), 'http://127.0.0.1:3000/tokens', payload);
         const user = jwt(res.data.token);
+        user.token = res.data.token;
         yield put({
-            type: "SET_TOKEN", payload: {
+            type: "SET_USER", payload: {
                 id: user.id,
                 email: user.email,
                 login: user.login,
-                authorized: true
+                token: res.data.token,
             }
         });
-        yield setLocalStorage(user);
+        yield call(setLocalStorage, user);
     } catch (err) {
-        console.log(err.message);
+        console.error(err);
     }
 }
 
 function *logout() {
     yield ls.clear();
-    yield syncToStore();
+    yield call(syncToStore);
 }
 
 function* syncToStore() {
@@ -39,8 +68,8 @@ function* syncToStore() {
     if (ls.getItem('id')) {
         user.login = ls.getItem('login');
     }
-    if (ls.getItem('authorized')) {
-        user.authorized  = ls.getItem('authorized');
+    if (ls.getItem('token')) {
+        user.token  = ls.getItem('token');
     }
     yield put({type: 'SYNC_STORAGE', payload: user});
 }
@@ -49,7 +78,7 @@ function setLocalStorage(user) {
     ls.setItem('id', user.id);
     ls.setItem('email', user.email);
     ls.setItem('login', user.login);
-    ls.setItem('authorized', 'true');
+    ls.setItem('token', user.token);
 }
 
 function* actionWatcher() {

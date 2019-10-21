@@ -9,8 +9,12 @@ import {getLocalStorage} from "../actions";
 
 
 class App extends Component {
-    render() {
+    constructor(props) {
+        super(props);
         this.props.syncStorage();
+    }
+
+    render() {
         return (
             <Switch>
                 <Route exact path='/auth' component={Auth}/>
@@ -21,9 +25,7 @@ class App extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        syncStorage: () => dispatch(getLocalStorage())
-    }
-};
+const mapDispatchToProps = (dispatch) => ({
+    syncStorage: () => dispatch(getLocalStorage())
+});
 export default connect(null, mapDispatchToProps)(App);

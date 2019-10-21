@@ -13,3 +13,10 @@ export const getLocalStorage = () => ({
 export const clearLocalStorage = () => ({
     type: 'CLEAR_LOCAL_STORAGE'
 });
+
+export const renderComponent = (path) => ({
+    type: 'RENDER_COMPONENT',
+    payload: {
+        path,
+    },
+});
