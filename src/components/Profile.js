@@ -6,46 +6,45 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import NavMenu from "./NavMenu";
-import './styles/main.css'
+import './styles/profile.css'
+import {getUser} from "../actions";
 
 class Profile extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.props.getUser();
+    }
+
     render() {
         const {auth} = this.props;
         if (!auth.token) {
             return (<Redirect to='/auth'/>);
         }
         return (
-            <div>
-                <NavMenu/>
-                <div>
-                    <div>
-                        <h4>Welcome back, {auth.login}!</h4>
-                        <h6>Here is some information about your profile:</h6>
-                        <List>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Your login:"
-                                    secondary={auth.login}
-                                />
-                            </ListItem>
-                            <Divider/>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Your UserID:"
-                                    secondary={auth.id}
-                                />
-                            </ListItem>
-                            <Divider/>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Your email:"
-                                    secondary={auth.email}
-                                />
-                            </ListItem>
-                        </List>
-                    </div>
-                </div>
+            <div className='profile-content'>
+                <h4>Profile information:</h4>
+                <List>
+                    <ListItem>
+                        <ListItemText
+                            primary="Your login:"
+                            secondary={this.props.user.login}
+                        />
+                    </ListItem>
+                    <Divider/>
+                    <ListItem>
+                        <ListItemText
+                            primary="Your UserID:"
+                            secondary={this.props.user.id}
+                        />
+                    </ListItem>
+                    <Divider/>
+                    <ListItem>
+                        <ListItemText
+                            primary="Your email:"
+                            secondary={this.props.user.email}
+                        />
+                    </ListItem>
+                </List>
             </div>
         );
     }
@@ -53,5 +52,12 @@ class Profile extends PureComponent {
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
+    user: state.user,
 });
-export default connect(mapStateToProps, )(Profile);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getUser: () => dispatch(getUser()),
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

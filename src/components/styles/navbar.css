@@ -5,19 +5,40 @@
     align-items: stretch;
     width: 80px;
     text-align: center;
-    background-color: deepskyblue;
-    color: aliceblue;
+    background-color: #00a6f5;
+    color: gainsboro;
 }
 
 .logo {
     width: 100%;
 }
 
-.nav-bar-button {
+.nav-list {
+    list-style-type: none;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: transparent;
+}
+
+.nav-list li a {
+    display: block;
+    color: gainsboro;
+    padding: 8px 8px;
+    text-decoration: none;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.nav-list li a:hover {
+    background-color: #00b2f0;
+}
+
+.logout-button {
     background-color: transparent;
     width: 100%;
     border: none;
-    color: white;
+    color: gainsboro;
     padding: 8px 0;
     text-align: center;
     text-decoration: none;
@@ -26,6 +47,6 @@
     transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
-.nav-bar-button:hover {
+.logout-button:hover {
     background-color: #00b2f0;
 }

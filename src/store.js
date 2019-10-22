@@ -11,6 +11,8 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 
+store.dispatch({ type: 'APP_INIT' });
+
 sagaMiddleware.run(rootSaga);
 
 export default store;

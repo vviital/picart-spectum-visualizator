@@ -5,7 +5,9 @@ import { Switch, Route } from 'react-router-dom'
 import Auth from "./Auth";
 import Main from "./Main";
 import NotFound from "./NotFound";
+import Layout from "./Layout";
 import {getLocalStorage} from "../actions";
+import Profile from "./Profile";
 
 
 class App extends Component {
@@ -18,7 +20,12 @@ class App extends Component {
         return (
             <Switch>
                 <Route exact path='/auth' component={Auth}/>
-                <Route exact path='/' component={Main}/>
+                <Route exact path='/' render={() => (
+                    <Layout content={<Main/>}/>
+                )}/>
+                <Route exact path='/profile' render={() => (
+                    <Layout content={<Profile/>}/>
+                )}/>
                 <Route component={NotFound}/>
             </Switch>
         );
