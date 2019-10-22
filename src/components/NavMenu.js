@@ -8,7 +8,7 @@ import './styles/navbar.css'
 class NavMenu extends Component {
     render() {
         return (
-            <div className='nav-bar'>
+            <div className='nav-bar' id='nav-bar'>
                 <div>
                     <a href='/'>
                     <img src='images/logo.png'

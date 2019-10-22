@@ -12,7 +12,7 @@ class Main extends PureComponent {
         }
         return (
             <div className='main'>
-                This is a main page.
+                Here is the main page.
             </div>
         );
     }

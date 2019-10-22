@@ -8,6 +8,7 @@ import NotFound from "./NotFound";
 import Layout from "./Layout";
 import {getLocalStorage} from "../actions";
 import Profile from "./Profile";
+import Search from "./Search";
 
 
 class App extends Component {
@@ -25,6 +26,9 @@ class App extends Component {
                 )}/>
                 <Route exact path='/profile' render={() => (
                     <Layout content={<Profile/>}/>
+                )}/>
+                <Route exact path='/search' render={() => (
+                    <Layout content={<Search/>}/>
                 )}/>
                 <Route component={NotFound}/>
             </Switch>
