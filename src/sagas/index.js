@@ -22,17 +22,13 @@ function *logout() {
 
 function* syncToStore() {
     let user = {};
-    if (ls.getItem('token')) {
-        user.token = ls.getItem('token');
-    }
     yield put({type: 'SET_TOKEN', payload: user});
 }
 
-function* appInit() {
+function appInit() {
     if (ls.getItem('token')) {
         let user = {};
         user.token = ls.getItem('token');
-        yield put({type: 'SET_TOKEN', payload: user});
     }
 }
 
@@ -40,7 +36,7 @@ function setLocalStorage(payload) {
     ls.setItem('token', payload.token);
 }
 
-function* getUser() {;
+function* getUser() {
     const user = jwt(ls.getItem('token'));
     yield put({
         type: "SET_USER", payload: {

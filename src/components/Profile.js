@@ -16,8 +16,8 @@ class Profile extends PureComponent {
     }
 
     render() {
-        const {auth} = this.props;
-        if (!auth.token) {
+        const token = window.localStorage.getItem('token');
+        if (!token) {
             return (<Redirect to='/auth'/>);
         }
         return (

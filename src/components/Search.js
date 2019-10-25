@@ -6,7 +6,8 @@ import './styles/search.css'
 
 class Search extends PureComponent{
     render() {
-        if (!this.props.auth.token) {
+        const token = window.localStorage.getItem('token');
+        if (!token) {
             return (<Redirect to='/auth'/>);
         }
         return (

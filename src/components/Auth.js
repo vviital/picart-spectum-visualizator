@@ -20,7 +20,8 @@ class Auth extends PureComponent {
     }
 
     render() {
-        if (this.props.auth.token && this.props.auth.token !== 'undefined') {
+        const token = window.localStorage.getItem('token');
+        if (token && token !== 'undefined') {
             return (<Redirect to='/'/>)
         }
         return (
