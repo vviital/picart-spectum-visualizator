@@ -41,11 +41,8 @@ class NavMenu extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    auth: state.auth,
-});
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(clearLocalStorage()),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);
+export default connect( null, mapDispatchToProps)(NavMenu);

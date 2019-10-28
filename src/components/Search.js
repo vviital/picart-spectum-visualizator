@@ -22,6 +22,6 @@ class Search extends PureComponent{
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth
+    user: state.user
 });
 export default connect(mapStateToProps, )(Search);
