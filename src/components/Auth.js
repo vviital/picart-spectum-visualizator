@@ -103,7 +103,7 @@ class Auth extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth,
+    user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => {

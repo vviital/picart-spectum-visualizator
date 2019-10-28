@@ -7,14 +7,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import './styles/profile.css'
-import {getUser} from "../actions";
 
 class Profile extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.props.getUser();
-    }
-
     render() {
         const token = window.localStorage.getItem('token');
         if (!token) {
@@ -51,13 +45,7 @@ class Profile extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth,
     user: state.user,
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getUser: () => dispatch(getUser()),
-    };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, )(Profile);

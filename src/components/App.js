@@ -6,7 +6,6 @@ import Auth from "./Auth";
 import Main from "./Main";
 import NotFound from "./NotFound";
 import Layout from "./Layout";
-import {getLocalStorage} from "../actions";
 import Profile from "./Profile";
 import Search from "./Search";
 
@@ -14,7 +13,7 @@ import Search from "./Search";
 class App extends Component {
     constructor(props) {
         super(props);
-        this.props.syncStorage();
+        this.props.init();
     }
 
     render() {
@@ -37,6 +36,6 @@ class App extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    syncStorage: () => dispatch(getLocalStorage())
+    init: () => dispatch({ type: 'APP_INIT'})
 });
 export default connect(null, mapDispatchToProps)(App);
