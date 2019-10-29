@@ -8,12 +8,10 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {getTokenAsync} from "../actions";
-import API from '../api/API';
 
 class Auth extends PureComponent {
     constructor(props) {
         super(props);
-        this.api = new API();
         this.state = {
             email: '',
             password: '',
@@ -107,9 +105,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        sendRequest: (email, password) => dispatch(getTokenAsync(email, password)),
-    };
-};
+const mapDispatchToProps = (dispatch) => ({
+    sendRequest: (email, password) => dispatch(getTokenAsync(email, password)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

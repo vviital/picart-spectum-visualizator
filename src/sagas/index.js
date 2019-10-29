@@ -26,20 +26,30 @@ function *logout() {
 }
 
 function* getUser() {
-    let user = {};
+    let user = {
+        id: '',
+    };
     if (ls.getItem('token')) {
-        user = jwt(ls.getItem('token'));
+       user = jwt(ls.getItem('token'));
     }
     yield put({
-        type: "SET_USER", payload: {
-            id: user.id,
-        }
+        type: "SET_USER", payload: {id: user.id}
+    });
+}
+
+function* getProfile(action) {
+    const { payload } = action;
+    const profile = yield call(api.getProfile, payload);
+    yield put({
+        type: 'SET_PROFILE',
+        payload: profile,
     });
 }
 
 function* clearUser() {
     yield put({
-        type: "SET_USER", payload: {
+        type: "SET_USER",
+        payload: {
             id: '',
         }
     });
@@ -50,6 +60,7 @@ function* actionWatcher() {
     yield takeEvery('CLEAR_LOCAL_STORAGE', logout);
     yield takeEvery('APP_INIT', appInit);
     yield takeEvery('GET_USER', getUser);
+    yield takeEvery('GET_PROFILE', getProfile);
 }
 
 export default function* rootSaga() {
