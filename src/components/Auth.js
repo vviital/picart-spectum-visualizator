@@ -1,17 +1,19 @@
 import React from 'react';
 import {PureComponent} from 'react';
 import {connect} from "react-redux";
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {getTokenAsync} from "../actions";
+import API from '../api/API';
 
 class Auth extends PureComponent {
     constructor(props) {
         super(props);
+        this.api = new API();
         this.state = {
             email: '',
             password: '',
@@ -20,9 +22,8 @@ class Auth extends PureComponent {
     }
 
     render() {
-        const token = window.localStorage.getItem('token');
-        if (token && token !== 'undefined') {
-            return (<Redirect to='/'/>)
+        if(this.props.user.id !== '') {
+            return(<Redirect to='/'/>)
         }
         return (
             <div className="Auth">

@@ -1,48 +1,47 @@
 import {all, call, put, takeEvery} from 'redux-saga/effects';
-import axios from "axios";
-import jwt from "jwt-decode";
+import jwt from 'jwt-decode';
+import API from '../api/API';
 
+const api = new API();
 const ls = window.localStorage;
 
 function* appInit() {
-    if (ls.getItem('token')) {
-        yield call(getUser);
-    }
+    yield call(getUser);
 }
 
 function* getToken(action) {
     const { payload } = action;
     try {
-        const res = yield call(axios.post.bind(axios), 'http://127.0.0.1:3000/tokens', payload);
-        yield call(setLocalStorage, {token: res.data.token});
-        yield call(getUser);
+        const res = yield call(api.getToken, payload);
+        ls.setItem('token', res);
+        yield call(getUser, res);
     } catch (err) {
         console.error(err);
     }
 }
 
 function *logout() {
-    yield ls.clear();
+    ls.clear();
     yield call(clearUser);
 }
 
-function setLocalStorage(payload) {
-    ls.setItem('token', payload.token);
-}
-
 function* getUser() {
-    const user = jwt(ls.getItem('token'));
+    let user = {};
+    if (ls.getItem('token')) {
+        user = jwt(ls.getItem('token'));
+    }
     yield put({
         type: "SET_USER", payload: {
             id: user.id,
-            email: user.email,
-            login: user.login,
         }
     });
 }
+
 function* clearUser() {
     yield put({
-        type: "SET_USER", payload: {}
+        type: "SET_USER", payload: {
+            id: '',
+        }
     });
 }
 

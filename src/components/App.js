@@ -3,6 +3,7 @@ import { Component } from 'react';
 import {connect} from "react-redux";
 import { Switch, Route } from 'react-router-dom'
 import Auth from "./Auth";
+import WithAuth from "./WithAuth";
 import Main from "./Main";
 import NotFound from "./NotFound";
 import Layout from "./Layout";
@@ -21,13 +22,13 @@ class App extends Component {
             <Switch>
                 <Route exact path='/auth' component={Auth}/>
                 <Route exact path='/' render={() => (
-                    <Layout content={<Main/>}/>
+                    <WithAuth content={<Layout content={<Main/>}/>}/>
                 )}/>
                 <Route exact path='/profile' render={() => (
-                    <Layout content={<Profile/>}/>
+                    <WithAuth content={<Layout content={<Profile/>}/>}/>
                 )}/>
                 <Route exact path='/search' render={() => (
-                    <Layout content={<Search/>}/>
+                    <WithAuth content={<Layout content={<Search/>}/>}/>
                 )}/>
                 <Route component={NotFound}/>
             </Switch>

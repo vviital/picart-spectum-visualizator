@@ -1,15 +1,10 @@
 import React from 'react';
 import {PureComponent} from 'react';
-import {Redirect} from 'react-router-dom';
 import {connect} from "react-redux";
 import './styles/search.css'
 
 class Search extends PureComponent{
     render() {
-        const token = window.localStorage.getItem('token');
-        if (!token) {
-            return (<Redirect to='/auth'/>);
-        }
         return (
             <div className='search-content'>
                 <form method='POST'>

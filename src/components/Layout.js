@@ -2,7 +2,8 @@ import React from 'react';
 import { PureComponent } from 'react';
 import SplitPane from "react-split-pane";
 import NavMenu from "./NavMenu";
-import './styles/layout.css'
+import './styles/layout.css';
+
 
 class Layout extends PureComponent{
     render() {
