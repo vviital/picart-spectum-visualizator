@@ -4,7 +4,6 @@ import API from '../api/API';
 import ls from './wrappers/localstorage';
 
 const api = new API();
-//const ls = window.localStorage;
 
 function* appInit() {
     yield call(getUser);
@@ -14,10 +13,7 @@ function* getToken(action) {
     const { payload } = action;
     try {
         const res = yield call(api.getToken, payload);
-        //ls.setItem('token', res);
-        // yield call(ls.setItem.bind(ls), 'token', res);
         yield call(ls.setItem, 'token', res);
-
         yield call(getUser, res);
     } catch (err) {
         console.error(err);
