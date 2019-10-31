@@ -14,14 +14,14 @@ class Profiles extends PureComponent {
     render() {
         if (lodash.isEmpty(this.props.profiles)) {
             return (
-                <div className='profile-content'>
+                <div className='profiles-content'>
                     Loading...
                 </div>
             );
         }
         const userCards = Array.from(Object.values(this.props.profiles));
         return (
-            <div className='profile-content'>
+            <div className='profiles-content'>
                 <Search/>
                 <div className='profiles-wrapper'>
                     {userCards.map((user) => {
