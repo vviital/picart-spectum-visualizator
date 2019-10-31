@@ -1,9 +1,10 @@
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
+import ls from './wrappers/localstorage';
 
 const api = new API();
-const ls = window.localStorage;
+//const ls = window.localStorage;
 
 function* appInit() {
     yield call(getUser);
@@ -13,7 +14,10 @@ function* getToken(action) {
     const { payload } = action;
     try {
         const res = yield call(api.getToken, payload);
-        ls.setItem('token', res);
+        //ls.setItem('token', res);
+        // yield call(ls.setItem.bind(ls), 'token', res);
+        yield call(ls.setItem, 'token', res);
+
         yield call(getUser, res);
     } catch (err) {
         console.error(err);
@@ -21,7 +25,7 @@ function* getToken(action) {
 }
 
 function *logout() {
-    ls.clear();
+    yield call(ls.clear);
     yield call(clearUser);
 }
 
@@ -29,11 +33,11 @@ function* getUser() {
     let user = {
         id: '',
     };
-    if (ls.getItem('token')) {
-       user = jwt(ls.getItem('token'));
+    if (yield call(ls.getItem, 'token')) {
+       user = jwt(yield call(ls.getItem, 'token'));
     }
     yield put({
-        type: "SET_USER", payload: {id: user.id}
+        type: "SET_USER", payload: user,
     });
 }
 
