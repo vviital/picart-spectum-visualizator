@@ -9,6 +9,7 @@ import NotFound from "./NotFound";
 import Layout from "./Layout";
 import Profiles from "./Profiles";
 import Search from "./Search";
+import Profile from "./Profile";
 
 
 class App extends Component {
@@ -27,9 +28,13 @@ class App extends Component {
                 <Route exact path='/profiles' render={() => (
                     <WithAuth content={<Layout content={<Profiles/>}/>}/>
                 )}/>
+                <Route path='/profiles/:number' render={() => (
+                    <WithAuth content={<Layout content={<Profile/>}/>}/>
+                )}/>
                 <Route exact path='/search' render={() => (
                     <WithAuth content={<Layout content={<Search/>}/>}/>
                 )}/>
+
                 <Route component={NotFound}/>
             </Switch>
         );
