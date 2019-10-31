@@ -7,7 +7,7 @@ import WithAuth from "./WithAuth";
 import Main from "./Main";
 import NotFound from "./NotFound";
 import Layout from "./Layout";
-import Profile from "./Profile";
+import Profiles from "./Profiles";
 import Search from "./Search";
 
 
@@ -24,8 +24,8 @@ class App extends Component {
                 <Route exact path='/' render={() => (
                     <WithAuth content={<Layout content={<Main/>}/>}/>
                 )}/>
-                <Route exact path='/profile' render={() => (
-                    <WithAuth content={<Layout content={<Profile/>}/>}/>
+                <Route exact path='/profiles' render={() => (
+                    <WithAuth content={<Layout content={<Profiles/>}/>}/>
                 )}/>
                 <Route exact path='/search' render={() => (
                     <WithAuth content={<Layout content={<Search/>}/>}/>

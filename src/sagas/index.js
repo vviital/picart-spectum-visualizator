@@ -46,6 +46,14 @@ function* getProfile(action) {
     });
 }
 
+function* getProfiles() {
+    const res = yield call(api.getProfiles);
+    yield put({
+        type: 'SET_PROFILES',
+        payload: res,
+    });
+}
+
 function* clearUser() {
     yield put({
         type: "SET_USER",
@@ -61,6 +69,7 @@ function* actionWatcher() {
     yield takeEvery('APP_INIT', appInit);
     yield takeEvery('GET_USER', getUser);
     yield takeEvery('GET_PROFILE', getProfile);
+    yield takeEvery('GET_PROFILES', getProfiles);
 }
 
 export default function* rootSaga() {

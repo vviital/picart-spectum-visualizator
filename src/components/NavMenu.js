@@ -25,7 +25,7 @@ class NavMenu extends Component {
                             <Link to='/search'>Search</Link>
                         </li>
                         <li>
-                            <Link to='/profile'>Profile</Link>
+                            <Link to='/profiles'>Profiles</Link>
                         </li>
                     </ul>
                 </div>
