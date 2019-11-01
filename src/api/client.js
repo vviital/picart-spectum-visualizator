@@ -9,12 +9,16 @@ class Client {
         return axios.get(url, options);
     }
 
-    static getWithAuth(url, options) {
-        return axios.get(url, {
-            headers: {
-                "Authorization": `Bearer ${options.token}`
-            }
-        });
+    static put(url, options) {
+        return axios.put(url, options);
+    }
+
+    static patch(url, options) {
+        return axios.patch(url, options);
+    }
+
+    static delete(url, options) {
+        return axios.delete(url, options);
     }
 }
-module.exports = Client;
+export default Client;

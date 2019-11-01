@@ -1,6 +1,5 @@
 import Client from './client';
-
-const ls = window.localStorage;
+import ClientAuth from "./clientAuth";
 
 class API {
     constructor() {
@@ -12,7 +11,7 @@ class API {
     }
 
     async getToken(payload) {
-        const res = await Client.post(this.buildURL('tokens'), payload);
+        const res = await Client.post(this.buildURL('tokens/'), payload);
         if (res.data && res.data === 401)
         {
             return '';
@@ -21,14 +20,12 @@ class API {
     }
 
     async getProfile(id) {
-        const token = ls.getItem('token');
-        const res = await Client.getWithAuth(`http://127.0.0.1:3000/profiles/${id}`, {token: token});
+        const res = await ClientAuth.get(this.buildURL('profiles/') + id);
         return res.data;
     }
 
     async getProfiles() {
-        const token = ls.getItem('token');
-        const res = await Client.getWithAuth('http://127.0.0.1:3000/profiles/', {token: token});
+        const res = await ClientAuth.get(this.buildURL('profiles/'));
         return res.data.items;
     }
 }

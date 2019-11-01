@@ -12,7 +12,7 @@ function* appInit() {
 function* getToken(action) {
     const { payload } = action;
     try {
-        const res = yield call(api.getToken, payload);
+        const res = yield call(api.getToken.bind(api), payload);
         yield call(ls.setItem, 'token', res);
         yield call(getUser, res);
     } catch (err) {
@@ -39,7 +39,7 @@ function* getUser() {
 
 function* getProfile(action) {
     const { payload } = action;
-    const profile = yield call(api.getProfile, payload);
+    const profile = yield call(api.getProfile.bind(api), payload);
     yield put({
         type: 'SET_PROFILE',
         payload: profile,
@@ -47,7 +47,7 @@ function* getProfile(action) {
 }
 
 function* getProfiles() {
-    const res = yield call(api.getProfiles);
+    const res = yield call(api.getProfiles.bind(api));
     yield put({
         type: 'SET_PROFILES',
         payload: res,
