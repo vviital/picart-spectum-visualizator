@@ -3,11 +3,19 @@ import Client from './client';
 const ls = window.localStorage;
 
 class API {
+    constructor() {
+        this.baseURL = 'http://127.0.0.1:3000/';
+    }
+
+    buildURL(path) {
+        return `${this.baseURL}${path}`;
+    }
+
     async getToken(payload) {
-        const res = await Client.post('http://127.0.0.1:3000/tokens', payload);
+        const res = await Client.post(this.buildURL('tokens'), payload);
         if (res.data && res.data === 401)
         {
-            return undefined;
+            return '';
         }
         return res.data.token;
     }
