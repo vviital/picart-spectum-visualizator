@@ -26,7 +26,7 @@ class Profiles extends PureComponent {
                 <div className='profiles-wrapper'>
                     {userCards.map((user) => {
                         return (
-                            <UserCard user={user}/>
+                            <UserCard key={user.id} user={user}/>
                         );
                     })}
                 </div>
