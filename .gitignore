@@ -11,9 +11,6 @@
 # production
 /build
 
-# dev
-.eslintrc.js
-
 # misc
 .DS_Store
 .idea/
