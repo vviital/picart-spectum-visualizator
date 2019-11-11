@@ -3,17 +3,19 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-
 import './styles/profile.css';
 import { Card, CardContent } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 class Profile extends React.PureComponent {
   componentDidMount() {
-    this.number = this.props.match.params.number;
-    this.props.getProfile(this.number);
+    const { getProfile, match } = this.props;
+    this.number = match.params.number;
+    getProfile(this.number);
   }
 
   render() {
+    const { profile } = this.props;
     return (
       <div className="profile-content">
         <Card>
@@ -24,27 +26,27 @@ class Profile extends React.PureComponent {
             <Typography>
               <b>User ID:</b>
               {' '}
-              {this.props.profile.id}
+              {profile.id}
             </Typography>
             <Typography>
               <b>Login:</b>
               {' '}
-              {this.props.profile.login}
+              {profile.login}
             </Typography>
             <Typography>
               <b>Name:</b>
               {' '}
-              {this.props.profile.name}
+              {profile.name}
             </Typography>
             <Typography>
               <b>Surname:</b>
               {' '}
-              {this.props.profile.surname}
+              {profile.surname}
             </Typography>
             <Typography>
               <b>Email:</b>
               {' '}
-              {this.props.profile.email}
+              {profile.email}
             </Typography>
           </CardContent>
         </Card>
@@ -52,6 +54,22 @@ class Profile extends React.PureComponent {
     );
   }
 }
+
+Profile.propTypes = {
+  profile: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    login: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      number: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  getProfile: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   profile: state.profile,

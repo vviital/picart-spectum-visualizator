@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 import { getTokenAsync } from '../actions';
 
 class Auth extends React.PureComponent {
@@ -16,6 +17,7 @@ class Auth extends React.PureComponent {
       password: '',
     };
     this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleFormChange(event) {
@@ -30,11 +32,15 @@ class Auth extends React.PureComponent {
 
   handleClick(e) {
     e.preventDefault();
-    this.props.sendRequest(this.state.email, this.state.password);
+    const { sendRequest } = this.props;
+    const { email, password } = this.state;
+    sendRequest(email, password);
   }
 
   render() {
-    if (this.props.user.id !== '') {
+    const { user } = this.props;
+    const { email, password } = this.state;
+    if (user.id !== '') {
       return (<Redirect to="/" />);
     }
     return (
@@ -53,12 +59,12 @@ class Auth extends React.PureComponent {
                 variant="h4"
                 align="center"
               >
-                                Login to PicArt
+                Login to PicArt
               </Typography>
               <form>
                 <TextField
                   onChange={this.handleFormChange}
-                  value={this.state.email}
+                  value={email}
                   variant="outlined"
                   margin="normal"
                   required
@@ -71,7 +77,7 @@ class Auth extends React.PureComponent {
                 />
                 <TextField
                   onChange={this.handleFormChange}
-                  value={this.state.password}
+                  value={password}
                   variant="outlined"
                   margin="normal"
                   required
@@ -87,9 +93,9 @@ class Auth extends React.PureComponent {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  onClick={this.handleClick.bind(this)}
+                  onClick={this.handleClick}
                 >
-                                    Sign In
+                  Sign In
                 </Button>
               </form>
             </Container>
@@ -99,6 +105,11 @@ class Auth extends React.PureComponent {
     );
   }
 }
+
+Auth.propTypes = {
+  user: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
+  sendRequest: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   user: state.user,

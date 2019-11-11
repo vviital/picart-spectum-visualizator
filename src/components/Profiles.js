@@ -1,24 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
+import PropTypes from 'prop-types';
 import UserCard from './UserCard';
 import './styles/profiles.css';
 import Search from './Search';
 
 class Profiles extends React.PureComponent {
   componentDidMount() {
-    this.props.getProfiles();
+    const { getProfiles } = this.props;
+    getProfiles();
   }
 
   render() {
-    if (lodash.isEmpty(this.props.profiles)) {
+    const { profiles } = this.props;
+    if (lodash.isEmpty(profiles)) {
       return (
         <div className="profiles-content">
                     Loading...
         </div>
       );
     }
-    const userCards = Array.from(Object.values(this.props.profiles));
+    const userCards = Array.from(Object.values(profiles));
     return (
       <div className="profiles-content">
         <Search />
@@ -31,6 +34,11 @@ class Profiles extends React.PureComponent {
     );
   }
 }
+
+Profiles.propTypes = {
+  profiles: PropTypes.shape({}).isRequired,
+  getProfiles: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   user: state.user,

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { clearLocalStorage } from '../actions';
 import './styles/navbar.css';
 
 class NavMenu extends React.PureComponent {
   render() {
+    const { logout } = this.props;
     return (
       <div className="nav-bar" id="nav-bar">
         <div>
@@ -31,9 +33,10 @@ class NavMenu extends React.PureComponent {
         <div>
           <button
             className="logout-button"
-            onClick={this.props.logout}
+            onClick={logout}
+            type="button"
           >
-Logout
+            Logout
           </button>
         </div>
       </div>
@@ -41,8 +44,12 @@ Logout
   }
 }
 
+NavMenu.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(clearLocalStorage()),
 });
+
 export default connect(null, mapDispatchToProps)(NavMenu);

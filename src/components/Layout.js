@@ -1,19 +1,26 @@
 import React from 'react';
 import SplitPane from 'react-split-pane';
+import PropTypes from 'prop-types';
 import NavMenu from './NavMenu';
 import './styles/layout.css';
 
 
 class Layout extends React.PureComponent {
   render() {
+    const { content } = this.props;
     return (
       <div className="layout">
         <SplitPane split="vertical" minSize={0} defaultSize={80} maxSize={100}>
           <NavMenu />
-          <div className="contents" id="contents">{this.props.content}</div>
+          <div className="contents" id="contents">{content}</div>
         </SplitPane>
       </div>
     );
   }
 }
+
+Layout.propTypes = {
+  content: PropTypes.element.isRequired,
+};
+
 export default Layout;
