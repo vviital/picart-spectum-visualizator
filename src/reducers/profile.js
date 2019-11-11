@@ -1,15 +1,17 @@
 const defaultState = {
-  id: '',
+  name: '',
+  surname: '',
   email: '',
   login: '',
 };
 
-const userReducer = (state = defaultState, action) => {
+const profileReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case 'SET_USER':
+    case 'SET_PROFILE': {
       return { ...state, ...action.payload };
+    }
     default:
       return state;
   }
 };
-export default userReducer;
+export default profileReducer;

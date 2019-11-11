@@ -1,48 +1,55 @@
-import React from "react";
-import {Component} from "react";
-import {Link} from 'react-router-dom'
-import {clearLocalStorage} from "../actions";
-import {connect} from "react-redux";
-import './styles/navbar.css'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { clearLocalStorage } from '../actions';
+import './styles/navbar.css';
 
-class NavMenu extends Component {
-    render() {
-        return (
-            <div className='nav-bar' id='nav-bar'>
-                <div>
-                    <a href='/'>
-                    <img src='images/logo.png'
-                         className='logo'
-                         alt='PicArt'
-
-                    />
-                    </a>
-                    <ul className='nav-list'>
-                        <li>
-                            <Link to='/'>Home</Link>
-                        </li>
-                        <li>
-                            <Link to='/search'>Search</Link>
-                        </li>
-                        <li>
-                            <Link to='/profile'>Profile</Link>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <button
-                        className='logout-button'
-                        onClick={this.props.logout}
-                    >Logout
-                    </button>
-                </div>
-            </div>
-        );
-    }
+class NavMenu extends React.PureComponent {
+  render() {
+    const { logout } = this.props;
+    return (
+      <div className="nav-bar" id="nav-bar">
+        <div>
+          <a href="/">
+            <img
+              src="images/logo.png"
+              className="logo"
+              alt="PicArt"
+            />
+          </a>
+          <ul className="nav-list">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/search">Search</Link>
+            </li>
+            <li>
+              <Link to="/profiles">Profiles</Link>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <button
+            className="logout-button"
+            onClick={logout}
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
 
+NavMenu.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
-    logout: () => dispatch(clearLocalStorage()),
+  logout: () => dispatch(clearLocalStorage()),
 });
-export default connect( null, mapDispatchToProps)(NavMenu);
+
+export default connect(null, mapDispatchToProps)(NavMenu);

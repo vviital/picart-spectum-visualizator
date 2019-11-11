@@ -1,0 +1,8 @@
+.user-card {
+    text-align: center;
+    text-decoration: none;
+}
+
+.MuiCardContent-root {
+    color: rgba(0,0,0, 0.8);
+}
