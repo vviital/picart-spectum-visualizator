@@ -5,7 +5,7 @@ import profile from './profile';
 import profiles from './profiles';
 
 export default combineReducers({
-    user,
-    profile,
-    profiles,
+  user,
+  profile,
+  profiles,
 });
