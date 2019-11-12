@@ -1,10 +1,10 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import './styles/profile.css';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent, CardMedia } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 class Profile extends React.PureComponent {
@@ -19,9 +19,14 @@ class Profile extends React.PureComponent {
     return (
       <div className="profile-content">
         <Card>
+          <CardMedia
+            component="img"
+            alt="Your avatar"
+            image="/images/avatar.png "
+          />
           <CardContent>
             <Typography variant="h5">
-                            Profile information:
+              Profile information:
             </Typography>
             <Typography>
               <b>User ID:</b>
@@ -48,6 +53,7 @@ class Profile extends React.PureComponent {
               {' '}
               {profile.email}
             </Typography>
+            <Link to='/edit-profile'>Edit profile</Link>
           </CardContent>
         </Card>
       </div>
@@ -57,7 +63,7 @@ class Profile extends React.PureComponent {
 
 Profile.propTypes = {
   profile: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     login: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     surname: PropTypes.string.isRequired,
