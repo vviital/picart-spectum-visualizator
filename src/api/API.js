@@ -3,7 +3,7 @@ import ClientAuth from './clientAuth';
 
 class API {
   constructor() {
-    this.baseURL = 'http://127.0.0.1:3000/';
+    this.baseURL = 'http://127.0.0.1:3001/';
   }
 
   buildURL(path) {

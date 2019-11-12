@@ -9,6 +9,7 @@ import Layout from './Layout';
 import Profiles from './Profiles';
 import Search from './Search';
 import Profile from './Profile';
+import EditProfile from './EditProfile';
 
 
 class App extends React.Component {
@@ -39,6 +40,13 @@ class App extends React.Component {
           path="/profiles/:number"
           render={() => (
             <WithAuth content={<Layout content={<Profile />} />} />
+          )}
+        />
+        <Route
+          exact
+          path="/edit-profile"
+          render={() => (
+            <WithAuth content={<Layout content={<EditProfile />} />} />
           )}
         />
         <Route

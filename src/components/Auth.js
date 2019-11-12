@@ -21,10 +21,7 @@ class Auth extends React.PureComponent {
   }
 
   handleFormChange(event) {
-    const { target } = event;
-    const { value } = target;
-    const { name } = target;
-
+    const { name, value } = event.target;
     this.setState({
       [name]: value,
     });
