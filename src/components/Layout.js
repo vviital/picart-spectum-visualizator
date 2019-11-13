@@ -2,6 +2,7 @@ import React from 'react';
 import SplitPane from 'react-split-pane';
 import PropTypes from 'prop-types';
 import NavMenu from './NavMenu';
+import Snack from './Snack';
 import './styles/layout.css';
 
 
@@ -14,6 +15,7 @@ class Layout extends React.PureComponent {
           <NavMenu />
           <div className="contents" id="contents">{content}</div>
         </SplitPane>
+        <Snack />
       </div>
     );
   }

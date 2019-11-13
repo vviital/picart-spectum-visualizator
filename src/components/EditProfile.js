@@ -46,7 +46,6 @@ class EditProfile extends React.PureComponent {
     e.preventDefault();
     const { updateProfile, profile } = this.props;
     const { name, surname } = this.state;
-    console.log(name, surname);
     updateProfile(profile.id, name, surname);
   }
 
