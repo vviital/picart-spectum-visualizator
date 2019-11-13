@@ -13,6 +13,7 @@ class EditProfile extends React.PureComponent {
       name: '',
       surname: '',
     };
+    this.gotProfile = false;
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -21,6 +22,17 @@ class EditProfile extends React.PureComponent {
     const { getProfile } = this.props;
     const { user } = this.props;
     getProfile(user);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { profile } = this.props;
+    if (profile.id && !this.gotProfile) {
+      this.setState({
+        name: profile.name,
+        surname: profile.surname,
+      });
+      this.gotProfile = true;
+    }
   }
 
   handleFormChange(event) {
@@ -32,9 +44,10 @@ class EditProfile extends React.PureComponent {
 
   handleClick(e) {
     e.preventDefault();
-    const { updateProfile } = this.props;
+    const { updateProfile, profile } = this.props;
     const { name, surname } = this.state;
-    updateProfile(name, surname);
+    console.log(name, surname);
+    updateProfile(profile.id, name, surname);
   }
 
   render() {
@@ -118,7 +131,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getProfile: (id) => dispatch({ type: 'GET_PROFILE', payload: id }),
-  updateProfile: (name, surname) => dispatch({ type: 'UPDATE_PROFILE', payload: { name, surname } }),
+  updateProfile: (id, name, surname) => dispatch({ type: 'UPDATE_PROFILE', payload: { id, name, surname } }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
