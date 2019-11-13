@@ -27,5 +27,9 @@ class API {
     const res = await ClientAuth.get(this.buildURL('profiles/'));
     return res.data.items;
   }
+
+  async updateProfile(payload) {
+    return ClientAuth.patch(this.buildURL('profiles/') + payload.id, payload);
+  }
 }
 export default API;

@@ -65,6 +65,19 @@ function* getProfiles() {
   });
 }
 
+function* updateProfile(action) {
+  const { payload } = action;
+  const res = yield call(api.updateProfile.bind(api), payload);
+  if (res.status) {
+    switch (res.status) {
+      case 200: console.log('Ok, show snack'); break;
+      case 401: console.log('Auth err'); break;
+      case 404: console.log('No profile'); break;
+      default: break;
+    }
+  }
+}
+
 function* actionWatcher() {
   yield takeEvery('GET_TOKEN_ASYNC', getToken);
   yield takeEvery('CLEAR_LOCAL_STORAGE', logout);
@@ -72,6 +85,7 @@ function* actionWatcher() {
   yield takeEvery('GET_USER', getUser);
   yield takeEvery('GET_PROFILE', getProfile);
   yield takeEvery('GET_PROFILES', getProfiles);
+  yield takeEvery('UPDATE_PROFILE', updateProfile);
 }
 
 export default function* rootSaga() {
