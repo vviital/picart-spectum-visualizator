@@ -29,8 +29,10 @@ function* getToken(action) {
     const res = yield call(api.getToken.bind(api), payload);
     yield call(ls.setItem, 'token', res);
     yield call(getUser, res);
+    yield call(showSnack, 'success', 'Successfully logged in! Welcome back!');
   } catch (err) {
     console.error(err);
+    yield call(showSnack, 'error', 'Incorrect login/password!');
   }
 }
 
@@ -46,6 +48,7 @@ function* clearUser() {
 function* logout() {
   yield call(ls.clear);
   yield call(clearUser);
+  yield call(showSnack, 'success', 'Successfully logged out! Bye!');
 }
 
 function* getProfile(action) {
@@ -70,12 +73,26 @@ function* updateProfile(action) {
   const res = yield call(api.updateProfile.bind(api), payload);
   if (res.status) {
     switch (res.status) {
-      case 200: console.log('Ok, show snack'); break;
-      case 401: console.log('Auth err'); break;
-      case 404: console.log('No profile'); break;
+      case 200:
+        yield call(showSnack, 'success', 'Profile has been updated!');
+        break;
+      case 404:
+        yield call(showSnack, 'error', 'Profile not found!');
+        break;
       default: break;
     }
   }
+}
+
+function* showSnack(type, message) {
+  yield put({
+    type: 'SHOW_SNACK',
+    payload: {
+      open: true,
+      type,
+      message,
+    },
+  });
 }
 
 function* actionWatcher() {
