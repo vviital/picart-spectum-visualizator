@@ -70,17 +70,22 @@ function* getProfiles() {
 
 function* updateProfile(action) {
   const { payload } = action;
-  const res = yield call(api.updateProfile.bind(api), payload);
-  if (res.status) {
-    switch (res.status) {
-      case 200:
+  try {
+    const res = yield call(api.updateProfile.bind(api), payload);
+    if (res.status) {
+      const status = res.status;
+      if (status === 200) {
         yield call(showSnack, 'success', 'Profile has been updated!');
-        break;
-      case 404:
+      }
+      else if (status === 404) {
         yield call(showSnack, 'error', 'Profile not found!');
-        break;
-      default: break;
+      }
+      else {
+        yield call(showSnack, 'error', 'Unknown error');
+      }
     }
+  } catch (e) {
+    yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
 
