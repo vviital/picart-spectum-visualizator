@@ -8,7 +8,7 @@ class Snack extends React.PureComponent {
   constructor(props) {
     super(props);
     this.handleClose = this.handleClose.bind(this);
-    this.setColor = this.setColor.bind(this);
+    this.getColor = this.getColor.bind(this);
   }
 
   handleClose() {
@@ -16,7 +16,7 @@ class Snack extends React.PureComponent {
     dispatch({ type: 'CLEAR_SNACK' });
   }
 
-  setColor(type) {
+  getColor(type) {
     switch (type) {
       case 'success': return 'green';
       case 'error': return 'firebrick';
@@ -37,7 +37,7 @@ class Snack extends React.PureComponent {
         >
           <SnackbarContent
             style={{
-              backgroundColor: this.setColor(snack.type),
+              backgroundColor: this.getColor(snack.type),
             }}
             message={snack.message}
           />

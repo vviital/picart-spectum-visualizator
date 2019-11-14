@@ -12,8 +12,8 @@ class EditProfile extends React.PureComponent {
     this.state = {
       name: '',
       surname: '',
+      gotProfile: false,
     };
-    this.gotProfile = false;
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -26,12 +26,13 @@ class EditProfile extends React.PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props;
-    if (profile.id && !this.gotProfile) {
+    const { gotProfile } = this.state;
+    if (profile.id && !gotProfile) {
       this.setState({
         name: profile.name,
         surname: profile.surname,
+        gotProfile: true,
       });
-      this.gotProfile = true;
     }
   }
 
