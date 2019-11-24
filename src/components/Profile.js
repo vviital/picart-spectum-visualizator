@@ -1,17 +1,14 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import './styles/profile.css';
-import { Card, CardContent, CardMedia } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './styles/profile.css';
 
 class Profile extends React.PureComponent {
   componentDidMount() {
-    const { getProfile, match } = this.props;
+    const { match } = this.props;
     this.number = match.params.number;
-    getProfile(this.number);
   }
 
   render() {
@@ -19,44 +16,24 @@ class Profile extends React.PureComponent {
     const { profile } = this.props;
     return (
       <div className="profile-content">
-        <Card>
-          <CardMedia
-            component="img"
-            alt="Your avatar"
-            image="/images/avatar.png "
-          />
-          <CardContent>
-            <Typography variant="h5">
-              Profile information:
-            </Typography>
-            <Typography>
-              <b>User ID:</b>
-              {' '}
-              {profile.id}
-            </Typography>
-            <Typography>
-              <b>Login:</b>
-              {' '}
-              {profile.login}
-            </Typography>
-            <Typography>
-              <b>Name:</b>
-              {' '}
-              {profile.name}
-            </Typography>
-            <Typography>
-              <b>Surname:</b>
-              {' '}
-              {profile.surname}
-            </Typography>
-            <Typography>
-              <b>Email:</b>
-              {' '}
-              {profile.email}
-            </Typography>
-            <Link to='/edit-profile'>Edit profile</Link>
-          </CardContent>
-        </Card>
+        <div id="profile-name">
+          {profile.name} {profile.surname}
+        </div>
+        <div className="profile-container">
+          <div className="profile-column">
+            <img src="/images/avatar.png" alt="Your avatar" className="profile-avatar" />
+          </div>
+          <div className="profile-column">
+            <input type="text" value={profile.name} className="profile-input" />
+            <input type="text" value={profile.surname} className="profile-input" />
+            <input type="text" value="Title" className="profile-input" />
+            <input type="text" value={profile.email} className="profile-input" />
+            <input type="text" value="Role" className="profile-input" />
+            <input type="text" value="Organisation" className="profile-input" />
+            <input type="text" value="About you" className="profile-input" />
+            <input type="button" className="profile-button-edit" value="Edit profile" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -75,18 +52,13 @@ Profile.propTypes = {
       number: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  getProfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getProfile: (id) => dispatch({ type: 'GET_PROFILE', payload: id }),
-});
-
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, null),
 )(Profile);
