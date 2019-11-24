@@ -15,6 +15,7 @@ class Profile extends React.PureComponent {
   }
 
   render() {
+    console.log('requested');
     const { profile } = this.props;
     return (
       <div className="profile-content">

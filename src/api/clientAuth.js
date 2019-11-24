@@ -1,5 +1,4 @@
 const axios = require('axios');
-const _ = require('lodash');
 
 const ls = window.localStorage;
 
@@ -30,8 +29,8 @@ class ClientAuth {
   }
 
   static createHeaders(options = {}) {
-    const headers = _.get(options, 'Headers');
     const token = ls.getItem('token');
+    const headers = {};
     headers.Authorization = `Bearer ${token}`;
     return headers;
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Auth from './Auth';
 import WithAuth from './WithAuth';
 import Main from './Main';
@@ -11,11 +12,11 @@ import Search from './Search';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.props.init();
+    const { init } = this.props;
+    init();
   }
 
   render() {
@@ -31,13 +32,13 @@ class App extends React.Component {
         />
         <Route
           exact
-          path="/profiles"
+          path="/users"
           render={() => (
             <WithAuth content={<Layout content={<Profiles />} />} />
           )}
         />
         <Route
-          path="/profiles/:number"
+          path="/users/:number"
           render={() => (
             <WithAuth content={<Layout content={<Profile />} />} />
           )}
@@ -51,7 +52,7 @@ class App extends React.Component {
         />
         <Route
           exact
-          path="/search"
+          path="/researches"
           render={() => (
             <WithAuth content={<Layout content={<Search />} />} />
           )}
@@ -62,6 +63,10 @@ class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  init: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   init: () => dispatch({ type: 'APP_INIT' }),
