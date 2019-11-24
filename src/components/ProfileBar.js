@@ -18,9 +18,9 @@ class ProfileBar extends React.PureComponent {
     return (
       <Link to={`/users/${profile.id}`} style={{ textDecoration: 'none' }}>
         <div className="profile-bar">
-          <div className="profile-container">
-            <img src="/images/avatar-small.png" alt="Avatar" className="profile-avatar" />
-            <div className="profile-info">
+          <div className="profile-bar-container">
+            <img src="/images/avatar-small.png" alt="Avatar" className="profile-bar-avatar" />
+            <div className="profile-bar-info">
               <span>
                 {profile.name} {profile.surname}
               </span>
