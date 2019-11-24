@@ -73,14 +73,12 @@ function* updateProfile(action) {
   try {
     const res = yield call(api.updateProfile.bind(api), payload);
     if (res.status) {
-      const status = res.status;
+      const { status } = res;
       if (status === 200) {
         yield call(showSnack, 'success', 'Profile has been updated!');
-      }
-      else if (status === 404) {
+      } else if (status === 404) {
         yield call(showSnack, 'error', 'Profile not found!');
-      }
-      else {
+      } else {
         yield call(showSnack, 'error', 'Unknown error');
       }
     }
