@@ -8,8 +8,8 @@ import Main from './Main';
 import NotFound from './NotFound';
 import Layout from './Layout';
 import Profiles from './Profile/Profiles';
-import Search from './Search';
 import Profile from './Profile/Profile';
+import Researches from './Research/Researches';
 
 class App extends React.Component {
   constructor(props) {
@@ -46,7 +46,7 @@ class App extends React.Component {
           exact
           path="/researches"
           render={() => (
-            <WithAuth content={<Layout content={<Search />} />} />
+            <WithAuth content={<Layout content={<Researches />} />} />
           )}
         />
 
