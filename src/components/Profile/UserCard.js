@@ -12,7 +12,7 @@ class UserCard extends React.PureComponent {
     return (
       <Card className="user-card">
         <CardActionArea>
-          <Link to={`/profiles/${user.id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
             <CardContent>
               <Typography variant="h5">
                 {user.name}
