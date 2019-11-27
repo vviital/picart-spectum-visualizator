@@ -20,7 +20,7 @@
 }
 
 .profile-input {
-    background: #F5F1F1;
+    background-color: rgba(0,0,0, .01);
     border: 1px solid #000000;
     box-sizing: border-box;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -32,8 +32,14 @@
     margin: 10px 0;
 }
 
+.profile-input:disabled {
+    font: normal 20px SansSerif;
+    background-color: rgba(0,0,0, .04);
+    color: black;
+}
+
 #profile-name {
-    font: normal small-caps normal 30px/1.4 Georgia;
+    font: normal 30px SansSerif;
     border-bottom: 1px solid black;
 }
 

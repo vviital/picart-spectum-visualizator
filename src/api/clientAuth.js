@@ -11,8 +11,13 @@ class ClientAuth {
     });
   }
 
-  static put(url, options) {
-    return axios.put(url, options);
+  static put(url, payload, options = {}) {
+    return axios({
+      method: 'put',
+      url,
+      headers: ClientAuth.createHeaders(),
+      data: payload,
+    });
   }
 
   static patch(url, payload, options = {}) {
