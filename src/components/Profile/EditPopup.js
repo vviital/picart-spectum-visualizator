@@ -35,8 +35,8 @@ class EditPopup extends React.PureComponent {
       } else {
         alert('Passwords do not match! Aborting.');
       }
-      close();
     }
+    close();
   }
 
   render() {
