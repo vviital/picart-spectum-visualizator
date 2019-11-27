@@ -2,7 +2,7 @@ import React from 'react';
 import SplitPane from 'react-split-pane';
 import PropTypes from 'prop-types';
 import NavMenu from './NavMenu';
-import ProfileBar from './ProfileBar';
+import ProfileBar from './Profile/ProfileBar';
 import Snack from './Snack';
 import './styles/layout.css';
 

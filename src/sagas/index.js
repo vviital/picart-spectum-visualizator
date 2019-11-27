@@ -31,7 +31,6 @@ function* getToken(action) {
     yield call(getUser, res);
     yield call(showSnack, 'success', 'Successfully logged in! Welcome back!');
   } catch (err) {
-    console.error(err);
     yield call(showSnack, 'error', 'Incorrect login/password!');
   }
 }
@@ -87,6 +86,46 @@ function* updateProfile(action) {
   }
 }
 
+function* updateEmail(action) {
+  const { payload } = action;
+  try {
+    const res = yield call(api.updateEmail.bind(api), payload);
+    if (res.status) {
+      const { status } = res;
+      if (status === 200) {
+        yield call(showSnack, 'success', 'Email has been updated!');
+      } else if (status === 403 || status === 401) {
+        yield call(showSnack, 'error', 'Wrong password!');
+      } else {
+        yield call(showSnack, 'error', 'Unknown error');
+      }
+    }
+  } catch (e) {
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* updatePassword(action) {
+  const { payload } = action;
+  try {
+    const res = yield call(api.updatePassword.bind(api), payload);
+    console.log(res);
+    if (res.status) {
+      const { status } = res;
+      if (status === 204) {
+        yield call(showSnack, 'success', 'Password has been updated!');
+      } else if (status === 403 || status === 401) {
+        yield call(showSnack, 'error', 'Wrong password!');
+      } else {
+        yield call(showSnack, 'error', 'Unknown error');
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
 function* showSnack(type, message) {
   yield put({
     type: 'SHOW_SNACK',
@@ -105,7 +144,9 @@ function* actionWatcher() {
   yield takeEvery('GET_USER', getUser);
   yield takeEvery('GET_PROFILE', getProfile);
   yield takeEvery('GET_PROFILES', getProfiles);
-  yield takeEvery('UPDATE_PROFILE', updateProfile);
+  yield takeEvery('UPDATE_PROFILE_INFO', updateProfile);
+  yield takeEvery('UPDATE_EMAIL', updateEmail);
+  yield takeEvery('UPDATE_PASSWORD', updatePassword);
 }
 
 export default function* rootSaga() {

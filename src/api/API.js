@@ -31,5 +31,23 @@ class API {
   async updateProfile(payload) {
     return ClientAuth.patch(this.buildURL('profiles/') + payload.id, payload);
   }
+
+  async updateEmail(payload) {
+    const { id, password, email } = payload;
+    const options = {
+      confirmationPassword: password,
+      email,
+    };
+    return ClientAuth.put(this.buildURL(`profiles/${id}/email`), options);
+  }
+
+  async updatePassword(payload) {
+    const { id, password, newPassword } = payload;
+    const options = {
+      confirmationPassword: password,
+      password: newPassword,
+    };
+    return ClientAuth.put(this.buildURL(`profiles/${id}/password`), options);
+  }
 }
 export default API;

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import './styles/profile-bar.css';
+import '../styles/profile-bar.css';
 
 class ProfileBar extends React.PureComponent {
   componentDidMount() {
@@ -39,7 +39,7 @@ ProfileBar.propTypes = {
     id: PropTypes.string,
     login: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    roles: PropTypes.array.isRequired,
+    roles: PropTypes.array,
     surname: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
   }).isRequired,
