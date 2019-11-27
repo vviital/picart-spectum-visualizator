@@ -136,6 +136,15 @@ function* getResearches() {
   });
 }
 
+function* getResearch(action) {
+  const id = action.payload;
+  const res = yield call(fakeApi.getResearch.bind(fakeApi), id);
+  yield put({
+    type: 'SET_RESEARCH',
+    payload: res,
+  });
+}
+
 function* showSnack(type, message) {
   yield put({
     type: 'SHOW_SNACK',
@@ -158,6 +167,7 @@ function* actionWatcher() {
   yield takeEvery('UPDATE_EMAIL', updateEmail);
   yield takeEvery('UPDATE_PASSWORD', updatePassword);
   yield takeEvery('GET_RESEARCHES', getResearches);
+  yield takeEvery('GET_RESEARCH', getResearch);
 }
 
 export default function* rootSaga() {

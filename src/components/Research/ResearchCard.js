@@ -12,7 +12,7 @@ class ResearchCard extends React.PureComponent {
     return (
       <Card className="research-card">
         <CardActionArea className="research-card-area">
-          <Link to={`/profiles/${research.id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/researches/${research.id}`} style={{ textDecoration: 'none' }}>
             <CardContent>
               <Typography variant="h6">
                 {research.researchType}
@@ -35,7 +35,7 @@ ResearchCard.propTypes = {
     type: PropTypes.string.isRequired,
     researchType: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    ownerId: PropTypes.number.isRequired,
+    ownerId: PropTypes.number,
   }).isRequired,
 };
 

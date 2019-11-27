@@ -93,7 +93,7 @@ class Profile extends React.PureComponent {
             <input type="text" name="title" defaultValue="Title" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
             <input type="text" name="email" defaultValue={profile.email} className="profile-input" disabled onChange={this.handleInputChange} />
             <input type="text" defaultValue={profile.roles[0]} className="profile-input" disabled />
-            <input type="text" name="organisation" defaultValue="Organisation" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
+            <input type="text" name="organization" defaultValue="Organization" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
             <input type="text" name="about" defaultValue="About you" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
             {isEditing ? <input type="button" className="profile-button-edit" value="Confirm" onClick={this.handleConfirmButton} onChange={this.handleInputChange} />
               : <input type="button" className="profile-button-edit" value="Edit profile" onClick={this.toggleEdit} onChange={this.handleInputChange} /> }

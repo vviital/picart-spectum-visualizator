@@ -10,6 +10,7 @@ import Layout from './Layout';
 import Profiles from './Profile/Profiles';
 import Profile from './Profile/Profile';
 import Researches from './Research/Researches';
+import Research from './Research/Research';
 
 class App extends React.Component {
   constructor(props) {
@@ -47,6 +48,12 @@ class App extends React.Component {
           path="/researches"
           render={() => (
             <WithAuth content={<Layout content={<Researches />} />} />
+          )}
+        />
+        <Route
+          path="/researches/:number"
+          render={() => (
+            <WithAuth content={<Layout content={<Research />} />} />
           )}
         />
 
