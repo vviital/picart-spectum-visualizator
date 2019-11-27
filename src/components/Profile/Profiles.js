@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
-import UserCard from '../UserCard';
+import UserCard from './UserCard';
 import '../styles/profiles.css';
 import Search from '../Search';
 

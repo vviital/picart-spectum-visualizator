@@ -3,9 +3,11 @@ import {
 } from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
+import FakeAPI from '../api/fakeAPI';
 import ls from './wrappers/localstorage';
 
 const api = new API();
+const fakeApi = new FakeAPI();
 
 function* getUser() {
   let user = {
@@ -126,6 +128,14 @@ function* updatePassword(action) {
   }
 }
 
+function* getResearches() {
+  const res = yield call(fakeApi.getResearches.bind(fakeApi));
+  yield put({
+    type: 'SET_RESEARCHES',
+    payload: res,
+  });
+}
+
 function* showSnack(type, message) {
   yield put({
     type: 'SHOW_SNACK',
@@ -147,6 +157,7 @@ function* actionWatcher() {
   yield takeEvery('UPDATE_PROFILE_INFO', updateProfile);
   yield takeEvery('UPDATE_EMAIL', updateEmail);
   yield takeEvery('UPDATE_PASSWORD', updatePassword);
+  yield takeEvery('GET_RESEARCHES', getResearches);
 }
 
 export default function* rootSaga() {
