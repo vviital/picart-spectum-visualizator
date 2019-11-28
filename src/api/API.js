@@ -3,7 +3,7 @@ import ClientAuth from './clientAuth';
 
 class API {
   constructor() {
-    this.baseURL = 'http://127.0.0.1:3001/';
+    this.baseURL = 'http://127.0.0.1:/api/v1/';
   }
 
   buildURL(path) {
@@ -48,6 +48,16 @@ class API {
       password: newPassword,
     };
     return ClientAuth.put(this.buildURL(`profiles/${id}/password`), options);
+  }
+
+  async getResearches() {
+    const res = await ClientAuth.get(this.buildURL('researches/'));
+    return res.data;
+  }
+
+  async getResearch(id) {
+    const res = await ClientAuth.get(this.buildURL('researches/') + id);
+    return res.data;
   }
 }
 export default API;
