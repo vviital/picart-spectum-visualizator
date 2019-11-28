@@ -3,11 +3,11 @@ import {
 } from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
-import FakeAPI from '../api/fakeAPI';
+// import FakeAPI from '../api/fakeAPI';
 import ls from './wrappers/localstorage';
 
 const api = new API();
-const fakeApi = new FakeAPI();
+// const fakeApi = new FakeAPI();
 
 function* getUser() {
   let user = {
@@ -129,7 +129,7 @@ function* updatePassword(action) {
 }
 
 function* getResearches() {
-  const res = yield call(fakeApi.getResearches.bind(fakeApi));
+  const res = yield call(api.getResearches.bind(api));
   yield put({
     type: 'SET_RESEARCHES',
     payload: res,
@@ -138,7 +138,7 @@ function* getResearches() {
 
 function* getResearch(action) {
   const id = action.payload;
-  const res = yield call(fakeApi.getResearch.bind(fakeApi), id);
+  const res = yield call(api.getResearch.bind(api), id);
   yield put({
     type: 'SET_RESEARCH',
     payload: res,
