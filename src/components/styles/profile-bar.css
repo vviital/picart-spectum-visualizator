@@ -1,0 +1,36 @@
+.profile-bar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.profile-bar-container {
+    display: flex;
+    margin: 5px 15px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 16px;
+    color: black;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.profile-bar-avatar {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 25px;
+    margin: 0 5px;
+}
+
+.profile-bar-info {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    margin: 0 15px;
+}
+
+.profile-bar-container:hover {
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: rgba(196, 196, 196, 0.4);
+}

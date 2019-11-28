@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Auth from './Auth';
 import WithAuth from './WithAuth';
 import Main from './Main';
 import NotFound from './NotFound';
 import Layout from './Layout';
-import Profiles from './Profiles';
-import Search from './Search';
-import Profile from './Profile';
-
+import Profiles from './Profile/Profiles';
+import Profile from './Profile/Profile';
+import Researches from './Research/Researches';
+import Research from './Research/Research';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.props.init();
+    const { init } = this.props;
+    init();
   }
 
   render() {
@@ -30,22 +32,28 @@ class App extends React.Component {
         />
         <Route
           exact
-          path="/profiles"
+          path="/users"
           render={() => (
             <WithAuth content={<Layout content={<Profiles />} />} />
           )}
         />
         <Route
-          path="/profiles/:number"
+          path="/users/:number"
           render={() => (
             <WithAuth content={<Layout content={<Profile />} />} />
           )}
         />
         <Route
           exact
-          path="/search"
+          path="/researches"
           render={() => (
-            <WithAuth content={<Layout content={<Search />} />} />
+            <WithAuth content={<Layout content={<Researches />} />} />
+          )}
+        />
+        <Route
+          path="/researches/:number"
+          render={() => (
+            <WithAuth content={<Layout content={<Research />} />} />
           )}
         />
 
@@ -54,6 +62,10 @@ class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  init: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   init: () => dispatch({ type: 'APP_INIT' }),

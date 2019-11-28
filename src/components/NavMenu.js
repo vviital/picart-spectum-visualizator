@@ -13,7 +13,7 @@ class NavMenu extends React.PureComponent {
         <div>
           <a href="/">
             <img
-              src="images/logo.png"
+              src="/images/logo.png"
               className="logo"
               alt="PicArt"
             />
@@ -23,22 +23,20 @@ class NavMenu extends React.PureComponent {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/search">Search</Link>
+              <Link to="/researches">Researches</Link>
             </li>
             <li>
-              <Link to="/profiles">Profiles</Link>
+              <Link to="/users">Users</Link>
             </li>
           </ul>
         </div>
-        <div>
-          <button
-            className="logout-button"
-            onClick={logout}
-            type="button"
-          >
-            Logout
-          </button>
-        </div>
+        <button
+          className="logout-button"
+          onClick={logout}
+          type="button"
+        >
+          Logout
+        </button>
       </div>
     );
   }

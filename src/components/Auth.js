@@ -4,10 +4,11 @@ import { Redirect } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { getTokenAsync } from '../actions';
+import Snack from './Snack';
+import './styles/auth.css';
 
 class Auth extends React.PureComponent {
   constructor(props) {
@@ -21,10 +22,7 @@ class Auth extends React.PureComponent {
   }
 
   handleFormChange(event) {
-    const { target } = event;
-    const { value } = target;
-    const { name } = target;
-
+    const { name, value } = event.target;
     this.setState({
       [name]: value,
     });
@@ -54,13 +52,8 @@ class Auth extends React.PureComponent {
             justify="center"
             style={{ minHeight: '90vh' }}
           >
+            <img src="/images/logo.png" alt="PicArt" className="auth-logo" />
             <Container component="main" maxWidth="sm">
-              <Typography
-                variant="h4"
-                align="center"
-              >
-                Login to PicArt
-              </Typography>
               <form>
                 <TextField
                   onChange={this.handleFormChange}
@@ -101,6 +94,7 @@ class Auth extends React.PureComponent {
             </Container>
           </Grid>
         </header>
+        <Snack />
       </div>
     );
   }

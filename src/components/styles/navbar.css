@@ -7,11 +7,11 @@
     height: 100%;
     margin: 0 auto;
     text-align: center;
-    background-color: #00a6f5;
-    color: gainsboro;
+    background-color: rgba(196, 196, 196, 0.17);
 }
 
 .logo {
+    margin: 10px 2px;
     width: 100%;
 }
 
@@ -26,33 +26,36 @@
 
 
 .nav-list li a {
+    margin: 5px 5px;
     display: block;
     width: auto;
     height: auto;
-    color: gainsboro;
     padding: 8px 0;
+    color: rgba(0, 0, 0, .8);
+    border: 1px solid rgba(0, 0, 0, .8);
+    border-radius: 5px;
     text-decoration: none;
     transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
 .nav-list li a:hover {
-    background-color: #00b2f0;
+    background-color: rgba(196, 196, 196, 0.4);
 }
 
 .logout-button {
-    background-color: transparent;
-    width: 100%;
     overflow: hidden;
-    border: none;
-    color: gainsboro;
+    background-color: transparent;
+    color: rgba(0, 0, 0, .8);
+    border: 1px solid rgba(0, 0, 0, .8);
+    border-radius: 5px;
+    width: 100%;
     padding: 8px 0;
     text-align: center;
     text-decoration: none;
-    display: block;
     font-size: 20px;
     transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
 .logout-button:hover {
-    background-color: #00b2f0;
+    background-color: rgba(196, 196, 196, 0.4);
 }

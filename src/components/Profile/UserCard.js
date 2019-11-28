@@ -4,7 +4,7 @@ import { CardActionArea, CardContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import './styles/userCard.css';
+import '../styles/userCard.css';
 
 class UserCard extends React.PureComponent {
   render() {
@@ -12,7 +12,7 @@ class UserCard extends React.PureComponent {
     return (
       <Card className="user-card">
         <CardActionArea>
-          <Link to={`/profiles/${user.id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
             <CardContent>
               <Typography variant="h5">
                 {user.name}

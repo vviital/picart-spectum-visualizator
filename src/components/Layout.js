@@ -2,6 +2,8 @@ import React from 'react';
 import SplitPane from 'react-split-pane';
 import PropTypes from 'prop-types';
 import NavMenu from './NavMenu';
+import ProfileBar from './Profile/ProfileBar';
+import Snack from './Snack';
 import './styles/layout.css';
 
 
@@ -10,10 +12,17 @@ class Layout extends React.PureComponent {
     const { content } = this.props;
     return (
       <div className="layout">
-        <SplitPane split="vertical" minSize={0} defaultSize={80} maxSize={100}>
+        <SplitPane split="vertical" minSize={0} defaultSize={120} maxSize={120}>
           <NavMenu />
-          <div className="contents" id="contents">{content}</div>
+          <div
+            className="contents"
+            id="contents"
+          >
+            <ProfileBar />
+            {content}
+          </div>
         </SplitPane>
+        <Snack />
       </div>
     );
   }

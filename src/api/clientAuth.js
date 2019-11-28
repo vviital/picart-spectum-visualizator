@@ -4,28 +4,40 @@ const ls = window.localStorage;
 
 class ClientAuth {
   static get(url, options = {}) {
-    options = ClientAuth.createHeader();
-    const headers = { ...options };
-    return axios.get(url, { ...options, headers });
+    return axios({
+      method: 'get',
+      url,
+      headers: ClientAuth.createHeaders(),
+    });
   }
 
-  static put(url, options) {
-    return axios.put(url, options);
+  static put(url, payload, options = {}) {
+    return axios({
+      method: 'put',
+      url,
+      headers: ClientAuth.createHeaders(),
+      data: payload,
+    });
   }
 
-  static patch(url, options) {
-    return axios.patch(url, options);
+  static patch(url, payload, options = {}) {
+    return axios({
+      method: 'patch',
+      url,
+      headers: ClientAuth.createHeaders(),
+      data: payload,
+    });
   }
 
   static delete(url, options) {
     return axios.delete(url, options);
   }
 
-  static createHeader() {
+  static createHeaders(options = {}) {
     const token = ls.getItem('token');
-    return {
-      Authorization: `Bearer ${token}`,
-    };
+    const headers = {};
+    headers.Authorization = `Bearer ${token}`;
+    return headers;
   }
 }
 export default ClientAuth;
