@@ -3,7 +3,7 @@ import ClientAuth from './clientAuth';
 
 class API {
   constructor() {
-    this.baseURL = 'http://127.0.0.1/api/v1/';
+    this.baseURL = '/api/v1/';
   }
 
   buildURL(path) {
