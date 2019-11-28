@@ -13,7 +13,7 @@ class NavMenu extends React.PureComponent {
         <div>
           <a href="/">
             <img
-              src="images/logo.png"
+              src="/images/logo.png"
               className="logo"
               alt="PicArt"
             />
