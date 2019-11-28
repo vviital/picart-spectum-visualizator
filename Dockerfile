@@ -11,6 +11,7 @@ RUN yarn
 
 # Build client
 COPY src src
+COPY public public
 RUN yarn build
 
 FROM nginx:stable
