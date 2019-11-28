@@ -3,9 +3,11 @@ import {
 } from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
+// import FakeAPI from '../api/fakeAPI';
 import ls from './wrappers/localstorage';
 
 const api = new API();
+// const fakeApi = new FakeAPI();
 
 function* getUser() {
   let user = {
