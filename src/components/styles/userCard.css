@@ -7,3 +7,7 @@
 .MuiCardContent-root {
     color: rgba(0,0,0, 0.8);
 }
+
+.user-card-avatar {
+    max-width: 200px;
+}
