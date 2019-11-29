@@ -1,6 +1,7 @@
 .user-card {
     text-align: center;
     text-decoration: none;
+    max-width: 300px;
 }
 
 .MuiCardContent-root {
