@@ -7,11 +7,11 @@ class API {
   }
 
   buildURL(path) {
-    return `${this.baseURL}${path}`;
+    return `${this.baseURL}/${path}`;
   }
 
   async getToken(payload) {
-    const res = await Client.post(this.buildURL('tokens/'), payload);
+    const res = await Client.post(this.buildURL('tokens'), payload);
     if (res.data && res.data === 401) {
       return '';
     }
@@ -19,17 +19,17 @@ class API {
   }
 
   async getProfile(id) {
-    const res = await ClientAuth.get(this.buildURL('profiles/') + id);
+    const res = await ClientAuth.get(this.buildURL(`profiles/${id}`));
     return res.data;
   }
 
   async getProfiles() {
-    const res = await ClientAuth.get(this.buildURL('profiles/'));
+    const res = await ClientAuth.get(this.buildURL('profiles'));
     return res.data.items;
   }
 
   async updateProfile(payload) {
-    return ClientAuth.patch(this.buildURL('profiles/') + payload.id, payload);
+    return ClientAuth.patch(this.buildURL(`profiles/${payload.id}`), payload);
   }
 
   async updateEmail(payload) {
@@ -51,12 +51,12 @@ class API {
   }
 
   async getResearches() {
-    const res = await ClientAuth.get(this.buildURL('researches/'));
+    const res = await ClientAuth.get(this.buildURL('researches'));
     return res.data;
   }
 
   async getResearch(id) {
-    const res = await ClientAuth.get(this.buildURL('researches/') + id);
+    const res = await ClientAuth.get(this.buildURL(`researches/${id}`));
     return res.data;
   }
 }

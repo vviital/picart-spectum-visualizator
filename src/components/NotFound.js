@@ -20,7 +20,7 @@ class NotFound extends React.PureComponent {
             align="center"
           >
             <img
-              src="images/404.png"
+              src="/images/404.png"
               alt="Not found"
               align="top"
               width="80%"

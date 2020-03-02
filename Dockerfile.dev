@@ -1,6 +1,6 @@
-FROM node:10.13.0
+FROM node:12.13.1-alpine
 
-RUN apt-get update
+RUN apk update && apk upgrade
 RUN npm i -g yarn
 
 WORKDIR /home/app
@@ -13,3 +13,5 @@ RUN yarn
 COPY . .
 
 EXPOSE 3000
+
+CMD ["yarn", "start"]
