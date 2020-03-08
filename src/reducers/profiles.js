@@ -1,10 +1,11 @@
 const defaultState = {
+  items: []
 };
 
 const profilesReducer = (state = defaultState, action) => {
   switch (action.type) {
     case 'SET_PROFILES':
-      return { ...state, ...action.payload };
+      return {...state, items: action.payload.items};
     default:
       return state;
   }

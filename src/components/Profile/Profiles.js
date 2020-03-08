@@ -7,26 +7,29 @@ import '../styles/profiles.css';
 import Search from '../Search';
 
 class Profiles extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    
+    this.onSearch = this.onSearch.bind(this);
+  }
+
   componentDidMount() {
     const { getProfiles } = this.props;
     getProfiles();
   }
 
+  onSearch(query) {
+    this.props.getProfiles({ query });
+  }
+
   render() {
     const { profiles } = this.props;
-    if (lodash.isEmpty(profiles)) {
-      return (
-        <div className="profiles-content">
-                    Loading...
-        </div>
-      );
-    }
-    const userCards = Array.from(Object.values(profiles));
+
     return (
       <div className="profiles-content">
-        <Search />
+        <Search onSearch={this.onSearch} />
         <div className="profiles-wrapper">
-          {userCards.map((user) => (
+          {profiles.map((user) => (
             <UserCard key={user.id} user={user} />
           ))}
         </div>
@@ -42,11 +45,11 @@ Profiles.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  profiles: state.profiles,
+  profiles: state.profiles.items,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getProfiles: () => dispatch({ type: 'GET_PROFILES' }),
+  getProfiles: (options = {}) => dispatch({ type: 'GET_PROFILES', payload: { options } }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profiles);

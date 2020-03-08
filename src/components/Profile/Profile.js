@@ -90,11 +90,11 @@ class Profile extends React.PureComponent {
           <div className="profile-column">
             <input type="text" name="name" defaultValue={profile.name} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
             <input type="text" name="surname" defaultValue={profile.surname} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            <input type="text" name="title" defaultValue="Title" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
+            <input type="text" name="title" defaultValue={profile.title} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
             <input type="text" name="email" defaultValue={profile.email} className="profile-input" disabled onChange={this.handleInputChange} />
             <input type="text" defaultValue={profile.roles[0]} className="profile-input" disabled />
-            <input type="text" name="organization" defaultValue="Organization" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            <input type="text" name="about" defaultValue="About you" className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
+            <input type="text" name="organization" defaultValue={profile.organization} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
+            <input type="text" name="about" defaultValue={profile.about} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
             {isEditing ? <input type="button" className="profile-button-edit" value="Confirm" onClick={this.handleConfirmButton} onChange={this.handleInputChange} />
               : <input type="button" className="profile-button-edit" value="Edit profile" onClick={this.toggleEdit} onChange={this.handleInputChange} /> }
             <input type="button" className="profile-button-edit" value="Edit email/password" onClick={this.togglePopup} onChange={this.handleInputChange} />
@@ -111,9 +111,12 @@ Profile.propTypes = {
     id: PropTypes.string,
     login: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    title: PropTypes.string,
     roles: PropTypes.array,
+    organization: PropTypes.string,
     surname: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
+    about: PropTypes.string,
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({

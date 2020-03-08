@@ -1,4 +1,4 @@
-FROM node:10.16.0-jessie AS builder
+FROM node:12.13.1-alpine AS builder
 
 WORKDIR /home/app
 
