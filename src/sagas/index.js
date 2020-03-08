@@ -61,12 +61,17 @@ function* getProfile(action) {
   });
 }
 
-function* getProfiles() {
-  const res = yield call(api.getProfiles.bind(api));
-  yield put({
-    type: 'SET_PROFILES',
-    payload: res,
-  });
+function* getProfiles(action = {}) {
+  try {
+    const options = action.payload.options;
+    const res = yield call(api.getProfiles.bind(api), options);
+    yield put({
+      type: 'SET_PROFILES',
+      payload: res,
+    });
+  } catch (error) {
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* updateProfile(action) {

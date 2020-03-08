@@ -1,9 +1,15 @@
 import Client from './client';
 import ClientAuth from './clientAuth';
 
+const toQueryString = (params) => {
+  return Object.keys(params).map((key) => {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+  }).join('&');
+}
+
 class API {
   constructor() {
-    this.baseURL = '/api/v1/';
+    this.baseURL = '/api/v1';
   }
 
   buildURL(path) {
@@ -23,9 +29,10 @@ class API {
     return res.data;
   }
 
-  async getProfiles() {
-    const res = await ClientAuth.get(this.buildURL('profiles'));
-    return res.data.items;
+  async getProfiles(options = {}) {
+    const query = toQueryString(options);
+    const res = await ClientAuth.get(this.buildURL(`profiles?${query}`));
+    return res.data;
   }
 
   async updateProfile(payload) {
