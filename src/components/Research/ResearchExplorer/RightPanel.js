@@ -67,7 +67,7 @@ class RightPanel extends React.PureComponent {
           const isActive = tab.name === this.props.activeTab;
           const styles = classNames({ 'active-tab-icon': isActive });
 
-          return (<IconButton size="small" className={styles} onClick={this.selectTab(tab.name)}>
+          return (<IconButton key={tab.name} size="small" className={styles} onClick={this.selectTab(tab.name)}>
             <Renderer />
           </IconButton>);
         })}

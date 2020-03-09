@@ -76,5 +76,10 @@ class API {
   async deleteResearch(id) {
     await ClientAuth.delete(this.buildURL(`researches/${id}`));
   }
+
+  async editResearch(id, payload) {
+    const res = await ClientAuth.patch(this.buildURL(`researches/${id}`), payload);
+    return res.data;
+  }
 }
 export default API;

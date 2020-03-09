@@ -192,6 +192,16 @@ function* deleteResearch(action) {
   }
 }
 
+function* editResearch(action) {
+  try {
+    const research = yield select((state) => state.research);
+    yield call(api.editResearch.bind(api), research.id, research);
+  } catch(e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
 function* showSnack(type, message) {
   yield put({
     type: 'SHOW_SNACK',
@@ -217,6 +227,7 @@ function* actionWatcher() {
   yield takeEvery('GET_RESEARCH', getResearch);
   yield takeEvery('CREATE_RESEARCH', createResearch);
   yield takeEvery('DELETE_RESEARCH', deleteResearch);
+  yield takeEvery('COMMIT_RESEARCH_EDIT', editResearch);
 }
 
 export default function* rootSaga() {

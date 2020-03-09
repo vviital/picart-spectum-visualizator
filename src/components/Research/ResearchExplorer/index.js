@@ -9,7 +9,7 @@ import Canvas from './Canvas';
 
 import ExperimentRenderer from './Tabs/Experiment';
 import FilesRenderer from './Tabs/Files';
-import ResearchRenderer from './Tabs/Research';
+import ResearchRenderer from './Tabs/Research/index';
 import ResultsRenderer from './Tabs/Results';
 import SettingsRenderer from './Tabs/Settings';
 
@@ -68,12 +68,12 @@ class Research extends React.PureComponent {
 
 Research.propTypes = {
   research: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     researchType: PropTypes.string.isRequired,
     description: PropTypes.string,
-    ownerID: PropTypes.number,
+    ownerID: PropTypes.string.isRequired,
     createdAt: PropTypes.number,
     updatedAt: PropTypes.number,
   }).isRequired,
