@@ -71,5 +71,9 @@ class API {
     const res = await ClientAuth.post(this.buildURL('researches'), payload);
     return res.data;
   }
+
+  async deleteResearch(id) {
+    await ClientAuth.delete(this.buildURL(`researches/${id}`));
+  }
 }
 export default API;

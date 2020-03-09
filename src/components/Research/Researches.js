@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import lodash from 'lodash';
+import PropTypes from 'prop-types';
+
 import Search from '../Search';
 import ResearchCard from './ResearchCard';
 import ResearchTemplates from './ResearchTemplates';
@@ -26,7 +27,7 @@ class Researches extends React.PureComponent {
         <Search />
         <div className="researches-wrapper">
           {researches.items.map((research) => (
-            <ResearchCard key={research.id} research={research} />
+            <ResearchCard key={research.id} research={research} onDelete={this.props.deleteResearch} />
           ))}
         </div>
       </div>
@@ -34,12 +35,20 @@ class Researches extends React.PureComponent {
   }
 }
 
+Researches.propTypes = {
+  createResearch: PropTypes.func.isRequired,
+  deleteResearch: PropTypes.func.isRequired,
+  getResearches: PropTypes.func.isRequired,
+}
+
 const mapStateToProps = (state) => ({
   researches: state.researches,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  createResearch: (payload) => {dispatch({ type:'CREATE_RESEARCH', payload})},
+  deleteResearch: (id) => {dispatch({ type:'DELETE_RESEARCH', payload: {id}})},
   getResearches: () => {dispatch({ type:'GET_RESEARCHES' })},
-  createResearch: (payload) => {dispatch({ type:'CREATE_RESEARCH', payload})}
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(Researches);

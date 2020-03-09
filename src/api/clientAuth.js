@@ -39,7 +39,11 @@ class ClientAuth {
   }
 
   static delete(url, options) {
-    return axios.delete(url, options);
+    return axios({
+      method: 'delete',
+      url,
+      headers: ClientAuth.createHeaders(),
+    });
   }
 
   static createHeaders(options = {}) {
