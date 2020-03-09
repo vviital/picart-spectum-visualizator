@@ -1,6 +1,7 @@
 .profile-bar {
     display: flex;
     justify-content: flex-end;
+    height: 64px;
 }
 
 .profile-bar-container {
