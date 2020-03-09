@@ -66,5 +66,10 @@ class API {
     const res = await ClientAuth.get(this.buildURL(`researches/${id}`));
     return res.data;
   }
+
+  async createResearch(payload = {}) {
+    const res = await ClientAuth.post(this.buildURL('researches'), payload);
+    return res.data;
+  }
 }
 export default API;

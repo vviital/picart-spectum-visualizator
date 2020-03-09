@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import lodash from 'lodash';
 import Search from '../Search';
 import ResearchCard from './ResearchCard';
+import ResearchTemplates from './ResearchTemplates';
+
+import '../styles/researches.css';
 
 class Researches extends React.PureComponent {
   componentDidMount() {
@@ -10,21 +13,19 @@ class Researches extends React.PureComponent {
     getResearches();
   }
 
+  componentWillUnmount() {
+    console.log('--- unmounting ---');
+  }
+
   render() {
     const { researches } = this.props;
-    if (lodash.isEmpty(researches.items)) {
-      return (
-        <div className="profiles-content">
-          Loading...
-        </div>
-      );
-    }
-    const cards = Array.from(Object.values(researches.items));
+
     return (
-      <div className="profiles-content">
+      <div className="researches-content">
+        <ResearchTemplates onCreate={this.props.createResearch} />
         <Search />
-        <div className="profiles-wrapper">
-          {cards.map((research) => (
+        <div className="researches-wrapper">
+          {researches.items.map((research) => (
             <ResearchCard key={research.id} research={research} />
           ))}
         </div>
@@ -39,5 +40,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getResearches: () => {dispatch({ type:'GET_RESEARCHES' })},
+  createResearch: (payload) => {dispatch({ type:'CREATE_RESEARCH', payload})}
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Researches);

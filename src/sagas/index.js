@@ -53,12 +53,17 @@ function* logout() {
 }
 
 function* getProfile(action) {
-  const { payload } = action;
-  const profile = yield call(api.getProfile.bind(api), payload);
-  yield put({
-    type: 'SET_PROFILE',
-    payload: profile,
-  });
+  try {
+    const { payload } = action;
+    const profile = yield call(api.getProfile.bind(api), payload);
+    yield put({
+      type: 'SET_PROFILE',
+      payload: profile,
+    });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* getProfiles(action = {}) {
@@ -69,7 +74,8 @@ function* getProfiles(action = {}) {
       type: 'SET_PROFILES',
       payload: res,
     });
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
@@ -89,6 +95,7 @@ function* updateProfile(action) {
       }
     }
   } catch (e) {
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
@@ -108,6 +115,7 @@ function* updateEmail(action) {
       }
     }
   } catch (e) {
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
@@ -116,7 +124,6 @@ function* updatePassword(action) {
   const { payload } = action;
   try {
     const res = yield call(api.updatePassword.bind(api), payload);
-    console.log(res);
     if (res.status) {
       const { status } = res;
       if (status === 204) {
@@ -128,12 +135,12 @@ function* updatePassword(action) {
       }
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
 
-function* getResearches() {
+function* getResearches(options = {}) {
   const res = yield call(api.getResearches.bind(api));
   yield put({
     type: 'SET_RESEARCHES',
@@ -142,12 +149,28 @@ function* getResearches() {
 }
 
 function* getResearch(action) {
-  const id = action.payload;
-  const res = yield call(api.getResearch.bind(api), id);
-  yield put({
-    type: 'SET_RESEARCH',
-    payload: res,
-  });
+  try {
+    const id = action.payload;
+    const res = yield call(api.getResearch.bind(api), id);
+    yield put({
+      type: 'SET_RESEARCH',
+      payload: res,
+    });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* createResearch(action) {
+  try {
+    const {payload} = action;
+    yield call(api.createResearch.bind(api), payload);
+    yield call(getResearches, {})
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* showSnack(type, message) {
@@ -173,6 +196,7 @@ function* actionWatcher() {
   yield takeEvery('UPDATE_PASSWORD', updatePassword);
   yield takeEvery('GET_RESEARCHES', getResearches);
   yield takeEvery('GET_RESEARCH', getResearch);
+  yield takeEvery('CREATE_RESEARCH', createResearch);
 }
 
 export default function* rootSaga() {

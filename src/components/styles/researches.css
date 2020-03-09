@@ -1,0 +1,16 @@
+.researches-content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px;
+}
+
+.researches-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap;
+}

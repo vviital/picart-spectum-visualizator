@@ -20,6 +20,7 @@
     "react-scripts": "3.0.1",
     "react-split-pane": "^0.1.87",
     "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
     "redux-saga": "^1.1.1"
   },
   "scripts": {

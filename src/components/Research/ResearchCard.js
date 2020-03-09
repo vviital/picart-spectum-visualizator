@@ -30,12 +30,12 @@ class ResearchCard extends React.PureComponent {
 
 ResearchCard.propTypes = {
   research: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     researchType: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    ownerId: PropTypes.number,
+    ownerID: PropTypes.string.isRequired,
   }).isRequired,
 };
 

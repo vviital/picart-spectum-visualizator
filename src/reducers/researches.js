@@ -1,4 +1,5 @@
 const defaultState = {
+  items: []
 };
 
 const researchesReducer = (state = defaultState, action) => {
