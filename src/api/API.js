@@ -57,8 +57,9 @@ class API {
     return ClientAuth.put(this.buildURL(`profiles/${id}/password`), options);
   }
 
-  async getResearches() {
-    const res = await ClientAuth.get(this.buildURL('researches'));
+  async getResearches(options = {}) {
+    const query = toQueryString(options);
+    const res = await ClientAuth.get(this.buildURL(`researches?${query}`));
     return res.data;
   }
 

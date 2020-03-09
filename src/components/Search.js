@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {debounce} from 'lodash';
 
+import TextField from '@material-ui/core/TextField';
+
 import './styles/search.css';
 
 const noop = (...args) => {
-  console.log('On search does not implementing', ...args);
+  console.log('Method does not implemented', ...args);
 };
 
 class Search extends React.PureComponent {
@@ -18,36 +20,29 @@ class Search extends React.PureComponent {
     this.handleClickDebounced = debounce(this.handleClick, 500);
   }
 
-  state = {
-    value: ''
-  }
-
   handleClick(e) {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
 
-    const value = this.state.value;
+    const value = this.props.value;
     this.props.onSearch(value);
   }
 
   handleChange(e) {
-    this.setState({value: e.target.value}, () => {
-      if (!this.props.autoSearch) {
-        return;
-      }
-
-      this.handleClickDebounced();
-    });
+    this.props.onValueChange(e.target.value);
+    this.handleClickDebounced();
   }
 
   render() {
     return (
       <div className="search-content">
-        <form method="POST">
-          <input type="search" value={this.state.value} onChange={this.handleChange} placeholder="Search..." className="search-field" />
-          <input type="submit" value="Search" className="search-button" onClick={this.handleClick}/>
-        </form>
+        <TextField
+          placeholder="Search..."
+          value={this.props.value}
+          onChange={this.handleChange}
+          className="search-field"
+        />
       </div>
     );
   }
@@ -55,12 +50,13 @@ class Search extends React.PureComponent {
 
 Search.propTypes = {
   onSearch: PropTypes.func.isRequired,
-  autoSearch: PropTypes.bool,
+  value: PropTypes.string.isRequired
 };
 
 Search.defaultProps = {
-  autoSearch: true,
   onSearch: noop,
+  onValueChange: noop,
+  value: '',
 }
 
 const mapStateToProps = (state) => ({

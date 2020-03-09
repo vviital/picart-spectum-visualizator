@@ -1,5 +1,5 @@
 import {
-  all, call, put, takeEvery,
+  all, call, put, takeEvery, select
 } from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
@@ -68,8 +68,8 @@ function* getProfile(action) {
 
 function* getProfiles(action = {}) {
   try {
-    const options = action.payload.options;
-    const res = yield call(api.getProfiles.bind(api), options);
+    const query = yield select((state) => state.profiles.query);
+    const res = yield call(api.getProfiles.bind(api), {query});
     yield put({
       type: 'SET_PROFILES',
       payload: res,
@@ -140,12 +140,18 @@ function* updatePassword(action) {
   }
 }
 
-function* getResearches(options = {}) {
-  const res = yield call(api.getResearches.bind(api));
-  yield put({
-    type: 'SET_RESEARCHES',
-    payload: res,
-  });
+function* getResearches() {
+  try {
+    const query = yield select((state) => state.researches.query);
+    const res = yield call(api.getResearches.bind(api), {query});
+    yield put({
+      type: 'SET_RESEARCHES',
+      payload: res,
+    });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* getResearch(action) {
@@ -166,7 +172,8 @@ function* createResearch(action) {
   try {
     const {payload} = action;
     yield call(api.createResearch.bind(api), payload);
-    yield call(getResearches, {})
+    yield put({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value: ''}});
+    yield call(getResearches)
   } catch (e) {
     console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
@@ -177,6 +184,7 @@ function* deleteResearch(action) {
   try {
     const {id} = action.payload;
     yield call(api.deleteResearch.bind(api), id);
+    yield put({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value: ''}});
     yield call(getResearches);
   } catch (e) {
     console.error(e);
