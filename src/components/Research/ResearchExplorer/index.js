@@ -8,7 +8,7 @@ import RightPanel from './RightPanel';
 import Canvas from './Canvas';
 
 import ExperimentRenderer from './Tabs/Experiment';
-import FilesRenderer from './Tabs/Files';
+import FilesRenderer from './Tabs/Files/index';
 import ResearchRenderer from './Tabs/Research/index';
 import ResultsRenderer from './Tabs/Results';
 import SettingsRenderer from './Tabs/Settings';

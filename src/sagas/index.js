@@ -192,10 +192,32 @@ function* deleteResearch(action) {
   }
 }
 
-function* editResearch(action) {
+function* editResearch() {
   try {
     const research = yield select((state) => state.research);
     yield call(api.editResearch.bind(api), research.id, research);
+  } catch(e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* uploadResearchFile(action) {
+  try {
+    const {file, meta} = action.payload;
+    const fileDescriptor = yield call(api.uploadFile.bind(api), file, meta);
+
+    // Update research info
+    const research = yield select((state) => state.research);
+    const files = [{
+      id: fileDescriptor.id,
+      description: fileDescriptor.description,
+      title: fileDescriptor.title,
+      type: 'file'
+    }, ...research.files];
+    yield put({ type: 'EDIT_RESEARCH', payload: { key: 'files', value: files }});
+    yield editResearch();
+    yield getResearch({ payload: research.id });
   } catch(e) {
     console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
@@ -228,6 +250,7 @@ function* actionWatcher() {
   yield takeEvery('CREATE_RESEARCH', createResearch);
   yield takeEvery('DELETE_RESEARCH', deleteResearch);
   yield takeEvery('COMMIT_RESEARCH_EDIT', editResearch);
+  yield takeEvery('UPLOAD_RESEARCH_FILE', uploadResearchFile);
 }
 
 export default function* rootSaga() {
