@@ -57,14 +57,66 @@ class API {
     return ClientAuth.put(this.buildURL(`profiles/${id}/password`), options);
   }
 
-  async getResearches() {
-    const res = await ClientAuth.get(this.buildURL('researches'));
+  async getResearches(options = {}) {
+    const query = toQueryString(options);
+    const res = await ClientAuth.get(this.buildURL(`researches?${query}`));
     return res.data;
   }
 
   async getResearch(id) {
     const res = await ClientAuth.get(this.buildURL(`researches/${id}`));
     return res.data;
+  }
+
+  async createResearch(payload = {}) {
+    const res = await ClientAuth.post(this.buildURL('researches'), payload);
+    return res.data;
+  }
+
+  async deleteResearch(id) {
+    await ClientAuth.delete(this.buildURL(`researches/${id}`));
+  }
+
+  async editResearch(id, payload) {
+    const res = await ClientAuth.patch(this.buildURL(`researches/${id}`), payload);
+    return res.data;
+  }
+
+  async uploadFile(file, fileMeta) {
+    const chunkSize = 4096;
+    const hash = Math.random().toString(16).slice(2);
+    const chunks = Math.ceil(file.size / chunkSize);
+    const self = this;
+
+    for (let i = 0; i < chunks; i++) {
+      const from = i * chunkSize;
+      const to = Math.min(from + chunkSize, file.size);
+      const blob = file.slice(from, to);
+
+      await uploadChunk(blob, {
+        filename: file.name,
+        hash,
+        index: i,
+        size: file.size,
+        total: chunks,
+      });
+    }
+
+    const res = await ClientAuth.post(this.buildURL(`chunks/spectrum/${hash}`), fileMeta);
+
+    return res.data;
+
+    async function uploadChunk(chunk, payload) {
+      const form = new FormData();
+
+      Object.keys(payload).forEach((key) => {
+        form.append(key, payload[key]);
+      });
+
+      form.append('chunk', chunk);
+
+      await ClientAuth.post(self.buildURL('chunks'), form);
+    }
   }
 }
 export default API;

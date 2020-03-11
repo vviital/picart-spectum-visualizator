@@ -1,0 +1,18 @@
+.researches-content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px;
+  overflow-y: scroll;
+  height: calc(100vh - 64px);
+}
+
+.researches-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap;
+}

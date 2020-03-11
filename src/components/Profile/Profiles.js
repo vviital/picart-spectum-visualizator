@@ -19,7 +19,7 @@ class Profiles extends React.PureComponent {
   }
 
   onSearch(query) {
-    this.props.getProfiles({ query });
+    this.props.getProfiles();
   }
 
   render() {
@@ -27,9 +27,13 @@ class Profiles extends React.PureComponent {
 
     return (
       <div className="profiles-content">
-        <Search onSearch={this.onSearch} />
+        <Search
+          onSearch={this.onSearch}
+          onValueChange={this.props.onProfilesQueryChange}
+          value={this.props.profiles.query}
+        />
         <div className="profiles-wrapper">
-          {profiles.map((user) => (
+          {profiles.items.map((user) => (
             <UserCard key={user.id} user={user} />
           ))}
         </div>
@@ -45,11 +49,12 @@ Profiles.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  profiles: state.profiles.items,
+  profiles: state.profiles,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getProfiles: (options = {}) => dispatch({ type: 'GET_PROFILES', payload: { options } }),
+  getProfiles: () => dispatch({ type: 'GET_PROFILES' }),
+  onProfilesQueryChange: (value) => dispatch({ type: 'PROFILES_QUERY_CHANGE', payload: {value}}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profiles);

@@ -3,26 +3,11 @@
     width: 100%;
     justify-content: center;
     align-items: flex-start;
-    margin: 50px;
-
+    margin: 40px;
 }
 
 .search-field {
     font-size: 20px;
-    padding: 5px 0;
-}
-
-.search-button {
-    background-color: #00a6f5;
-    border: none;
-    color: gainsboro;
-    padding: 7px 18px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 20px;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-}
-
-.search-button:hover {
-    background-color: #00b2f0;
+    width: 500px;
+    max-width: 80%;
 }

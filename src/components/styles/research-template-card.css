@@ -1,0 +1,21 @@
+.research-template-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.research-template-card {
+  width: 240px;
+  height: 240px;
+  margin: 10px 10px;
+}
+
+.research-template-card-area {
+  width: 100%;
+  height: 100%;
+}
+
+.research-template-icon-container {
+  width: 128px;
+  height: 128px;
+}

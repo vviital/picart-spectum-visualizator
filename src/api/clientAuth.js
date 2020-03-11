@@ -11,6 +11,15 @@ class ClientAuth {
     });
   }
 
+  static post(url, payload, options = {}) {
+    return axios({
+      method: 'post',
+      url,
+      headers: ClientAuth.createHeaders(),
+      data: payload,
+    });
+  }
+
   static put(url, payload, options = {}) {
     return axios({
       method: 'put',
@@ -30,7 +39,11 @@ class ClientAuth {
   }
 
   static delete(url, options) {
-    return axios.delete(url, options);
+    return axios({
+      method: 'delete',
+      url,
+      headers: ClientAuth.createHeaders(),
+    });
   }
 
   static createHeaders(options = {}) {

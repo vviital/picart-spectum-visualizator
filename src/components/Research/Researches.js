@@ -1,31 +1,47 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import lodash from 'lodash';
+import PropTypes from 'prop-types';
+
 import Search from '../Search';
 import ResearchCard from './ResearchCard';
+import ResearchTemplates from './ResearchTemplates';
+
+import '../styles/researches.css';
 
 class Researches extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.onSearch = this.onSearch.bind(this);
+  }
+
   componentDidMount() {
     const { getResearches } = this.props;
     getResearches();
   }
 
+  componentWillUnmount() {
+    console.log('--- unmounting ---');
+  }
+
+  onSearch(value) {
+    this.props.getResearches()
+  }
+
   render() {
     const { researches } = this.props;
-    if (lodash.isEmpty(researches.items)) {
-      return (
-        <div className="profiles-content">
-          Loading...
-        </div>
-      );
-    }
-    const cards = Array.from(Object.values(researches.items));
+
     return (
-      <div className="profiles-content">
-        <Search />
-        <div className="profiles-wrapper">
-          {cards.map((research) => (
-            <ResearchCard key={research.id} research={research} />
+      <div className="researches-content">
+        <ResearchTemplates onCreate={this.props.createResearch} />
+        <Search
+          onValueChange={this.props.onSearchValueChange}
+          onSearch={this.onSearch}
+          value={researches.query}
+        />
+        <div className="researches-wrapper">
+          {researches.items.map((research) => (
+            <ResearchCard key={research.id} research={research} onDelete={this.props.deleteResearch} />
           ))}
         </div>
       </div>
@@ -33,11 +49,22 @@ class Researches extends React.PureComponent {
   }
 }
 
+Researches.propTypes = {
+  createResearch: PropTypes.func.isRequired,
+  deleteResearch: PropTypes.func.isRequired,
+  getResearches: PropTypes.func.isRequired,
+  onSearchValueChange: PropTypes.func.isRequired
+}
+
 const mapStateToProps = (state) => ({
   researches: state.researches,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getResearches: () => {dispatch({ type:'GET_RESEARCHES' })},
+  createResearch: (payload) => dispatch({ type:'CREATE_RESEARCH', payload}),
+  deleteResearch: (id) => dispatch({ type:'DELETE_RESEARCH', payload: {id}}),
+  getResearches: (options) => dispatch({ type:'GET_RESEARCHES', payload: {options} }),
+  onSearchValueChange: (value) => dispatch({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value}}),
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(Researches);

@@ -1,5 +1,5 @@
 import {
-  all, call, put, takeEvery,
+  all, call, put, takeEvery, select
 } from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
@@ -53,23 +53,29 @@ function* logout() {
 }
 
 function* getProfile(action) {
-  const { payload } = action;
-  const profile = yield call(api.getProfile.bind(api), payload);
-  yield put({
-    type: 'SET_PROFILE',
-    payload: profile,
-  });
+  try {
+    const { payload } = action;
+    const profile = yield call(api.getProfile.bind(api), payload);
+    yield put({
+      type: 'SET_PROFILE',
+      payload: profile,
+    });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* getProfiles(action = {}) {
   try {
-    const options = action.payload.options;
-    const res = yield call(api.getProfiles.bind(api), options);
+    const query = yield select((state) => state.profiles.query);
+    const res = yield call(api.getProfiles.bind(api), {query});
     yield put({
       type: 'SET_PROFILES',
       payload: res,
     });
-  } catch (error) {
+  } catch (e) {
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
@@ -89,6 +95,7 @@ function* updateProfile(action) {
       }
     }
   } catch (e) {
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
@@ -108,6 +115,7 @@ function* updateEmail(action) {
       }
     }
   } catch (e) {
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
@@ -116,7 +124,6 @@ function* updatePassword(action) {
   const { payload } = action;
   try {
     const res = yield call(api.updatePassword.bind(api), payload);
-    console.log(res);
     if (res.status) {
       const { status } = res;
       if (status === 204) {
@@ -128,26 +135,93 @@ function* updatePassword(action) {
       }
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
   }
 }
 
 function* getResearches() {
-  const res = yield call(api.getResearches.bind(api));
-  yield put({
-    type: 'SET_RESEARCHES',
-    payload: res,
-  });
+  try {
+    const query = yield select((state) => state.researches.query);
+    const res = yield call(api.getResearches.bind(api), {query});
+    yield put({
+      type: 'SET_RESEARCHES',
+      payload: res,
+    });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* getResearch(action) {
-  const id = action.payload;
-  const res = yield call(api.getResearch.bind(api), id);
-  yield put({
-    type: 'SET_RESEARCH',
-    payload: res,
-  });
+  try {
+    const id = action.payload;
+    const res = yield call(api.getResearch.bind(api), id);
+    yield put({
+      type: 'SET_RESEARCH',
+      payload: res,
+    });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* createResearch(action) {
+  try {
+    const {payload} = action;
+    yield call(api.createResearch.bind(api), payload);
+    yield put({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value: ''}});
+    yield call(getResearches)
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* deleteResearch(action) {
+  try {
+    const {id} = action.payload;
+    yield call(api.deleteResearch.bind(api), id);
+    yield put({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value: ''}});
+    yield call(getResearches);
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* editResearch() {
+  try {
+    const research = yield select((state) => state.research);
+    yield call(api.editResearch.bind(api), research.id, research);
+  } catch(e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* uploadResearchFile(action) {
+  try {
+    const {file, meta} = action.payload;
+    const fileDescriptor = yield call(api.uploadFile.bind(api), file, meta);
+
+    // Update research info
+    const research = yield select((state) => state.research);
+    const files = [{
+      id: fileDescriptor.id,
+      description: fileDescriptor.description,
+      title: fileDescriptor.title,
+      type: 'file'
+    }, ...research.files];
+    yield put({ type: 'EDIT_RESEARCH', payload: { key: 'files', value: files }});
+    yield editResearch();
+    yield getResearch({ payload: research.id });
+  } catch(e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
 }
 
 function* showSnack(type, message) {
@@ -173,6 +247,10 @@ function* actionWatcher() {
   yield takeEvery('UPDATE_PASSWORD', updatePassword);
   yield takeEvery('GET_RESEARCHES', getResearches);
   yield takeEvery('GET_RESEARCH', getResearch);
+  yield takeEvery('CREATE_RESEARCH', createResearch);
+  yield takeEvery('DELETE_RESEARCH', deleteResearch);
+  yield takeEvery('COMMIT_RESEARCH_EDIT', editResearch);
+  yield takeEvery('UPLOAD_RESEARCH_FILE', uploadResearchFile);
 }
 
 export default function* rootSaga() {
