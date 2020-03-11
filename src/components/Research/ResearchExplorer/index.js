@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import RightPanel from './RightPanel';
 import Canvas from './Canvas';
 
-import ExperimentRenderer from './Tabs/Experiment';
+import ExperimentRenderer from './Tabs/Experiment/index';
 import FilesRenderer from './Tabs/Files/index';
 import ResearchRenderer from './Tabs/Research/index';
 import ResultsRenderer from './Tabs/Results';

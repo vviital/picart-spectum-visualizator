@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux';
-import user from './user';
+import files from './files';
 import profile from './profile';
 import profiles from './profiles';
-import snack from './snack';
 import research from './research';
 import researches from './researches';
+import snack from './snack';
+import user from './user';
 
 export default combineReducers({
-  user,
+  files,
   profile,
   profiles,
-  snack,
   research,
   researches,
+  snack,
+  user,
 });

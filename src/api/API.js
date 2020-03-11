@@ -118,5 +118,11 @@ class API {
       await ClientAuth.post(self.buildURL('chunks'), form);
     }
   }
+
+  async getFileContent(fileId) {
+    const query = toQueryString({limit: 1e+4});
+    const res = await ClientAuth.get(this.buildURL(`files/${fileId}?${query}`));
+    return res.data;
+  }
 }
 export default API;

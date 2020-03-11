@@ -224,6 +224,23 @@ function* uploadResearchFile(action) {
   }
 }
 
+function* getFileContent(action) {
+  try {
+    const {fileId} = action.payload;
+    yield put({type: 'SET_CURRENT_FILE', payload: fileId});
+
+    const payload = yield call(api.getFileContent.bind(api), fileId);
+    payload.content = payload.content.map((item) => ({
+      y: item.intensity,
+      x: item.waveLength,
+    }));
+    yield put({ type: 'SET_FILE_CONTENT', payload });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
 function* showSnack(type, message) {
   yield put({
     type: 'SHOW_SNACK',
@@ -251,6 +268,7 @@ function* actionWatcher() {
   yield takeEvery('DELETE_RESEARCH', deleteResearch);
   yield takeEvery('COMMIT_RESEARCH_EDIT', editResearch);
   yield takeEvery('UPLOAD_RESEARCH_FILE', uploadResearchFile);
+  yield takeEvery('GET_FILE_CONTENT', getFileContent);
 }
 
 export default function* rootSaga() {
