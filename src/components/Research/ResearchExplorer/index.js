@@ -11,7 +11,7 @@ import ExperimentRenderer from './Tabs/Experiment/index';
 import FilesRenderer from './Tabs/Files/index';
 import ResearchRenderer from './Tabs/Research/index';
 import ResultsRenderer from './Tabs/Results';
-import SettingsRenderer from './Tabs/Settings';
+import SettingsRenderer from './Tabs/Settings/index';
 
 import '../../styles/research.css';
 import './styles/research-explorer.css';

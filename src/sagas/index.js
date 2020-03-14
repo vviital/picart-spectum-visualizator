@@ -321,6 +321,7 @@ function* actionWatcher() {
   yield takeEvery('GET_FILE_CONTENT', getFileContent);
   yield takeEvery('CREATE_EXPERIMENT', createExperiment);
   yield takeEvery('GET_EXPERIMENTS', getExperiments);
+  yield takeEvery('GET_EXPERIMENT', getExperiment);
 }
 
 export default function* rootSaga() {
