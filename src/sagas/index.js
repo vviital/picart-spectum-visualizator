@@ -226,15 +226,65 @@ function* uploadResearchFile(action) {
 
 function* getFileContent(action) {
   try {
-    const {fileId} = action.payload;
-    yield put({type: 'SET_CURRENT_FILE', payload: fileId});
+    const {fileID} = action.payload;
+    yield put({type: 'SET_CURRENT_FILE', payload: fileID});
 
-    const payload = yield call(api.getFileContent.bind(api), fileId);
+    const payload = yield call(api.getFileContent.bind(api), fileID);
     payload.content = payload.content.map((item) => ({
       y: item.intensity,
       x: item.waveLength,
     }));
     yield put({ type: 'SET_FILE_CONTENT', payload });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* createExperiment(action) {
+  try {
+    const {payload} = action;
+    const research = yield select((state) => state.research);
+    const result = yield call(api.createExperiment.bind(api), {
+      ...payload,
+      researchID: research.id,
+    });
+    yield put({ type: 'SET_EXPERIMENT', payload: result });
+    yield getExperiments();
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* getExperiments(action) {
+  try {
+    const research = yield select((state) => state.research);
+    const experiments = yield call(api.getExperiments.bind(api), [research.id]);
+    yield put({ type: 'SET_EXPERIMENTS', payload: experiments });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* getExperiment(action) {
+  try {
+    const id = action.payload;
+    const experiment = yield call(api.getExperiment.bind(api), id);
+    yield put({ type: 'SET_EXPERIMENT', payload: experiment });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* editExperiment(action) {
+  try {
+    const experiment = yield select((state) => state.experiment);
+    const result = yield call(api.editExperiment.bind(api), experiment);
+    yield put({ type: 'SET_EXPERIMENT', payload: result });
+    yield getExperiments();
   } catch (e) {
     console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
@@ -269,6 +319,8 @@ function* actionWatcher() {
   yield takeEvery('COMMIT_RESEARCH_EDIT', editResearch);
   yield takeEvery('UPLOAD_RESEARCH_FILE', uploadResearchFile);
   yield takeEvery('GET_FILE_CONTENT', getFileContent);
+  yield takeEvery('CREATE_EXPERIMENT', createExperiment);
+  yield takeEvery('GET_EXPERIMENTS', getExperiments);
 }
 
 export default function* rootSaga() {

@@ -119,9 +119,33 @@ class API {
     }
   }
 
-  async getFileContent(fileId) {
+  async getFileContent(fileID) {
     const query = toQueryString({limit: 1e+4});
-    const res = await ClientAuth.get(this.buildURL(`files/${fileId}?${query}`));
+    const res = await ClientAuth.get(this.buildURL(`files/${fileID}?${query}`));
+    return res.data;
+  }
+
+  async createExperiment(payload) {
+    const res = await ClientAuth.post(this.buildURL(`experiments`), payload);
+    return res.data;
+  }
+
+  async getExperiments(researchIDs) {
+    const query = toQueryString({
+      researchID: researchIDs.join(','),
+    });
+
+    const res = await ClientAuth.get(this.buildURL(`experiments?${query}`));
+    return res.data;
+  }
+
+  async getExperiment(id) {
+    const res = await ClientAuth.get(this.buildURL(`experiments/${id}`));
+    return res.data;
+  }
+
+  async editExperiment(id, payload) {
+    const res = await ClientAuth.patch(this.buildURL(`experiments/${id}`), payload);
     return res.data;
   }
 }

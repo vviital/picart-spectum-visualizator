@@ -71,7 +71,6 @@ class Files extends React.PureComponent {
           type="text"
           id="title"
           name="title"
-          autoComplete="current-password"
         />
         <TextField
           onChange={this.handleFormChange}
@@ -84,7 +83,6 @@ class Files extends React.PureComponent {
           type="text"
           id="description"
           name="description"
-          autoComplete="current-password"
         />
         <Input
           label="File upload"

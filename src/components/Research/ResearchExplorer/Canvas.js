@@ -43,7 +43,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getFileContent: (fileId) => dispatch({ type: 'GET_FILE_CONTENT', payload: {fileId}}),
+  getFileContent: (fileID) => dispatch({ type: 'GET_FILE_CONTENT', payload: {fileID}}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
