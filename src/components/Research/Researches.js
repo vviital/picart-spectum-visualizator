@@ -20,10 +20,6 @@ class Researches extends React.PureComponent {
     getResearches();
   }
 
-  componentWillUnmount() {
-    console.log('--- unmounting ---');
-  }
-
   onSearch(value) {
     this.props.getResearches()
   }

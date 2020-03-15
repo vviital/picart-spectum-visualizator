@@ -273,6 +273,7 @@ function* getExperiment(action) {
     const id = action.payload;
     const experiment = yield call(api.getExperiment.bind(api), id);
     yield put({ type: 'SET_EXPERIMENT', payload: experiment });
+    yield getFileContent({payload: {fileID: experiment.fileID}});
   } catch (e) {
     console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
@@ -282,7 +283,7 @@ function* getExperiment(action) {
 function* editExperiment(action) {
   try {
     const experiment = yield select((state) => state.experiment);
-    const result = yield call(api.editExperiment.bind(api), experiment);
+    const result = yield call(api.editExperiment.bind(api), experiment.id, experiment);
     yield put({ type: 'SET_EXPERIMENT', payload: result });
     yield getExperiments();
   } catch (e) {
@@ -322,6 +323,7 @@ function* actionWatcher() {
   yield takeEvery('CREATE_EXPERIMENT', createExperiment);
   yield takeEvery('GET_EXPERIMENTS', getExperiments);
   yield takeEvery('GET_EXPERIMENT', getExperiment);
+  yield takeEvery('COMMIT_EXPERIMENT', editExperiment);
 }
 
 export default function* rootSaga() {

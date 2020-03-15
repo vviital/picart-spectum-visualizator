@@ -24,7 +24,6 @@ class ExistingFilesPanel extends React.PureComponent {
     }
   }
 
-
   render() {
     const {files} = this.props;
 

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import RightPanel from './RightPanel';
-import Canvas from './Canvas';
+import Canvas from './Canvas/index';
 
 import ExperimentRenderer from './Tabs/Experiment/index';
 import FilesRenderer from './Tabs/Files/index';
