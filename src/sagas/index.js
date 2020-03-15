@@ -230,10 +230,6 @@ function* getFileContent(action) {
     yield put({type: 'SET_CURRENT_FILE', payload: fileID});
 
     const payload = yield call(api.getFileContent.bind(api), fileID);
-    payload.content = payload.content.map((item) => ({
-      y: item.intensity,
-      x: item.waveLength,
-    }));
     yield put({ type: 'SET_FILE_CONTENT', payload });
   } catch (e) {
     console.error(e);
