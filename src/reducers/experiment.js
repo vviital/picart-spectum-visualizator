@@ -5,7 +5,7 @@ const defaultState = {
   name: '',
   ownerID: '',
   researchID: '',
-  settings: {},
+  peaksSearchSettings: {},
   type: '',
 };
 
