@@ -51,7 +51,7 @@ Canvas.propTypes = {
       y: PropTypes.number.isRequired,
     }))
   }),
-  peaks: PropTypes.arrayOf({
+  peaks: PropTypes.arrayOf(PropTypes.shape({
     peak: PropTypes.shape({
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired,
@@ -65,7 +65,7 @@ Canvas.propTypes = {
       y: PropTypes.number.isRequired,
     }),
     area: PropTypes.number,
-  })
+  })),
 }
 
 const mapStateToProps = (state) => ({

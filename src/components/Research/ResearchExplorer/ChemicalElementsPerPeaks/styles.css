@@ -1,0 +1,26 @@
+.chemical-elements-container {
+  display: flex;
+  flex-direction: row;
+  overflow-y: scroll;
+  height: calc(100vh - 64px);
+}
+
+.chemical-elements-left-subcontainer {
+  width: 30%;
+}
+
+.chemical-elements-right-subcontainer {
+  width: 70%;
+}
+
+.chemical-elements-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0px;
+  position: absolute;
+  top: 20px;
+  width: 1px;
+}

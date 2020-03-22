@@ -5,7 +5,20 @@ const defaultState = {
   name: '',
   ownerID: '',
   researchID: '',
-  peaksSearchSettings: {},
+  peaksSearchSettings: {
+    smoothMarkov: false,
+    averageWindow: 0,
+    deconvolutionIterations: 0,
+    sigma: 0,
+    threshold: 0
+  },
+  chemicalElementsSettings: {
+    maxElementsPerPeak: 0,
+    minIntensity: 0,
+    maxIntensity: 0,
+    maxIonizationLevel: 0,
+    waveLengthRange: 0
+  },
   type: '',
 };
 

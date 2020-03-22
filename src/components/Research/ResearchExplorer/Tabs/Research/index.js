@@ -75,8 +75,8 @@ Research.propTypes = {
     researchType: PropTypes.string.isRequired,
     description: PropTypes.string,
     ownerID: PropTypes.string.isRequired,
-    createdAt: PropTypes.number,
-    updatedAt: PropTypes.number,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
   }).isRequired,
 };
 

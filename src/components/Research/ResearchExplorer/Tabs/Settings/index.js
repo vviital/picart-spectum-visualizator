@@ -189,13 +189,6 @@ class Settings extends React.PureComponent {
       <FormLabel component="legend">Chemical elements search config</FormLabel>
       <FormGroup>
         <FormControlLabel
-          control={<Switch
-            checked={chemicalElementsSettings.searchInMostSuitableGroup}
-            onChange={this.handleSwitchChange('chemicalElementsSettings.searchInMostSuitableGroup')}
-             />}
-          label="Search in most suitable groups"
-        />
-        <FormControlLabel
           control={
              <Slider
               value={chemicalElementsSettings.maxElementsPerPeak}
@@ -289,7 +282,6 @@ Settings.defaultProps = {
 Settings.propTypes = {
   experiment: PropTypes.shape({
     peaksSearchSettings: PropTypes.shape({
-      calculateBackground: PropTypes.bool.isRequired,
       smoothMarkov: PropTypes.bool.isRequired,
       averageWindow: PropTypes.number.isRequired,
       deconvolutionIterations: PropTypes.number.isRequired,
@@ -297,7 +289,6 @@ Settings.propTypes = {
       threshold: PropTypes.number.isRequired,
     }),
     chemicalElementsSettings: PropTypes.shape({
-      searchInMostSuitableGroup: PropTypes.bool.isRequired,
       maxElementsPerPeak: PropTypes.number.isRequired,
       minIntensity: PropTypes.number.isRequired,
       maxIntensity: PropTypes.number.isRequired,
