@@ -18,6 +18,9 @@ const filesReducer = (state = defaultState, action) => {
     case 'SET_CURRENT_FILE': {
       return {...state, currentFile: action.payload}
     }
+    case 'CLEAR_FILE': {
+      return {...state, currentFile: ''};
+    }
     default:
       return state;
   }

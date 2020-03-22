@@ -52,6 +52,12 @@ class Research extends React.PureComponent {
     settings: SettingsRenderer,
   }
 
+  componentWillUnmount() {
+    this.props.clearExperiment();
+    this.props.clearFile();
+    this.props.clearResearch();
+  }
+
   componentDidMount() {
     const { match, getResearch } = this.props;
     const {id} = match.params;
@@ -118,6 +124,9 @@ Research.propTypes = {
     id: PropTypes.string.isRequired
   }),
   getResearch: PropTypes.func.isRequired,
+  clearExperiment: PropTypes.func.isRequired,
+  clearFile: PropTypes.func.isRequired,
+  clearResearch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -127,6 +136,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getResearch: (id) => dispatch({ type: 'GET_RESEARCH', payload: id }),
+  clearExperiment: () => dispatch({ type: 'CLEAR_EXPERIMENT' }),
+  clearFile: () => dispatch({ type: 'CLEAR_FILE' }),
+  clearResearch: () => dispatch({ type: 'CLEAR_RESEARCH' }),
 });
 
 export default compose(
