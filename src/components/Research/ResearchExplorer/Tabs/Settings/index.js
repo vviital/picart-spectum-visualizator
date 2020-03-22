@@ -16,6 +16,11 @@ import Slider from '@material-ui/core/Slider';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 
+const fieldsToUpdate = [
+  'chemicalElementsSettings',
+  'peaksSearchSettings'
+]
+
 class Settings extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -43,7 +48,7 @@ class Settings extends React.PureComponent {
   }
 
   commitExperiment() {
-    this.props.commitExperiment();
+    this.props.commitExperiment({ fields: fieldsToUpdate });
   }
 
   handleFormChange(updates = []) {
@@ -312,7 +317,7 @@ const mapDispatchToProps = (dispatch) => ({
   getExperiment: (id) => dispatch({ type: 'GET_EXPERIMENT', payload: id }),
   getExperiments: () => dispatch({ type: 'GET_EXPERIMENTS' }),
   editExperiment: (key, value) => dispatch({ type: 'EDIT_EXPERIMENT', payload: {key, value} }),
-  commitExperiment: () => dispatch({ type: 'COMMIT_EXPERIMENT' })
+  commitExperiment: (payload) => dispatch({ type: 'COMMIT_EXPERIMENT', payload })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

@@ -49,8 +49,8 @@ const headCells = [
   { id: 'similarity', numeric: true, disablePadding: false, label: 'Similarity to the peak' },
   { id: 'waveLength', numeric: true, disablePadding: false, label: 'Wave length' },
   { id: 'intensity', numeric: true, disablePadding: false, label: 'Intensity' },
-  { id: 'ionizationStage', numeric: true, disablePadding: false, label: 'Ionization stage' },
-  { id: 'isSearchCriteriaMatched', numeric: false, disablePadding: true, label: 'Matched by criteria' },
+  { id: 'stage', numeric: true, disablePadding: false, label: 'Ionization stage' },
+  { id: 'matched', numeric: false, disablePadding: true, label: 'Matched by criteria' },
 ];
 
 class ElementsTable extends React.PureComponent {
@@ -181,8 +181,8 @@ class ElementsTable extends React.PureComponent {
                         <TableCell align="right">{_.round(def.similarity, 5)}</TableCell>
                         <TableCell align="right">{def.waveLength}</TableCell>
                         <TableCell align="right">{def.intensity}</TableCell>
-                        <TableCell align="right">{def.ionizationStage}</TableCell>
-                        <TableCell align="right">{def.isSearchCriteriaMatched ? 'YES' : 'NO'}</TableCell>
+                        <TableCell align="right">{def.stage}</TableCell>
+                        <TableCell align="right">{def.matched ? 'YES' : 'NO'}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -217,8 +217,8 @@ ElementsTable.propTypes = {
   elements: PropTypes.arrayOf(PropTypes.shape({
     element: PropTypes.string.isRequired,
     intensity: PropTypes.number.isRequired,
-    ionizationStage: PropTypes.number.isRequired,
-    isSearchCriteriaMatched: PropTypes.bool.isRequired,
+    stage: PropTypes.number.isRequired,
+    matched: PropTypes.bool.isRequired,
     selected: PropTypes.bool.isRequired,
     similarity: PropTypes.number.isRequired,
     waveLength: PropTypes.number.isRequired,

@@ -3,11 +3,10 @@ import {
 } from 'redux-saga/effects';
 import jwt from 'jwt-decode';
 import API from '../api/API';
-// import FakeAPI from '../api/fakeAPI';
 import ls from './wrappers/localstorage';
+import * as _ from 'lodash';
 
 const api = new API();
-// const fakeApi = new FakeAPI();
 
 function* getUser() {
   let user = {
@@ -278,7 +277,13 @@ function* getExperiment(action) {
 
 function* editExperiment(action) {
   try {
-    const experiment = yield select((state) => state.experiment);
+    const {fields} = action.payload || {};
+
+    let experiment = yield select((state) => state.experiment);
+    if (_.isArray(fields)) {
+      experiment = _.pick(experiment, ['id', ...fields]);
+    }
+
     const result = yield call(api.editExperiment.bind(api), experiment.id, experiment);
     yield put({ type: 'SET_EXPERIMENT', payload: result });
     yield getExperiments();

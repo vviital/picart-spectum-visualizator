@@ -24,25 +24,22 @@ class ChemicalElementsPerPeaks extends React.PureComponent {
   }
 
   commitExperiment() {
-    this.props.commitExperiment();
+    this.props.commitExperiment({ fields: ['matchedElementsPerPeak'] });
   }
 
   updateElements(elements) {
     const updatedElementsPerPeaks = this.props.elementsPerPeaks.map((peak) => {
       if (this.isCurrentPeak(peak)) {
-        console.log('--- next elements ---', elements, peak);
         return {...peak, elements};
       }
       return peak;
     });
 
     this.props.editExperiment('matchedElementsPerPeak', updatedElementsPerPeaks);
-    this.commitExperimentDebounced();
+    this.commitExperiment();
   }
 
   isCurrentPeak(peak) {
-    const {x, y} = peak;
-
     return (
       _.get(peak, 'peak.x') === _.get(this.state, 'selectedPeak.peak.x') &&
       _.get(peak, 'peak.y') === _.get(this.state, 'selectedPeak.peak.y')
@@ -63,6 +60,7 @@ class ChemicalElementsPerPeaks extends React.PureComponent {
         <Peaks
           elementsPerPeaks={elementsPerPeaks}
           onClick={(p) => this.setState({ selectedPeak: p })}
+          selected={peak}
         />
       </div>
       <div className="chemical-elements-right-subcontainer">
@@ -96,8 +94,8 @@ ChemicalElementsPerPeaks.propTypes = {
     elements: PropTypes.arrayOf(PropTypes.shape({
       element: PropTypes.string.isRequired,
       intensity: PropTypes.number.isRequired,
-      ionizationStage: PropTypes.number.isRequired,
-      isSearchCriteriaMatched: PropTypes.bool.isRequired,
+      stage: PropTypes.number.isRequired,
+      matched: PropTypes.bool.isRequired,
       selected: PropTypes.bool.isRequired,
       similarity: PropTypes.number.isRequired,
       waveLength: PropTypes.number.isRequired,
@@ -114,7 +112,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   editExperiment: (key, value) => dispatch({ type: 'EDIT_EXPERIMENT', payload: {key, value} }),
-  commitExperiment: () => dispatch({ type: 'COMMIT_EXPERIMENT' })
+  commitExperiment: (payload) => dispatch({ type: 'COMMIT_EXPERIMENT', payload })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChemicalElementsPerPeaks);

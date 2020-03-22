@@ -47,7 +47,7 @@ function stableSort(array, comparator) {
 const headCells = [
   { id: 'peak.x', numeric: true, disablePadding: false, label: 'Wave length' },
   { id: 'peak.y', numeric: true, disablePadding: false, label: 'Intensity' },
-  { id: 'totalElementsCount', numeric: true, disablePadding: false, label: 'Number of matched elements' },
+  { id: 'elements.length', numeric: true, disablePadding: false, label: 'Number of matched elements' },
 ];
 
 class ElementsTable extends React.PureComponent {
@@ -98,6 +98,13 @@ class ElementsTable extends React.PureComponent {
     this.props.onClick(peak);
   };
 
+  isCurrentPeak(peak) {;
+    return (
+      _.get(peak, 'peak.x') === _.get(this.props, 'selected.peak.x') &&
+      _.get(peak, 'peak.y') === _.get(this.props, 'selected.peak.y')
+    );
+  }
+
   get emptyRows() {
     const {rowsPerPage, page} = this.state;
     const {elementsPerPeaks} = this.props;
@@ -144,13 +151,13 @@ class ElementsTable extends React.PureComponent {
                         aria-checked={def.selected}
                         tabIndex={-1}
                         key={def._id}
-                        selected={def.selected}
+                        selected={this.isCurrentPeak(def, this.props.selected)}
                       >
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {_.round(def.peak.x, 5)}
                         </TableCell>
                         <TableCell align="right">{_.round(def.peak.y, 5)}</TableCell>
-                        <TableCell align="right">{def.totalElementsCount}</TableCell>
+                        <TableCell align="right">{def.elements.length}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -178,7 +185,8 @@ class ElementsTable extends React.PureComponent {
 }
 
 ElementsTable.defaultProps = {
-  elementsPerPeaks: []
+  elementsPerPeaks: [],
+  selected: {},
 };
 
 const Coordinates = PropTypes.shape({
@@ -194,6 +202,9 @@ ElementsTable.propTypes = {
     area: PropTypes.number.isRequired,
     totalElementsCount: PropTypes.number.isRequired
   })),
+  selected: PropTypes.shape({
+    peak: Coordinates
+  }),
   onClick: PropTypes.func.isRequired,
 };
 
