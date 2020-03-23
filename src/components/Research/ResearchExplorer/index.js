@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import RightPanel from './RightPanel';
 import Canvas from './Canvas/index';
 import ChemicalElementsPerPeaks from './ChemicalElementsPerPeaks/index';
+import ExperimentResults from './ExperimentResults/index';
 
 import ExperimentRenderer from './Tabs/Experiment/index';
 import FilesRenderer from './Tabs/Files/index';
@@ -24,7 +25,8 @@ import './styles/research-explorer.css';
 
 const tabsMapping = {
   0: 'canvas',
-  1: 'elements'
+  1: 'elements',
+  2: 'results',
 };
 
 const revTabMapping = _.transform(tabsMapping, (res, value, key) => {
@@ -91,9 +93,11 @@ class Research extends React.PureComponent {
         >
           <Tab label="Canvas" />
           {!!this.props.experiment.id && <Tab label="Chemical elements" />}
+          {!!this.props.experiment.id && <Tab label="Experiment results" />}
         </Tabs>
         {this.state.activeTopTab === 'canvas' && <Canvas />}
         {this.state.activeTopTab === 'elements' && <ChemicalElementsPerPeaks />}
+        {this.state.activeTopTab === 'results' && <ExperimentResults />}
       </div>
       <RightPanel
         tab={<Renderer />}

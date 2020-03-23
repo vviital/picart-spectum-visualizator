@@ -51,6 +51,10 @@ class ChemicalElementsPerPeaks extends React.PureComponent {
     return elementsPerPeaks.find(this.isCurrentPeak);
   }
 
+  get suggestion() {
+    return _.find(this.props.autoSuggestions, ({peak}) => this.isCurrentPeak(peak));
+  }
+
   render() {
     const {elementsPerPeaks} = this.props;
     const peak = this.peak;
@@ -68,6 +72,7 @@ class ChemicalElementsPerPeaks extends React.PureComponent {
           peak &&
             <Elements
               elements={peak.elements}
+              suggestion={this.suggestion}
               updateElements={this.updateElements}
             />
         }
@@ -77,13 +82,24 @@ class ChemicalElementsPerPeaks extends React.PureComponent {
 }
 
 ChemicalElementsPerPeaks.defaultProps = {
-  elementsPerPeaks: []
+  elementsPerPeaks: [],
+  autoSuggestions: [],
 }
 
 const Coordinates = PropTypes.shape({
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
-})
+});
+
+const Element = PropTypes.shape({
+  element: PropTypes.string.isRequired,
+  intensity: PropTypes.number.isRequired,
+  stage: PropTypes.number.isRequired,
+  matched: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired,
+  similarity: PropTypes.number.isRequired,
+  waveLength: PropTypes.number.isRequired,
+});
 
 ChemicalElementsPerPeaks.propTypes = {
   elementsPerPeaks: PropTypes.arrayOf(PropTypes.shape({
@@ -91,23 +107,25 @@ ChemicalElementsPerPeaks.propTypes = {
     left: Coordinates.isRequired,
     right: Coordinates.isRequired,
     area: PropTypes.number.isRequired,
-    elements: PropTypes.arrayOf(PropTypes.shape({
-      element: PropTypes.string.isRequired,
-      intensity: PropTypes.number.isRequired,
-      stage: PropTypes.number.isRequired,
-      matched: PropTypes.bool.isRequired,
-      selected: PropTypes.bool.isRequired,
-      similarity: PropTypes.number.isRequired,
-      waveLength: PropTypes.number.isRequired,
-    })),
+    elements: PropTypes.arrayOf(Element),
     totalElementsCount: PropTypes.number.isRequired
+  })),
+  autoSuggestions: PropTypes.arrayOf(PropTypes.shape({
+    peak: PropTypes.shape({
+      peak: Coordinates.isRequired,
+      left: Coordinates.isRequired,
+      right: Coordinates.isRequired,
+      area: PropTypes.number.isRequired,
+    }).isRequired,
+    element: Element.isRequired,
   })),
   editExperiment: PropTypes.func.isRequired,
   commitExperiment: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
-  elementsPerPeaks: state.experiment.matchedElementsPerPeak
+  autoSuggestions: state.experiment.autoSuggestions,
+  elementsPerPeaks: state.experiment.matchedElementsPerPeak,
 });
 
 const mapDispatchToProps = (dispatch) => ({

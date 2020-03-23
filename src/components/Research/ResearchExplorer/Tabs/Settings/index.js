@@ -213,7 +213,7 @@ class Settings extends React.PureComponent {
               value={[chemicalElementsSettings.minIntensity, chemicalElementsSettings.maxIntensity]}
               step={0.05}
               min={0}
-              max={500}
+              max={25}
               valueLabelDisplay="auto"
               onChange={this.handleMultiSliderChange('chemicalElementsSettings', 'minIntensity', 'maxIntensity')}
             />

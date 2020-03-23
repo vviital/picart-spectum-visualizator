@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { lighten, withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,6 +13,9 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import Typography from '@material-ui/core/Typography';
 
 import './styles.css';
 
@@ -52,6 +55,21 @@ const headCells = [
   { id: 'stage', numeric: true, disablePadding: false, label: 'Ionization stage' },
   { id: 'matched', numeric: false, disablePadding: true, label: 'Matched by criteria' },
 ];
+
+const isSuggested = (element, suggestion) => {
+  const extractFields = (el) => _.pick(el, ['element', 'intensity', 'stage', 'matched', 'similarity', 'waveLength']);
+  return _.isEqual(extractFields(element), extractFields(suggestion));
+}
+
+const HtmlTooltip = withStyles(theme => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
 
 class ElementsTable extends React.PureComponent {
   constructor(props) {
@@ -132,7 +150,7 @@ class ElementsTable extends React.PureComponent {
   }
 
   render() {
-    const {elements} = this.props;
+    const {elements, suggestion} = this.props;
     const {orderBy, page, rowsPerPage} = this.state;
   
     return (
@@ -158,6 +176,7 @@ class ElementsTable extends React.PureComponent {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((def, index) => {
                     const labelId = `enhanced-table-checkbox-${index}`;
+                    const suggested = isSuggested(def, suggestion.element);
   
                     return (
                       <TableRow
@@ -177,6 +196,18 @@ class ElementsTable extends React.PureComponent {
                         </TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {def.element}
+                          {
+                            suggested &&
+                              <HtmlTooltip
+                                title={
+                                  <React.Fragment>
+                                    <Typography color="inherit">Suggested by the system</Typography>
+                                  </React.Fragment>
+                                }
+                              >
+                                <AnnouncementIcon style={{marginLeft: 12}} color="primary" />
+                              </HtmlTooltip>
+                          }
                         </TableCell>
                         <TableCell align="right">{_.round(def.similarity, 5)}</TableCell>
                         <TableCell align="right">{def.waveLength}</TableCell>
@@ -210,19 +241,25 @@ class ElementsTable extends React.PureComponent {
 }
 
 ElementsTable.defaultProps = {
-  elements: []
+  elements: [],
+  suggestion: {},
 };
 
+const Element = PropTypes.shape({
+  element: PropTypes.string.isRequired,
+  intensity: PropTypes.number.isRequired,
+  stage: PropTypes.number.isRequired,
+  matched: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired,
+  similarity: PropTypes.number.isRequired,
+  waveLength: PropTypes.number.isRequired,
+});
+
 ElementsTable.propTypes = {
-  elements: PropTypes.arrayOf(PropTypes.shape({
-    element: PropTypes.string.isRequired,
-    intensity: PropTypes.number.isRequired,
-    stage: PropTypes.number.isRequired,
-    matched: PropTypes.bool.isRequired,
-    selected: PropTypes.bool.isRequired,
-    similarity: PropTypes.number.isRequired,
-    waveLength: PropTypes.number.isRequired,
-  }))
+  elements: PropTypes.arrayOf(Element),
+  suggestion: PropTypes.shape({
+    element: Element.isRequired,
+  }),
 };
 
 export default ElementsTable;
