@@ -52,18 +52,6 @@ class Research extends React.PureComponent {
     settings: SettingsRenderer,
   }
 
-  componentWillUnmount() {
-    this.props.clearExperiment();
-    this.props.clearFile();
-    this.props.clearResearch();
-  }
-
-  componentDidMount() {
-    const { match, getResearch } = this.props;
-    const {id} = match.params;
-    getResearch(id);
-  }
-
   onChangeRightTab(tab) {
     this.setState({ activeRightTab: tab });
   }
@@ -73,11 +61,6 @@ class Research extends React.PureComponent {
   }
 
   render() {
-    if (!this.props.research.id) {
-      // TODO: think about something better here
-      return null;
-    }
-
     const Renderer = this.mapping[this.state.activeRightTab];
 
     return (<div className="research-explorer-container">
@@ -125,10 +108,6 @@ Research.propTypes = {
   experiment: PropTypes.shape({
     id: PropTypes.string.isRequired
   }),
-  getResearch: PropTypes.func.isRequired,
-  clearExperiment: PropTypes.func.isRequired,
-  clearFile: PropTypes.func.isRequired,
-  clearResearch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -136,14 +115,7 @@ const mapStateToProps = (state) => ({
   experiment: state.experiment,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getResearch: (id) => dispatch({ type: 'GET_RESEARCH', payload: id }),
-  clearExperiment: () => dispatch({ type: 'CLEAR_EXPERIMENT' }),
-  clearFile: () => dispatch({ type: 'CLEAR_FILE' }),
-  clearResearch: () => dispatch({ type: 'CLEAR_RESEARCH' }),
-});
-
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, null),
 )(Research);

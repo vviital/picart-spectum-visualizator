@@ -13,12 +13,18 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import ResearchIcon from './ResearchIcon';
+import ComparisonIcon from './ComparisonIcon';
 
 import '../styles/research-card.css';
 
 const noop = (...args) => {
   console.error('onDelete method does not implemented', args);
 };
+
+const typeIconMapping = {
+  'zaidel': ResearchIcon,
+  'comparison': ComparisonIcon
+}
 
 class ResearchCard extends React.PureComponent {
   constructor(props) {
@@ -37,6 +43,8 @@ class ResearchCard extends React.PureComponent {
 
   render() {
     const { research } = this.props;
+    const Icon = typeIconMapping[research.researchType] || ResearchIcon;
+
     return (
       <Card className="research-card">
         <CardHeader
@@ -56,7 +64,7 @@ class ResearchCard extends React.PureComponent {
           <Link to={`/researches/${research.id}`} style={{ textDecoration: 'none' }}  className="research-card-content">
             <CardContent>
               <div className="research-icon-container">
-                <ResearchIcon />
+                <Icon />
               </div>
               <Typography>
                 {research.name}

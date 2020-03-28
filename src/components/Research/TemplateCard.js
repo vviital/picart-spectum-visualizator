@@ -5,11 +5,17 @@ import { Card, CardActionArea, CardContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
 import ResearchIcon from './ResearchIcon';
+import ComparisonIcon from './ComparisonIcon';
 
 import '../styles/research-template-card.css';
 
 const noop = (...args) => {
   console.error('onClick method does not implemented', ...args);
+}
+
+const typeIconMapping = {
+  'zaidel': ResearchIcon,
+  'comparison': ComparisonIcon
 }
 
 class TemplateCard extends React.PureComponent {
@@ -32,13 +38,14 @@ class TemplateCard extends React.PureComponent {
 
   render() {
     const {type, description} = this.props;
+    const Icon = typeIconMapping[type] || ResearchIcon;
 
     return (
       <Card className="research-template-card">
       <CardActionArea className="research-template-card-area">
         <CardContent onClick={this.onClick} className="research-template-card-content">
           <div className="research-template-icon-container">
-            <ResearchIcon />
+            <Icon />
           </div>
           <Typography variant="h6">
             {type}

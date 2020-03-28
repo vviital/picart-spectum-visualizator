@@ -38,7 +38,10 @@ class ResearchTemplates extends React.PureComponent {
 
   research = [{
     type: 'zaidel',
-    description: 'Create your zaidel research'
+    description: 'Create your zaidel research',
+  }, {
+    type: 'comparison',
+    description: 'Compare your previous research with each other'
   }];
 
   handleClose() {
