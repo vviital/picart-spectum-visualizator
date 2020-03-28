@@ -4,12 +4,18 @@ import * as _ from 'lodash';
 
 import { connect } from 'react-redux';
 
+import Results from './Results';
+
+import './styles.css';
+
 class ExperimentResults extends React.PureComponent {
   render() {
     const {experimentResults} = this.props;
 
-    return (<div>
-      {JSON.stringify(experimentResults, null, ' ')}
+    return (<div className="results-container">
+      <Results
+        experimentResults={experimentResults}
+      />
     </div>)
   }
 }

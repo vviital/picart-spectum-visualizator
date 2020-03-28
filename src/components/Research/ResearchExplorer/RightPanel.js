@@ -8,7 +8,6 @@ import ResearchIcon from './icons/Research';
 import FileIcon from './icons/File';
 import ExperimentIcon from './icons/Experiment';
 import SettingsIcon from './icons/Settings';
-import ResultsIcon from './icons/Results';
 
 import './styles/right-panel.css';
 
@@ -49,10 +48,6 @@ class RightPanel extends React.PureComponent {
     {
       Renderer: SettingsIcon,
       name: 'settings'
-    },
-    {
-      Renderer: ResultsIcon,
-      name: 'results'
     }
   ];
 

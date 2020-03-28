@@ -17,7 +17,6 @@ import ExperimentResults from './ExperimentResults/index';
 import ExperimentRenderer from './Tabs/Experiment/index';
 import FilesRenderer from './Tabs/Files/index';
 import ResearchRenderer from './Tabs/Research/index';
-import ResultsRenderer from './Tabs/Results';
 import SettingsRenderer from './Tabs/Settings/index';
 
 import '../../styles/research.css';
@@ -50,7 +49,6 @@ class Research extends React.PureComponent {
     experiment: ExperimentRenderer,
     files: FilesRenderer,
     research: ResearchRenderer,
-    results: ResultsRenderer,
     settings: SettingsRenderer,
   }
 

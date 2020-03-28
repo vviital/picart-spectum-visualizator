@@ -48,12 +48,14 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'element', numeric: false, disablePadding: false, label: 'Chemical element' },
-  { id: 'similarity', numeric: true, disablePadding: false, label: 'Similarity to the peak' },
-  { id: 'waveLength', numeric: true, disablePadding: false, label: 'Wave length' },
-  { id: 'intensity', numeric: true, disablePadding: false, label: 'Intensity' },
-  { id: 'stage', numeric: true, disablePadding: false, label: 'Ionization stage' },
-  { id: 'matched', numeric: false, disablePadding: true, label: 'Matched by criteria' },
+  { id: 'peak.peak.x', numeric: false, disablePadding: false, label: 'Wave length' },
+  { id: 'peak.peak.y', numeric: true, disablePadding: false, label: 'Intensity' },
+  { id: 'element.element', numeric: true, disablePadding: false, label: 'Matched chemical element' },
+  { id: 'element.waveLength', numeric: true, disablePadding: false, label: 'Element wave length' },
+  { id: 'element.intensity', numeric: true, disablePadding: false, label: 'Element relative intensity' },
+  { id: 'element.stage', numeric: false, disablePadding: true, label: 'Element ionization stage' },
+  { id: 'element.similarity', numeric: false, disablePadding: true, label: 'Similarity with the peak' },
+  { id: 'fromSuggestions', numeric: false, disablePadding: true, label: 'Auto match' },
 ];
 
 const isSuggested = (element, suggestion) => {
@@ -71,7 +73,7 @@ const HtmlTooltip = withStyles(theme => ({
   },
 }))(Tooltip);
 
-class ElementsTable extends React.PureComponent {
+class ResultsTable extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -80,8 +82,6 @@ class ElementsTable extends React.PureComponent {
     this.handleRequestSort = this.handleRequestSort.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
-    this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   state = {
@@ -116,41 +116,15 @@ class ElementsTable extends React.PureComponent {
     this.setOrderBy(property);
   }
 
-  handleSelectAllClick = (event) => {
-    const nextElements = this.props.elements.map((el) => ({
-      ...el,
-      selected: event.target.checked
-    }));
-    this.props.updateElements(nextElements);
-  };
-
-  handleClick(event, element) {
-    const nextElements = this.props.elements.map((el) => {
-      if (el._id === element._id) {
-        return {
-          ...el,
-          selected: !el.selected
-        }
-      }
-
-      return el;
-    });
-    this.props.updateElements(nextElements);
-  };
-
   get emptyRows() {
     const {rowsPerPage, page} = this.state;
-    const {elements} = this.props;
+    const {experimentResults} = this.props;
 
-    return rowsPerPage - Math.min(rowsPerPage, elements.length - page * rowsPerPage);
-  }
-  
-  get numberOfSelectedRows() {
-    return _.sumBy(this.props.elements, ({selected}) => selected ? 1 : 0);
+    return rowsPerPage - Math.min(rowsPerPage, experimentResults.length - page * rowsPerPage);
   }
 
   render() {
-    const {elements, suggestion} = this.props;
+    const {experimentResults, suggestion} = this.props;
     const {orderBy, page, rowsPerPage} = this.state;
   
     return (
@@ -164,56 +138,33 @@ class ElementsTable extends React.PureComponent {
             >
               <EnhancedTableHead
                 headCells={headCells}
-                numSelected={this.numberOfSelectedRows}
                 onRequestSort={this.handleRequestSort}
-                onSelectAllClick={this.handleSelectAllClick}
                 order={this.state.order}
                 orderBy={orderBy}
-                rowCount={elements.length}
+                rowCount={experimentResults.length}
               />
               <TableBody>
-                {stableSort(elements, getComparator(this.state.order, orderBy))
+                {stableSort(experimentResults, getComparator(this.state.order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((def, index) => {
                     const labelId = `enhanced-table-checkbox-${index}`;
-                    const suggested = isSuggested(def, suggestion.element);
-  
                     return (
                       <TableRow
                         hover
-                        onClick={event => this.handleClick(event, def)}
                         role="checkbox"
-                        aria-checked={def.selected}
                         tabIndex={-1}
                         key={def._id}
-                        selected={def.selected}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={def.selected}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {def.element}
-                          {
-                            suggested &&
-                              <HtmlTooltip
-                                title={
-                                  <React.Fragment>
-                                    <Typography color="inherit">Suggested by the system</Typography>
-                                  </React.Fragment>
-                                }
-                              >
-                                <AnnouncementIcon style={{marginLeft: 12}} color="primary" />
-                              </HtmlTooltip>
-                          }
+                          {_.round(def.peak.peak.x, 5)}
                         </TableCell>
-                        <TableCell align="right">{_.round(def.similarity, 5)}</TableCell>
-                        <TableCell align="right">{def.waveLength}</TableCell>
-                        <TableCell align="right">{def.intensity}</TableCell>
-                        <TableCell align="right">{def.stage}</TableCell>
-                        <TableCell align="right">{def.matched ? 'YES' : 'NO'}</TableCell>
+                        <TableCell align="right">{_.round(def.peak.peak.y, 5)}</TableCell>
+                        <TableCell align="right">{def.element.element}</TableCell>
+                        <TableCell align="right">{def.element.waveLength}</TableCell>
+                        <TableCell align="right">{def.element.intensity}</TableCell>
+                        <TableCell align="right">{def.element.stage}</TableCell>
+                        <TableCell align="right">{_.round(def.element.similarity, 5)}</TableCell>
+                        <TableCell align="right">{def.fromSuggestions ? 'YES' : 'NO'}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -228,7 +179,7 @@ class ElementsTable extends React.PureComponent {
           <TablePagination
             rowsPerPageOptions={[20, 50, 100]}
             component="div"
-            count={elements.length}
+            count={experimentResults.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={this.handleChangePage}
@@ -240,10 +191,14 @@ class ElementsTable extends React.PureComponent {
   }
 }
 
-ElementsTable.defaultProps = {
-  elements: [],
-  suggestion: {},
+ResultsTable.defaultProps = {
+  experimentResults: [],
 };
+
+const Coordinates = PropTypes.shape({
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+});
 
 const Element = PropTypes.shape({
   element: PropTypes.string.isRequired,
@@ -255,11 +210,17 @@ const Element = PropTypes.shape({
   waveLength: PropTypes.number.isRequired,
 });
 
-ElementsTable.propTypes = {
-  elements: PropTypes.arrayOf(Element),
-  suggestion: PropTypes.shape({
-    element: Element.isRequired,
-  }),
+ResultsTable.propTypes = {
+  experimentResults: PropTypes.arrayOf(PropTypes.shape({
+    peak: PropTypes.shape({
+      peak: Coordinates.isRequired,
+      left: Coordinates.isRequired,
+      right: Coordinates.isRequired,
+      area: PropTypes.number.isRequired,
+    }),
+    element: PropTypes.shape(Element),
+    fromSuggestions: PropTypes.bool.isRequired,
+  }))
 };
 
-export default ElementsTable;
+export default ResultsTable;
