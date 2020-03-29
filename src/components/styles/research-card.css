@@ -18,6 +18,14 @@
     width: 100%;
     height: 100%;
 }
+
+.research-icon-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-bottom: 24px;
+}
   
 .research-icon-container {
     width: 128px;

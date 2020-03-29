@@ -25,7 +25,7 @@ class Researches extends React.PureComponent {
   }
 
   render() {
-    const { researches } = this.props;
+    const { query, researches } = this.props;
 
     return (
       <div className="researches-content">
@@ -33,10 +33,10 @@ class Researches extends React.PureComponent {
         <Search
           onValueChange={this.props.onSearchValueChange}
           onSearch={this.onSearch}
-          value={researches.query}
+          value={query}
         />
         <div className="researches-wrapper">
-          {researches.items.map((research) => (
+          {researches.map((research) => (
             <ResearchCard key={research.id} research={research} onDelete={this.props.deleteResearch} />
           ))}
         </div>
@@ -53,7 +53,8 @@ Researches.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  researches: state.researches,
+  researches: state.researches.items,
+  query: state.researches.query,
 });
 
 const mapDispatchToProps = (dispatch) => ({

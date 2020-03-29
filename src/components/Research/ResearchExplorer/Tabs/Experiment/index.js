@@ -157,7 +157,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getFileContent: (fileID) => dispatch({ type: 'GET_FILE_CONTENT', payload: {fileID}}),
   createExperiment: (payload) => dispatch({ type: 'CREATE_EXPERIMENT', payload }),
-  getExperiments: () => dispatch({ type: 'GET_EXPERIMENTS' },)
+  getExperiments: () => dispatch({ type: 'GET_EXPERIMENTS' })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Experiment);

@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import comparison from './comparison';
 import experiment from './experiment';
 import experiments from './experiments';
 import files from './files';
@@ -11,6 +12,7 @@ import snack from './snack';
 import user from './user';
 
 export default combineReducers({
+  comparison,
   experiment,
   experiments,
   files,

@@ -1,0 +1,52 @@
+.comparison-researches-container {
+  display: flex;
+  flex-direction: row;
+  overflow-y: scroll;
+  height: calc(100vh - 64px);
+}
+
+.comparison-researches-left-subcontainer {
+  width: 30%;
+}
+
+.comparison-researches-right-subcontainer {
+  width: 70%;
+}
+
+.comparison-researches-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0px;
+  position: absolute;
+  top: 20px;
+  width: 1px;
+}
+
+.comparison-researches-countdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison-researches-countdown-content {
+  width: 256px!important;
+  height: 256px!important;
+}
+
+.comparison-researches-countdown-time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #DFA129;
+}
+
+.comparison-researches-counter-progress > div {
+  background-color: #DFA129;
+}
+
+.comparison-researches-countdown-time > h1 {
+  font-size: 42px;
+}

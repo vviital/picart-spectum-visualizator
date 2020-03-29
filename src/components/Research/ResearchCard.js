@@ -63,8 +63,10 @@ class ResearchCard extends React.PureComponent {
         <CardActionArea className="research-card-area">
           <Link to={`/researches/${research.id}`} style={{ textDecoration: 'none' }}  className="research-card-content">
             <CardContent>
-              <div className="research-icon-container">
-                <Icon />
+              <div className="research-icon-container-wrapper">
+                <div className="research-icon-container">
+                  <Icon />
+                </div>
               </div>
               <Typography>
                 {research.name}

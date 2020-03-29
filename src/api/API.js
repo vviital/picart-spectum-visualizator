@@ -58,7 +58,7 @@ class API {
   }
 
   async getResearches(options = {}) {
-    const query = toQueryString(options);
+    const query = toQueryString({...options, limit: 999});
     const res = await ClientAuth.get(this.buildURL(`researches?${query}`));
     return res.data;
   }
@@ -146,6 +146,16 @@ class API {
 
   async editExperiment(id, payload) {
     const res = await ClientAuth.patch(this.buildURL(`experiments/${id}`), payload);
+    return res.data;
+  }
+
+  async createComparison(payload) {
+    const res = await ClientAuth.post(this.buildURL('comparisons'), payload);
+    return res.data;
+  }
+
+  async getComparison(id) {
+    const res = await ClientAuth.get(this.buildURL(`comparisons/${id}`));
     return res.data;
   }
 }

@@ -139,10 +139,11 @@ function* updatePassword(action) {
   }
 }
 
-function* getResearches() {
+function* getResearches(action) {
   try {
+    const options = _.get(action, 'payload.options') || {};
     const query = yield select((state) => state.researches.query);
-    const res = yield call(api.getResearches.bind(api), {query});
+    const res = yield call(api.getResearches.bind(api), {...options, query});
     yield put({
       type: 'SET_RESEARCHES',
       payload: res,
@@ -254,8 +255,13 @@ function* createExperiment(action) {
 
 function* getExperiments(action) {
   try {
-    const research = yield select((state) => state.research);
-    const experiments = yield call(api.getExperiments.bind(api), [research.id]);
+    let researchID = _.get(action, 'payload.id');
+    if (!researchID) {
+      const research = yield select((state) => state.research);
+      researchID = research.id;
+    }
+
+    const experiments = yield call(api.getExperiments.bind(api), [researchID]);
     yield put({ type: 'SET_EXPERIMENTS', payload: experiments });
   } catch (e) {
     console.error(e);
@@ -287,6 +293,30 @@ function* editExperiment(action) {
     const result = yield call(api.editExperiment.bind(api), experiment.id, experiment);
     yield put({ type: 'SET_EXPERIMENT', payload: result });
     yield getExperiments();
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* createComparison(action) {
+  try {
+    const {payload} = action;
+    const comparison = yield call(api.createComparison.bind(api), payload);
+    yield put({ type: 'SET_COMPARISON', payload: comparison });
+
+    yield getResearch({ payload: comparison.researchID });
+  } catch (e) {
+    console.error(e);
+    yield call(showSnack, 'error', 'Service is unreachable');
+  }
+}
+
+function* getComparison(action) {
+  try {
+    const id = action.payload;
+    const comparison = yield call(api.getComparison.bind(api), id);
+    yield put({ type: 'SET_COMPARISON', payload: comparison });
   } catch (e) {
     console.error(e);
     yield call(showSnack, 'error', 'Service is unreachable');
@@ -325,6 +355,8 @@ function* actionWatcher() {
   yield takeEvery('GET_EXPERIMENTS', getExperiments);
   yield takeEvery('GET_EXPERIMENT', getExperiment);
   yield takeEvery('COMMIT_EXPERIMENT', editExperiment);
+  yield takeEvery('CREATE_COMPARISON', createComparison);
+  yield takeEvery('GET_COMPARISON', getComparison);
 }
 
 export default function* rootSaga() {

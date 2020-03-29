@@ -14,16 +14,31 @@ const renderersMapping = {
 };
 
 class Research extends React.PureComponent {
-  componentWillUnmount() {
-    this.props.clearExperiment();
-    this.props.clearFile();
-    this.props.clearResearch();
-  }
-
   componentDidMount() {
     const { match, getResearch } = this.props;
     const {id} = match.params;
     getResearch(id);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { match, research, getResearch } = this.props;
+    const {id} = match.params;
+    
+    if (research.id && research.id !== id) {
+      this.cleanUp();
+
+      getResearch(id);
+    }
+  }
+
+  componentWillUnmount() {
+    this.cleanUp();
+  }
+
+  cleanUp() {
+    this.props.clearExperiment();
+    this.props.clearFile();
+    this.props.clearResearch();
   }
 
   render() {
@@ -31,8 +46,6 @@ class Research extends React.PureComponent {
       // TODO: think about something better here
       return null;
     }
-
-    console.log('--- this.props.research. ---', this.props.research);
 
     const Renderer = renderersMapping[this.props.research.researchType] || ResearchExplorer;
 
