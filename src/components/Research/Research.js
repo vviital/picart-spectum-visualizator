@@ -21,13 +21,18 @@ class Research extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { match, research, getResearch } = this.props;
+    const { match, research, getResearch, getExperiment, location } = this.props;
     const {id} = match.params;
+    const experimentID = (new URLSearchParams(location.search)).get('experimentID');
     
     if (research.id && research.id !== id) {
       this.cleanUp();
 
       getResearch(id);
+    }
+
+    if (research.id && research.id === id && experimentID) {
+      getExperiment(experimentID);
     }
   }
 
@@ -73,6 +78,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getExperiment: (id) => dispatch({ type: 'GET_EXPERIMENT', payload: id }),
   getResearch: (id) => dispatch({ type: 'GET_RESEARCH', payload: id }),
   clearExperiment: () => dispatch({ type: 'CLEAR_EXPERIMENT' }),
   clearFile: () => dispatch({ type: 'CLEAR_FILE' }),
