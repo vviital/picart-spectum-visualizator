@@ -38,7 +38,7 @@ class Canvas extends React.PureComponent {
   }
   
   render() {
-    const {peaks, file} = this.props;
+    const {experimentResults, file} = this.props;
 
     if (_.isEmpty(file)) {
       return <div>
@@ -46,22 +46,27 @@ class Canvas extends React.PureComponent {
       </div>
     }
 
+    const peaks = _.map(experimentResults, 'peak');
+    const elements = _.map(experimentResults, 'element');
+
     return (
       <Plot
         data={[
           {
+            marker: {color: 'red'},
+            mode: 'lines',
+            type: 'scatter',
             x: _.map(file.content, 'x'),
             y: _.map(file.content, 'y'),
-            type: 'scatter',
-            mode: 'lines',
-            marker: {color: 'red'},
           },
           {
+            marker: {color: 'blue'},
+            mode: 'markers+text',
+            text: _.map(elements, 'element'),
+            textposition: 'top',
+            type: 'scatter',
             x: _.map(peaks, 'peak.x'),
             y: _.map(peaks, 'peak.y'),
-            type: 'scatter',
-            mode: 'markers',
-            marker: {color: 'blue'},
           }
         ]}
         layout={{width: this.state.width, height: this.state.height, title: 'Spectrum visualization'}}
@@ -101,7 +106,8 @@ Canvas.propTypes = {
 
 const mapStateToProps = (state) => ({
   file: state.files.contents[state.files.currentFile] || {},
-  peaks: state.experiment.peaks
+  peaks: state.experiment.peaks,
+  experimentResults: state.experiment.experimentResults,
 });
 
 const mapDispatchToProps = (dispatch) => ({
