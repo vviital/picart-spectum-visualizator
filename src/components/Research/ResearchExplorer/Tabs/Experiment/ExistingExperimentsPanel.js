@@ -27,7 +27,7 @@ class ExistingExperimentsPanel extends React.PureComponent {
   render() {
     const {experiments} = this.props;
 
-    return (<div>
+    return (<div style={{height: 'calc(100vh - 480px)', overflowY: 'scroll'}}>
       {
         experiments.map((experiment) => {
           const id = experiment.id;

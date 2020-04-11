@@ -4,11 +4,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import ExistingExperimentsPanel from './ExistingExperimentsPanel';
 
@@ -18,7 +20,6 @@ class Experiment extends React.PureComponent {
 
     this.handleExperimentCreation = this.handleExperimentCreation.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
-    this.isSaveButtonDisabled = this.isSaveButtonDisabled.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
   }
 
@@ -46,7 +47,7 @@ class Experiment extends React.PureComponent {
     this.setState({ [name]: value })
   }
 
-  isSaveButtonDisabled() {
+  get isSaveButtonDisabled() {
     const {description, fileID, name} = this.state;
     return !(description && fileID && name);
   }
@@ -74,56 +75,76 @@ class Experiment extends React.PureComponent {
   render() {
     const {experiments, files} = this.props;
 
-    return <div>
-      <FormControl>
+    return <div className="research-tab-container">
+      <Typography variant="h5" gutterBottom>
+        Start new experiment
+      </Typography>
+      <FormControl fullWidth>
         <TextField
+          fullWidth
+          id="name"
+          label="Name"
+          margin="normal"
+          name="name"
           onChange={this.handleFormChange}
+          required
+          type="text"
           value={this.state.name}
           variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Name"
-          type="text"
-          id="name"
-          name="name"
         />
         <TextField
+          fullWidth
+          id="description"
+          label="Description"
+          margin="normal"
+          name="description"
           onChange={this.handleFormChange}
+          required
+          type="text"
           value={this.state.description}
           variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Description"
-          type="text"
-          id="description"
-          name="description"
         />
-        <Select
-          open={this.state.open}
-          onClose={() => this.setState({open: false})}
-          onOpen={() => this.setState({open: true})}
-          value={this.state.fileID}
-          onChange={this.onFileChange}
-        >
-          {
-            files.map((file) => {
-              return (<MenuItem key={file.id} value={file.id}>{file.title}</MenuItem>)
-            })
-          }
-        </Select>
-        <Button
-          disabled={this.isSaveButtonDisabled()}
-          fullWidth
-          onClick={this.handleExperimentCreation}
-          variant="contained"
-         >
-           Start experiment
-         </Button>
+        <FormControl>
+          <InputLabel id="choose-file-label">Choose file</InputLabel>
+          <Select
+            labelId="choose-file-label"
+            onChange={this.onFileChange}
+            onClose={() => this.setState({open: false})}
+            onOpen={() => this.setState({open: true})}
+            open={this.state.open}
+            value={this.state.fileID}
+          >
+            {
+              files.map((file) => {
+                return (<MenuItem key={file.id} value={file.id}>{file.title}</MenuItem>)
+              })
+            }
+          </Select>
+        </FormControl>
       </FormControl>
 
-      <ExistingExperimentsPanel experiments={experiments} />
+      <Divider className="files-panel-divider" />
+
+      <Button
+        color="primary"
+        disabled={this.isSaveButtonDisabled}
+        fullWidth
+        onClick={this.handleExperimentCreation}
+        variant="contained"
+      >
+           Start experiment
+      </Button>
+
+      <Divider className="files-panel-divider" />
+
+      <div>
+        <Typography variant="h5" gutterBottom>
+          Started experiments:
+        </Typography>
+        <div>
+          <ExistingExperimentsPanel experiments={experiments} />
+        </div>
+      </div>
     </div>
   }
 }

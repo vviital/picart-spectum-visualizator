@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 
-import Input from '@material-ui/core/Input';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import {DropzoneArea} from 'material-ui-dropzone'
@@ -55,42 +56,44 @@ class Files extends React.PureComponent {
   }
 
   render() {
-    return <div>
+    return <div className="research-tab-container">
       <div>
         <Typography variant="h5" gutterBottom>
           Create new file
         </Typography>
 
-        <TextField
-          onChange={this.handleFormChange}
-          value={this.state.title}
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Title"
-          type="text"
-          id="title"
-          name="title"
-        />
-        <TextField
-          onChange={this.handleFormChange}
-          value={this.state.description}
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Description"
-          type="text"
-          id="description"
-          name="description"
-        />
-        <DropzoneArea
-          onChange={this.handleFileSelect}
-          dropzoneText="Select a file with spectrum data"
-          filesLimit={1}
-          acceptedFiles={['.txt']}
-        />
+        <FormControl fullWidth>
+          <TextField
+            onChange={this.handleFormChange}
+            value={this.state.title}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Title"
+            type="text"
+            id="title"
+            name="title"
+          />
+          <TextField
+            onChange={this.handleFormChange}
+            value={this.state.description}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Description"
+            type="text"
+            id="description"
+            name="description"
+          />
+          <DropzoneArea
+            onChange={this.handleFileSelect}
+            dropzoneText="Select a file with spectrum data"
+            filesLimit={1}
+            acceptedFiles={['.txt']}
+          />
+        </FormControl>
       </div>
 
       <Divider className="files-panel-divider" />
