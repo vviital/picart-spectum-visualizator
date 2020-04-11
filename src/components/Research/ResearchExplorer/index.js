@@ -81,9 +81,10 @@ class Research extends React.PureComponent {
         {this.state.activeTopTab === 'results' && <ExperimentResults />}
       </div>
       <RightPanel
-        tab={<Renderer />}
         activeTab={this.state.activeRightTab}
+        experimentID={this.props.experiment.id}
         onChangeTab={this.onChangeRightTab}
+        tab={<Renderer />}
       />
     </div>);
   }

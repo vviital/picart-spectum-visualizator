@@ -22,6 +22,12 @@ class RightPanel extends React.PureComponent {
     this.selectTab = this.selectTab.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.experimentID && this.props.experimentID !== prevProps.experimentID) {
+      this.props.onChangeTab('settings');
+    }
+  }
+
   selectTab(name) {
     return (e) => {
       if (e && e.preventDefault) {
@@ -73,11 +79,13 @@ class RightPanel extends React.PureComponent {
 
 RightPanel.defaultProps = {
   activeTab: 'research',
+  experimentID: '',
   onChangeTab: noop,
 };
 
 RightPanel.propTypes = {
   activeTab: PropTypes.string.isRequired,
+  experimentID: PropTypes.string,
   onChangeTab: PropTypes.func.isRequired,
   tab: PropTypes.node.isRequired
 };
