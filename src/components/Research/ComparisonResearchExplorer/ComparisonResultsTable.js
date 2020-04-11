@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
+import * as lunr from 'lunr';
 
 import { Link } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import './styles.css';
 
 import EnhancedTableHead from './TableHeader';
+import Search from '../../Search';
 
 function descendingComparator(a, b, orderBy) {
   if (_.get(b, orderBy) < _.get(a, orderBy)) {
@@ -50,26 +52,68 @@ function stableSort(array, comparator) {
 const headCells = [
   { id: 'rName', numeric: false, disablePadding: false, label: 'Research name' },
   { id: 'eName', numeric: false, disablePadding: false, label: 'Experiment name' },
-  { id: 'p', numeric: true, disablePadding: false, label: 'Similarity' },
-  { id: 'link', numeric: false, disablePadding: false, label: '' },
+  { id: 'p', numeric: false, disablePadding: false, label: 'Similarity' },
+  { id: 'link', numeric: false, disablePadding: false, label: 'Link to experiment' },
 ];
 
 class ComparisonResultsTable extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleRequestSort = this.handleRequestSort.bind(this);
+    this.onQueryChange = this.onQueryChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
     this.setOrder = this.setOrder.bind(this);
     this.setOrderBy = this.setOrderBy.bind(this);
-    this.handleRequestSort = this.handleRequestSort.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-    this.handleChangePage = this.handleChangePage.bind(this);
+    this.tableChangeSize = this.tableChangeSize.bind(this);
   }
 
   state = {
     order: 'desc',
     orderBy: 'name',
     page: 0,
-    rowsPerPage: 20
+    rowsPerPage: 20,
+    query: '',
+    similarities: []
+  }
+
+  componentDidMount() {
+    this.tableChangeSize();
+    window.addEventListener('resize', this.tableChangeSize);
+
+    this.buildIndexes();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tableChangeSize);
+  }
+
+  buildIndexes() {
+    const {similarities} = this.props;
+    const docs = _.keyBy(similarities, (doc) =>  `${doc.eID}_${doc.rID}`);
+
+    const idx = lunr(function() {
+      this.ref('id');
+      this.field('eName');
+      this.field('rName');
+
+      _.forEach(similarities, (doc) => {
+        this.add({
+          eName: doc.eName,
+          rName: doc.rName,
+          id: `${doc.eID}_${doc.rID}`
+        });
+      });
+    });
+
+    this.lunrIndexes = {docs, idx};
+  }
+
+  tableChangeSize() {
+    const actualHeight = window.innerHeight - 250 - 50;
+    const maxRows = _.floor(actualHeight / 33);
+    this.setState({page: 0, rowsPerPage: maxRows});
   }
 
   setOrder(order) {
@@ -83,13 +127,6 @@ class ComparisonResultsTable extends React.PureComponent {
   handleChangePage(event, page) {
     this.setState({page});
   }
-  
-  handleChangeRowsPerPage(event) {
-    this.setState({
-      page: 0,
-      rowsPerPage: parseInt(event.target.value, 10)
-    });
-  }
 
   handleRequestSort(event, property) {
     const isAsc = this.state.orderBy === property && this.state.order === 'asc';
@@ -97,26 +134,44 @@ class ComparisonResultsTable extends React.PureComponent {
     this.setOrderBy(property);
   }
 
-  get emptyRows() {
+  emptyRows(similarities) {
     const {rowsPerPage, page} = this.state;
-    const {similarities} = this.props;
 
     return rowsPerPage - Math.min(rowsPerPage, similarities.length - page * rowsPerPage);
   }
 
   formatText(text) {
-    if (_.size(text) > 256) {
-      return text.slice(0, 256) + '...'
+    if (_.size(text) > 36) {
+      return text.slice(0, 36) + '...'
     }
     return text;
   }
 
+  onSearch() {
+    const {docs, idx} = this.lunrIndexes;
+
+    let searchQuery = this.state.query && `*${_.split(this.state.query, '').join('*')}*`;
+    const matches = _.map(idx.search(searchQuery), (match) => docs[match.ref]);
+
+    this.setState({similarities: matches});
+  }
+
+  onQueryChange(query) {
+    this.setState({query});
+  }
+
   render() {
-    const {similarities} = this.props;
     const {order, orderBy, page, rowsPerPage} = this.state;
+
+    const similarities = this.state.query ? this.state.similarities : this.props.similarities;
   
     return (
-      <div style={{width: '100%'}}>
+      <div className="comparison-table-container">
+        <Search
+          onSearch={this.onSearch}
+          onValueChange={this.onQueryChange}
+          value={this.state.query}
+        />
         <Paper>
           <TableContainer>
             <Table
@@ -144,14 +199,14 @@ class ComparisonResultsTable extends React.PureComponent {
                         tabIndex={-1}
                         key={similarity.eID}
                       >
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
+                        <TableCell component="th" id={labelId} scope="row">
                           {this.formatText(similarity.rName)}
                         </TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
+                        <TableCell component="th" id={labelId} scope="row">
                           {this.formatText(similarity.eName)}
                         </TableCell>
-                        <TableCell>{_.round(similarity.p, 5)}</TableCell>
-                        <TableCell>
+                        <TableCell style={{width: 172}}>{_.round(similarity.p, 5)}</TableCell>
+                        <TableCell style={{width: 172, paddingTop: 0, paddingLeft: 12, paddingBottom: 0}}>
                           <Link
                             to={`/researches/${similarity.rID}?experimentID=${similarity.eID}`}
                             style={{ textDecoration: 'none' }}
@@ -162,8 +217,8 @@ class ComparisonResultsTable extends React.PureComponent {
                       </TableRow>
                     );
                   })}
-                {this.emptyRows > 0 && (
-                  <TableRow style={{ height: 33 * this.emptyRows }}>
+                {this.emptyRows(similarities) > 0 && (
+                  <TableRow style={{ height: 33 * this.emptyRows(similarities) }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -171,13 +226,12 @@ class ComparisonResultsTable extends React.PureComponent {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
+            rowsPerPageOptions={[]}
             component="div"
             count={similarities.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </Paper>
       </div>

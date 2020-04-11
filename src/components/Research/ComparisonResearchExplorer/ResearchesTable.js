@@ -56,9 +56,9 @@ class ResearchesTable extends React.PureComponent {
     this.setOrder = this.setOrder.bind(this);
     this.setOrderBy = this.setOrderBy.bind(this);
     this.handleRequestSort = this.handleRequestSort.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.tableChangeSize = this.tableChangeSize.bind(this);
   }
 
   state = {
@@ -66,6 +66,21 @@ class ResearchesTable extends React.PureComponent {
     orderBy: 'name',
     page: 0,
     rowsPerPage: 20
+  }
+
+  componentDidMount() {
+    this.tableChangeSize();
+    window.addEventListener('resize', this.tableChangeSize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tableChangeSize);
+  }
+
+  tableChangeSize() {
+    const actualHeight = window.innerHeight - 230 - 50;
+    const maxRows = _.floor(actualHeight / 33);
+    this.setState({page: 0, rowsPerPage: maxRows});
   }
 
   setOrder(order) {
@@ -78,13 +93,6 @@ class ResearchesTable extends React.PureComponent {
 
   handleChangePage(event, page) {
     this.setState({page});
-  }
-  
-  handleChangeRowsPerPage(event) {
-    this.setState({
-      page: 0,
-      rowsPerPage: parseInt(event.target.value, 10)
-    });
   }
 
   handleRequestSort(event, property) {
@@ -109,8 +117,8 @@ class ResearchesTable extends React.PureComponent {
   }
 
   formatText(text) {
-    if (_.size(text) > 256) {
-      return text.slice(0, 256) + '...'
+    if (_.size(text) > 32) {
+      return text.slice(0, 32) + '...'
     }
     return text;
   }
@@ -166,13 +174,12 @@ class ResearchesTable extends React.PureComponent {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
             component="div"
             count={researches.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
             onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[]}
           />
         </Paper>
       </div>

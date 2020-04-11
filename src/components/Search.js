@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import {debounce} from 'lodash';
 
 import TextField from '@material-ui/core/TextField';
@@ -59,7 +58,4 @@ Search.defaultProps = {
   value: '',
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-export default connect(mapStateToProps)(Search);
+export default Search;

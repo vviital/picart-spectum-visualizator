@@ -54,12 +54,12 @@ class ExperimentsTable extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.setOrder = this.setOrder.bind(this);
-    this.setOrderBy = this.setOrderBy.bind(this);
-    this.handleRequestSort = this.handleRequestSort.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleRequestSort = this.handleRequestSort.bind(this);
+    this.setOrder = this.setOrder.bind(this);
+    this.setOrderBy = this.setOrderBy.bind(this);
+    this.tableChangeSize = this.tableChangeSize.bind(this);
   }
 
   state = {
@@ -67,6 +67,21 @@ class ExperimentsTable extends React.PureComponent {
     orderBy: 'name',
     page: 0,
     rowsPerPage: 20
+  }
+
+  componentDidMount() {
+    this.tableChangeSize();
+    window.addEventListener('resize', this.tableChangeSize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tableChangeSize);
+  }
+
+  tableChangeSize() {
+    const actualHeight = window.innerHeight - 230 - 50;
+    const maxRows = _.floor(actualHeight / 33);
+    this.setState({page: 0, rowsPerPage: maxRows});
   }
 
   setOrder(order) {
@@ -79,13 +94,6 @@ class ExperimentsTable extends React.PureComponent {
 
   handleChangePage(event, page) {
     this.setState({page});
-  }
-  
-  handleChangeRowsPerPage(event) {
-    this.setState({
-      page: 0,
-      rowsPerPage: parseInt(event.target.value, 10)
-    });
   }
 
   handleRequestSort(event, property) {
@@ -110,8 +118,8 @@ class ExperimentsTable extends React.PureComponent {
   }
 
   formatText(text) {
-    if (_.size(text) > 256) {
-      return text.slice(0, 256) + '...'
+    if (_.size(text) > 36) {
+      return text.slice(0, 36) + '...'
     }
     return text;
   }
@@ -154,9 +162,9 @@ class ExperimentsTable extends React.PureComponent {
                           {this.formatText(experiment.name)}
                         </TableCell>
                         <TableCell>{this.formatText(experiment.description)}</TableCell>
-                        <TableCell style={{width: 158}}>
+                        <TableCell style={{width: 158, padding: 0}}>
                           <div onClick={(event) => this.handleClick(event, experiment)}>
-                            <Button variant="contained" color="primary">
+                            <Button size="small" variant="contained" color="primary">
                               Find similar
                             </Button>
                           </div>
@@ -173,13 +181,12 @@ class ExperimentsTable extends React.PureComponent {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
+            rowsPerPageOptions={[]}
             component="div"
             count={experiments.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </Paper>
       </div>

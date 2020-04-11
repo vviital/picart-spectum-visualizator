@@ -78,10 +78,10 @@ class ElementsTable extends React.PureComponent {
     this.setOrder = this.setOrder.bind(this);
     this.setOrderBy = this.setOrderBy.bind(this);
     this.handleRequestSort = this.handleRequestSort.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.tableChangeSize = this.tableChangeSize.bind(this);
   }
 
   state = {
@@ -89,6 +89,21 @@ class ElementsTable extends React.PureComponent {
     orderBy: 'similarity',
     page: 0,
     rowsPerPage: 20
+  }
+
+  componentDidMount() {
+    this.tableChangeSize();
+    window.addEventListener('resize', this.tableChangeSize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tableChangeSize);
+  }
+
+  tableChangeSize() {
+    const actualHeight = window.innerHeight - 165 - 50;
+    const maxRows = _.floor(actualHeight / 33);
+    this.setState({page: 0, rowsPerPage: maxRows});
   }
 
   setOrder(order) {
@@ -101,13 +116,6 @@ class ElementsTable extends React.PureComponent {
 
   handleChangePage(event, page) {
     this.setState({page});
-  }
-  
-  handleChangeRowsPerPage(event) {
-    this.setState({
-      page: 0,
-      rowsPerPage: parseInt(event.target.value, 10)
-    });
   }
 
   handleRequestSort(event, property) {
@@ -226,13 +234,12 @@ class ElementsTable extends React.PureComponent {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
+            rowsPerPageOptions={[]}
             component="div"
             count={elements.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </Paper>
       </div>

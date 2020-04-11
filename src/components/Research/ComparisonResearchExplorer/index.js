@@ -22,7 +22,9 @@ class ComparisonResearchExplorer extends React.PureComponent {
   render() {
     const Renderer = this.props.research.comparisonID ? ComparisonResult : Researches;
 
-    return <Renderer />
+    return <div className="comparison-research-container">
+      <Renderer />
+    </div>
   }
 }
 

@@ -50,3 +50,12 @@
 .comparison-researches-countdown-time > h1 {
   font-size: 42px;
 }
+
+.comparison-research-container {
+  padding: 12px;
+}
+
+.comparison-table-container {
+  padding: 12px;
+  width: calc(100% - 24px)
+}
