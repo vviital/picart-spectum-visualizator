@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -15,6 +16,7 @@ import Select from '@material-ui/core/Select';
 import Slider from '@material-ui/core/Slider';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 const fieldsToUpdate = [
   'chemicalElementsSettings',
@@ -92,30 +94,35 @@ class Settings extends React.PureComponent {
 
     const {peaksSearchSettings} = experiment;
 
-    return (<FormControl>
+    return (<FormControl fullWidth>
       <FormLabel component="legend">Peak search config</FormLabel>
+      <Divider className="files-panel-divider" />
       <FormGroup>
         <FormControlLabel
+          fullWidth
           control={<Switch
+            fullWidth
             checked={peaksSearchSettings.smoothMarkov}
             onChange={this.handleSwitchChange('peaksSearchSettings.smoothMarkov')}
-            value="jason" />}
+            />}
           label="Use Markov smooth"
         />
-        <FormControlLabel
-          control={
-             <Slider
-              value={peaksSearchSettings.averageWindow}
-              step={1}
-              min={0}
-              max={20}
-              valueLabelDisplay="auto"
-              onChange={this.handleSliderChange('peaksSearchSettings.averageWindow')}
-            />
-          }
-          labelPlacement="top"
-          label="Use Markov smooth"
-        />
+        {
+          peaksSearchSettings.smoothMarkov && <FormControlLabel
+            control={
+              <Slider
+                value={peaksSearchSettings.averageWindow}
+                step={1}
+                min={0}
+                max={20}
+                valueLabelDisplay="auto"
+                onChange={this.handleSliderChange('peaksSearchSettings.averageWindow')}
+              />
+            }
+            labelPlacement="top"
+            label="Markov smooth"
+          />
+        }
         <FormControlLabel
           control={
              <Slider
@@ -190,8 +197,9 @@ class Settings extends React.PureComponent {
 
     const {chemicalElementsSettings} = experiment;
 
-    return (<FormControl>
+    return (<FormControl fullWidth>
       <FormLabel component="legend">Chemical elements search config</FormLabel>
+      <Divider className="files-panel-divider" />
       <FormGroup>
         <FormControlLabel
           control={
@@ -206,6 +214,7 @@ class Settings extends React.PureComponent {
           }
           labelPlacement="top"
           label="Max elements per peak"
+          fullWidth
         />
         <FormControlLabel
           control={
@@ -256,12 +265,20 @@ class Settings extends React.PureComponent {
   render() {
     const {experiments} = this.props;
 
-    return <div>
+    return (<div className="research-tab-container">
+      <div>
+        <Typography variant="h5" gutterBottom>
+          Customize experiment
+        </Typography>
+      </div>
+      <FormControl fullWidth>
+        <InputLabel id="choose-experiment-label">Experiment</InputLabel>
         <Select
+          labelId="choose-experiment-label"
           open={this.state.open}
           onClose={() => this.setState({open: false})}
           onOpen={() => this.setState({open: true})}
-          value={this.state.experimentID}
+          value={this.state.experimentID || this.props.experiment.id}
           onChange={this.onExperimentChange}
         >
           {
@@ -270,9 +287,16 @@ class Settings extends React.PureComponent {
             })
           }
         </Select>
-        {this.renderPeaksExperimentForm()}
-        {this.renderChemicalElementExperimentForm()}
-    </div>
+      </FormControl>
+
+      <Divider className="files-panel-divider" />
+
+      {this.renderPeaksExperimentForm()}
+
+      <Divider className="files-panel-divider" />
+
+      {this.renderChemicalElementExperimentForm()}
+    </div>)
   }
 }
 
