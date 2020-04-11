@@ -27,7 +27,7 @@ class ExistingFilesPanel extends React.PureComponent {
   render() {
     const {files} = this.props;
 
-    return (<div>
+    return (<div style={{height: 'calc(100vh - 665px)', overflowY: 'scroll'}}>
       {
         files.map((file) => {
           const id = file.id;

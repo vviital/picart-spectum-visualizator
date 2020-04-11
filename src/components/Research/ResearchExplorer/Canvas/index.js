@@ -5,7 +5,38 @@ import * as _ from 'lodash';
 
 import { connect } from 'react-redux';
 
+const reservedWidth = 525;
+const reservedHeight = 100;
+
 class Canvas extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    
+    this.updateCanvasSize = this.updateCanvasSize.bind(this);
+  }
+
+  state = {
+    width: 1000,
+    height: 1000
+  }
+
+  updateCanvasSize() {
+    const obj = {
+      height: window.innerHeight - reservedHeight,
+      width: window.innerWidth - reservedWidth
+    };
+    this.setState(obj);
+  }
+
+  componentDidMount() {
+    this.updateCanvasSize();
+    window.addEventListener('resize', this.updateCanvasSize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateCanvasSize);
+  }
+  
   render() {
     const {peaks, file} = this.props;
 
@@ -33,7 +64,7 @@ class Canvas extends React.PureComponent {
             marker: {color: 'blue'},
           }
         ]}
-        layout={ {width: 1000, height: 1000, title: 'Spectrum visualization'} }
+        layout={{width: this.state.width, height: this.state.height, title: 'Spectrum visualization'}}
       />
     );
   }

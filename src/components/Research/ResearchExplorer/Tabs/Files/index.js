@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as _ from 'lodash';
 
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
+
+import {DropzoneArea} from 'material-ui-dropzone'
 
 import { connect } from 'react-redux';
 
@@ -37,13 +41,8 @@ class Files extends React.PureComponent {
     this.setState({ [name]: value })
   }
 
-  handleFileSelect(e) {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
-
-    const file = e.target.files[0];
-
+  handleFileSelect(files) {
+    const file = _.first(files) || null;
     this.setState({ file });
   }
 
@@ -58,7 +57,9 @@ class Files extends React.PureComponent {
   render() {
     return <div>
       <div>
-        Create new file
+        <Typography variant="h5" gutterBottom>
+          Create new file
+        </Typography>
 
         <TextField
           onChange={this.handleFormChange}
@@ -84,25 +85,32 @@ class Files extends React.PureComponent {
           id="description"
           name="description"
         />
-        <Input
-          label="File upload"
-          type="file"
+        <DropzoneArea
           onChange={this.handleFileSelect}
+          dropzoneText="Select a file with spectrum data"
+          filesLimit={1}
+          acceptedFiles={['.txt']}
         />
-         <Button
-          disabled={!this.state.file}
-          fullWidth
-          onClick={this.handleFileUpload}
-          variant="contained"
-         >
-           Upload file
-         </Button>
       </div>
 
       <Divider className="files-panel-divider" />
 
+      <Button
+          disabled={!this.state.file}
+          fullWidth
+          onClick={this.handleFileUpload}
+          variant="contained"
+          color="primary"
+         >
+           Save file
+         </Button>
+
+      <Divider className="files-panel-divider" />
+
       <div>
-        Uploaded files:
+        <Typography variant="h5" gutterBottom>
+          Saved files:
+        </Typography>
         <div>
           <ExistingFilesPanel files={this.props.files} />
         </div>

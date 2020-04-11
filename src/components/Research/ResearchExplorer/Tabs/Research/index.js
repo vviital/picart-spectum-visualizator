@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {debounce} from 'lodash';
 
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import { connect } from 'react-redux';
 
@@ -36,7 +37,9 @@ class Research extends React.PureComponent {
     const {research} = this.props;
 
     return (<div className="research-tab-container">
-      Research tab
+      <Typography variant="h5" gutterBottom>
+        Research tab
+      </Typography>
       <TextField
         onChange={this.handleFormChange}
         value={research.name}
