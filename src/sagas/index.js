@@ -32,7 +32,7 @@ function* getToken(action) {
     yield call(getUser, res);
     yield call(showSnack, 'success', 'Successfully logged in! Welcome back!');
   } catch (err) {
-    yield call(showSnack, 'error', 'Incorrect login/password!');
+    yield handleError(err, 'Incorrect login/password!');
   }
 }
 
@@ -59,9 +59,8 @@ function* getProfile(action) {
       type: 'SET_PROFILE',
       payload: profile,
     });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -73,9 +72,8 @@ function* getProfiles(action = {}) {
       type: 'SET_PROFILES',
       payload: res,
     });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -93,9 +91,8 @@ function* updateProfile(action) {
         yield call(showSnack, 'error', 'Unknown error');
       }
     }
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -113,9 +110,8 @@ function* updateEmail(action) {
         yield call(showSnack, 'error', 'Unknown error');
       }
     }
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -133,9 +129,8 @@ function* updatePassword(action) {
         yield call(showSnack, 'error', 'Unknown error');
       }
     }
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -148,9 +143,8 @@ function* getResearches(action) {
       type: 'SET_RESEARCHES',
       payload: res,
     });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -162,9 +156,8 @@ function* getResearch(action) {
       type: 'SET_RESEARCH',
       payload: res,
     });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -174,9 +167,8 @@ function* createResearch(action) {
     yield call(api.createResearch.bind(api), payload);
     yield put({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value: ''}});
     yield call(getResearches)
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -186,9 +178,8 @@ function* deleteResearch(action) {
     yield call(api.deleteResearch.bind(api), id);
     yield put({ type: 'RESEARCHES_QUERY_CHANGE', payload: {value: ''}});
     yield call(getResearches);
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -196,9 +187,8 @@ function* editResearch() {
   try {
     const research = yield select((state) => state.research);
     yield call(api.editResearch.bind(api), research.id, research);
-  } catch(e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -218,9 +208,8 @@ function* uploadResearchFile(action) {
     yield put({ type: 'EDIT_RESEARCH', payload: { key: 'files', value: files }});
     yield editResearch();
     yield getResearch({ payload: research.id });
-  } catch(e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -231,9 +220,8 @@ function* getFileContent(action) {
 
     const payload = yield call(api.getFileContent.bind(api), fileID);
     yield put({ type: 'SET_FILE_CONTENT', payload });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -247,9 +235,8 @@ function* createExperiment(action) {
     });
     yield put({ type: 'SET_EXPERIMENT', payload: result });
     yield getExperiments();
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -263,9 +250,8 @@ function* getExperiments(action) {
 
     const experiments = yield call(api.getExperiments.bind(api), [researchID]);
     yield put({ type: 'SET_EXPERIMENTS', payload: experiments });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -275,9 +261,8 @@ function* getExperiment(action) {
     const experiment = yield call(api.getExperiment.bind(api), id);
     yield put({ type: 'SET_EXPERIMENT', payload: experiment });
     yield getFileContent({payload: {fileID: experiment.fileID}});
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -293,9 +278,8 @@ function* editExperiment(action) {
     const result = yield call(api.editExperiment.bind(api), experiment.id, experiment);
     yield put({ type: 'SET_EXPERIMENT', payload: result });
     yield getExperiments();
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -306,9 +290,8 @@ function* createComparison(action) {
     yield put({ type: 'SET_COMPARISON', payload: comparison });
 
     yield getResearch({ payload: comparison.researchID });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -317,9 +300,8 @@ function* getComparison(action) {
     const id = action.payload;
     const comparison = yield call(api.getComparison.bind(api), id);
     yield put({ type: 'SET_COMPARISON', payload: comparison });
-  } catch (e) {
-    console.error(e);
-    yield call(showSnack, 'error', 'Service is unreachable');
+  } catch (err) {
+    yield handleError(err);
   }
 }
 
@@ -332,6 +314,18 @@ function* showSnack(type, message) {
       message,
     },
   });
+}
+
+function* handleError(error, message) {
+  if (error.isAxiosError) {
+    const {response} = error;
+    if (response.status === 401) {
+      yield logout();
+      return;
+    }
+  }
+  console.error(error);
+  yield call(showSnack, 'error', message || 'Service is unreachable');
 }
 
 function* actionWatcher() {
