@@ -43,3 +43,8 @@
     cursor: pointer;
     background-color: rgba(196, 196, 196, 0.4);
 }
+
+.profile-edit-popup-button-group {
+    display: flex;
+    flex-direction: row;
+}

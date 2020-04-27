@@ -185,13 +185,17 @@ class Profile extends React.PureComponent {
               >
                 {isEditing ? 'Confirm' : 'Edit profile'}
               </Button>
-              <Button 
-                color="primary"
-                fullWidth
-                onClick={this.togglePopup}
-              >
-                Edit email/password
-              </Button>
+              {
+                !isEditing && (
+                  <Button 
+                    color="primary"
+                    fullWidth
+                    onClick={this.togglePopup}
+                  >
+                    Edit email/password
+                  </Button>
+                )
+              }
             </div>
           </div>
         </div>
