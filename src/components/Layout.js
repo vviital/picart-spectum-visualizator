@@ -12,7 +12,7 @@ class Layout extends React.PureComponent {
     const { content } = this.props;
     return (
       <div className="layout">
-        <SplitPane split="vertical" minSize={0} defaultSize={150} maxSize={150}>
+        <SplitPane split="vertical" minSize={120} defaultSize={150} maxSize={150}>
           <NavMenu />
           <div
             className="contents"

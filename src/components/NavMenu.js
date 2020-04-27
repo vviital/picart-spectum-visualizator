@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { clearLocalStorage } from '../actions';
+
+import Button from '@material-ui/core/Button';
+
 import './styles/navbar.css';
 
 class NavMenu extends React.PureComponent {
@@ -11,32 +14,46 @@ class NavMenu extends React.PureComponent {
     return (
       <div className="nav-bar" id="nav-bar">
         <div>
-          <a href="/">
+          <Link to="/">
             <img
               src="/images/logo.png"
               className="logo"
               alt="PicArt"
             />
-          </a>
+          </Link>
           <ul className="nav-list">
             <li>
-              <Link to="/">Home</Link>
+            <Link to="/">
+                <Button color="primary" fullWidth>
+                Home
+                </Button>
+              </Link>
             </li>
             <li>
-              <Link to="/researches">Researches</Link>
+              <Link to="/researches">
+                <Button color="primary" fullWidth>
+                Researches
+                </Button>
+              </Link>
             </li>
             <li>
-              <Link to="/users">Users</Link>
+              <Link to="/users">
+                <Button color="primary" fullWidth>
+                  Users
+                </Button>
+              </Link>
             </li>
           </ul>
         </div>
-        <button
+
+        <Button
           className="logout-button"
+          color="primary"
+          fullWidth
           onClick={logout}
-          type="button"
         >
           Logout
-        </button>
+        </Button>
       </div>
     );
   }
