@@ -33,7 +33,8 @@ function* getToken(action) {
     yield call(getUser, res);
     yield call(showSnack, 'success', 'Successfully logged in! Welcome back!');
   } catch (err) {
-    yield handleError(err, 'Incorrect email/password!');
+    console.error(err);
+    yield call(showSnack, 'error', 'Incorrect email/password!');
   }
 }
 
@@ -109,6 +110,16 @@ function* updateProfile(action) {
     if (userProfileId === res.id) {
       yield put({type: 'SET_PROFILE', payload: res});
     }
+  } catch (err) {
+    yield handleError(err);
+  }
+}
+
+function* deleteProfile(action = {}) {
+  try {
+    const {id} = action.payload;
+    yield call(api.deleteProfile.bind(api), id);
+    yield call(getProfiles);
   } catch (err) {
     yield handleError(err);
   }
@@ -355,6 +366,7 @@ function* actionWatcher() {
   yield takeEvery('GET_PROFILE', getProfile);
   yield takeEvery('GET_PROFILES', getProfiles);
   yield takeEvery('UPDATE_PROFILE_INFO', updateProfile);
+  yield takeEvery('DELETE_PROFILE', deleteProfile);
   yield takeEvery('UPDATE_EMAIL', updateEmail);
   yield takeEvery('UPDATE_PASSWORD', updatePassword);
   yield takeEvery('GET_RESEARCHES', getResearches);

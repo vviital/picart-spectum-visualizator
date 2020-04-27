@@ -13,8 +13,8 @@ class Profiles extends React.PureComponent {
   constructor(props) {
     super(props);
     
-    this.onSearch = this.onSearch.bind(this);
     this.createProfile = this.createProfile.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +31,7 @@ class Profiles extends React.PureComponent {
   }
 
   render() {
-    const { profiles } = this.props;
+    const { user: currentUser, profiles } = this.props;
 
     return (
       <div className="profiles-content">
@@ -43,7 +43,12 @@ class Profiles extends React.PureComponent {
         />
         <div className="profiles-wrapper">
           {profiles.items.map((user) => (
-            <UserCard key={user.id} user={user} />
+            <UserCard
+              currentUser={currentUser}
+              key={user.id}
+              onDelete={this.props.deleteProfile}
+              user={user}
+            />
           ))}
         </div>
       </div>
@@ -53,6 +58,7 @@ class Profiles extends React.PureComponent {
 
 Profiles.propTypes = {
   createProfile: PropTypes.func.isRequired,
+  deleteProfile: PropTypes.func.isRequired,
   getProfiles: PropTypes.func.isRequired,
   profiles: PropTypes.shape({}).isRequired,
 };
@@ -64,6 +70,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   createProfile: (payload) => dispatch({type: 'CREATE_PROFILE', payload}),
+  deleteProfile: (id) => dispatch({type: 'DELETE_PROFILE', payload: {id}}),
   getProfiles: () => dispatch({ type: 'GET_PROFILES' }),
   onProfilesQueryChange: (value) => dispatch({ type: 'PROFILES_QUERY_CHANGE', payload: {value}}),
 });

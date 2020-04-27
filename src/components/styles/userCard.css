@@ -5,6 +5,11 @@
     margin: 10px 10px;
 }
 
+.user-card-header {
+    padding: 0!important;
+    height: 40px;
+}
+
 .MuiCardContent-root {
     color: rgba(0,0,0, 0.8);
 }

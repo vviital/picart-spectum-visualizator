@@ -45,6 +45,11 @@ class API {
     return res.data;
   }
 
+  async deleteProfile(id) {
+    const res = await ClientAuth.delete(this.buildURL(`profiles/${id}`));
+    return res.data;
+  }
+
   async updateEmail(payload) {
     const { id, password, email } = payload;
     const options = {
