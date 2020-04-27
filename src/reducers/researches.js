@@ -11,6 +11,9 @@ const researchesReducer = (state = defaultState, action) => {
     case 'RESEARCHES_QUERY_CHANGE': {
       return { ...state, query: action.payload.value }
     }
+    case 'CLEAR_SYSTEM': {
+      return defaultState;
+    }
     default:
       return state;
   }

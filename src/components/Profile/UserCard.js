@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/userCard.css';
 
+import {getLinkToProfilePhoto, sizes} from './utils';
+
 class UserCard extends React.PureComponent {
   render() {
     const { user } = this.props;
@@ -14,7 +16,7 @@ class UserCard extends React.PureComponent {
         <CardActionArea>
           <Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
             <CardContent>
-              <img src="/images/avatar.png" alt="" className="user-card-avatar" />
+              <img src={getLinkToProfilePhoto(user, sizes.MEDIUM)} alt="" className="user-card-avatar" />
               <Typography variant="h5">
                 {user.name}
               </Typography>

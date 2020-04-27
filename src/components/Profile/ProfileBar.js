@@ -4,12 +4,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/profile-bar.css';
 
-class ProfileBar extends React.PureComponent {
-  componentDidMount() {
-    const { id, getProfile } = this.props;
-    getProfile(id);
-  }
+import {getLinkToProfilePhoto, sizes} from './utils';
 
+class ProfileBar extends React.PureComponent {
   render() {
     const { profile } = this.props;
     if (profile.email === '') {
@@ -19,7 +16,7 @@ class ProfileBar extends React.PureComponent {
       <Link to={`/users/${profile.id}`} style={{ textDecoration: 'none' }}>
         <div className="profile-bar">
           <div className="profile-bar-container">
-            <img src="/images/avatar-small.png" alt="Avatar" className="profile-bar-avatar" />
+            <img src={getLinkToProfilePhoto(profile, sizes.SMALL)} alt="Avatar" className="profile-bar-avatar" />
             <div className="profile-bar-info">
               <span>
                 {profile.name} {profile.surname}
@@ -34,7 +31,6 @@ class ProfileBar extends React.PureComponent {
 }
 
 ProfileBar.propTypes = {
-  id: PropTypes.string.isRequired,
   profile: PropTypes.shape({
     id: PropTypes.string,
     login: PropTypes.string.isRequired,
@@ -42,17 +38,11 @@ ProfileBar.propTypes = {
     roles: PropTypes.array,
     surname: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-  }).isRequired,
-  getProfile: PropTypes.func.isRequired,
+  }).isRequired
 };
 
 const mapStateToProps = (state) => ({
-  id: state.user.id,
   profile: state.profile,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getProfile: (id) => dispatch({ type: 'GET_PROFILE', payload: id }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileBar);
+export default connect(mapStateToProps, null)(ProfileBar);

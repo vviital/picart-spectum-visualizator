@@ -18,6 +18,7 @@ function* getUser() {
   yield put({
     type: 'SET_USER', payload: user,
   });
+  yield call(getProfile, {payload: {id: user.id, selected: false}});
 }
 
 function* appInit() {
@@ -36,27 +37,22 @@ function* getToken(action) {
   }
 }
 
-function* clearUser() {
-  yield put({
-    type: 'SET_USER',
-    payload: {
-      id: '',
-    },
-  });
+function* clearAllData() {
+  yield put({type: 'CLEAR_SYSTEM'})
 }
 
 function* logout() {
   yield call(ls.clear);
-  yield call(clearUser);
+  yield call(clearAllData);
   yield call(showSnack, 'success', 'Successfully logged out! Bye!');
 }
 
 function* getProfile(action) {
   try {
-    const { payload } = action;
-    const profile = yield call(api.getProfile.bind(api), payload);
+    const {id, selected} = action.payload;
+    const profile = yield call(api.getProfile.bind(api), id);
     yield put({
-      type: 'SET_PROFILE',
+      type: selected ? 'SET_SELECTED_PROFILE' : 'SET_PROFILE',
       payload: profile,
     });
   } catch (err) {
@@ -80,7 +76,13 @@ function* getProfiles(action = {}) {
 function* updateProfile(action) {
   const { payload } = action;
   try {
-    const res = yield call(api.updateProfile.bind(api), payload);
+    const profile = _.omit(payload, 'imageBlob');
+    const imageBlob = payload.imageBlob;
+
+    const photo = yield call(api.uploadImage.bind(api), imageBlob);
+    profile.photo = photo.id;
+
+    const res = yield call(api.updateProfile.bind(api), profile);
     if (res.status) {
       const { status } = res;
       if (status === 200) {
@@ -90,6 +92,13 @@ function* updateProfile(action) {
       } else {
         yield call(showSnack, 'error', 'Unknown error');
       }
+    }
+
+    yield put({type: 'SET_SELECTED_PROFILE', payload: res});
+
+    const userProfileId = yield select(state => state.profile.id);
+    if (userProfileId === res.id) {
+      yield put({type: 'SET_PROFILE', payload: res});
     }
   } catch (err) {
     yield handleError(err);

@@ -11,6 +11,9 @@ const profilesReducer = (state = defaultState, action) => {
     case 'PROFILES_QUERY_CHANGE': {
       return { ...state, query: action.payload.value };
     }
+    case 'CLEAR_SYSTEM': {
+      return defaultState;
+    }
     default:
       return state;
   }

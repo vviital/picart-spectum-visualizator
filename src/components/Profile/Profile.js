@@ -3,37 +3,37 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import * as _ from 'lodash';
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
 import EditPopup from './EditPopup';
+import ProfileImage from './ProfileImage';
+
 import '../styles/profile.css';
 
 class Profile extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      showPopup: false,
-      isEditing: false,
-      gotInfo: false,
-    };
-    this.togglePopup = this.togglePopup.bind(this);
-    this.toggleEdit = this.toggleEdit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+
     this.handleConfirmButton = this.handleConfirmButton.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.onImageCropped = this.onImageCropped.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.togglePopup = this.togglePopup.bind(this);
   }
+
+  state = {
+    gotInfo: false,
+    isEditing: false,
+    profileData: {},
+    showPopup: false
+  };
 
   componentDidMount() {
     const { match } = this.props;
-    this.number = match.params.number;
-  }
-
-  componentDidUpdate() {
-    const { profile } = this.props;
-    const { gotInfo } = this.state;
-    if (!gotInfo) {
-      this.setState({
-        profileData: profile,
-        gotInfo: true,
-      });
-    }
+    this.props.getProfile(match.params.id)
   }
 
   togglePopup() {
@@ -47,17 +47,27 @@ class Profile extends React.PureComponent {
     const { isEditing } = this.state;
     this.setState({
       isEditing: !isEditing,
+      profileData: !isEditing ? this.props.profile : {}
     });
   }
 
-  handleInputChange(event) {
-    const { name, value } = event.target;
-    const { profileData } = this.state;
-    const currState = profileData;
-    currState[name] = value;
+  setProfileData(key, value) {
+    const {profileData} = this.state;
     this.setState({
-      profileData: currState,
+      profileData: {
+        ...profileData,
+        [key]: value
+      }
     });
+  } 
+
+  handleInputChange(event) {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    
+    const { name, value } = event.target;
+    this.setProfileData(name, value);
   }
 
   handleConfirmButton() {
@@ -70,14 +80,21 @@ class Profile extends React.PureComponent {
     });
   }
 
+  onImageCropped(blob) {
+    this.setProfileData('imageBlob', blob);
+  }
+
   render() {
     const { profile } = this.props;
-    const { showPopup, isEditing } = this.state;
+    const { profileData, showPopup, isEditing } = this.state;
     if (!profile.roles) {
       return (
         <div />
       );
     }
+
+    const source = isEditing ? profileData : profile;
+
     return (
       <div className="profile-content">
         <div id="profile-name">
@@ -85,19 +102,97 @@ class Profile extends React.PureComponent {
         </div>
         <div className="profile-container">
           <div className="profile-column">
-            <img src="/images/avatar.png" alt="Your avatar" className="profile-avatar" />
+            <ProfileImage isEditing={isEditing} onImageCropped={this.onImageCropped} profile={profile} />
           </div>
           <div className="profile-column">
-            <input type="text" name="name" defaultValue={profile.name} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            <input type="text" name="surname" defaultValue={profile.surname} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            <input type="text" name="title" defaultValue={profile.title} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            <input type="text" name="email" defaultValue={profile.email} className="profile-input" disabled onChange={this.handleInputChange} />
-            <input type="text" defaultValue={profile.roles[0]} className="profile-input" disabled />
-            <input type="text" name="organization" defaultValue={profile.organization} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            <input type="text" name="about" defaultValue={profile.about} className="profile-input" disabled={!isEditing} onChange={this.handleInputChange} />
-            {isEditing ? <input type="button" className="profile-button-edit" value="Confirm" onClick={this.handleConfirmButton} onChange={this.handleInputChange} />
-              : <input type="button" className="profile-button-edit" value="Edit profile" onClick={this.toggleEdit} onChange={this.handleInputChange} /> }
-            <input type="button" className="profile-button-edit" value="Edit email/password" onClick={this.togglePopup} onChange={this.handleInputChange} />
+            <div className="profile-column-fields">
+              <TextField
+                name="name"
+                disabled={!isEditing} 
+                fullWidth
+                label="Name"
+                margin="normal"
+                onChange={this.handleInputChange}
+                value={source.name}
+                variant="outlined"
+              />
+              <TextField
+                name="surname"
+                disabled={!isEditing} 
+                fullWidth
+                label="Surname"
+                margin="normal"
+                onChange={this.handleInputChange}
+                value={source.surname}
+                variant="outlined"
+              />
+              <TextField
+                name="title"
+                disabled={!isEditing} 
+                fullWidth
+                label="Title"
+                margin="normal"
+                onChange={this.handleInputChange}
+                value={source.title}
+                variant="outlined"
+              />
+              <TextField
+                name="email"
+                disabled
+                fullWidth
+                label="Email"
+                margin="normal"
+                value={source.email}
+                variant="outlined"
+              />
+              <TextField
+                name="roles"
+                disabled
+                fullWidth
+                label="Roles"
+                margin="normal"
+                value={_.join(_.get(source, 'roles'), ',')}
+                variant="outlined"
+              />
+              <TextField
+                name="organization"
+                disabled={!isEditing} 
+                fullWidth
+                label="Organization"
+                margin="normal"
+                multiline
+                onChange={this.handleInputChange}
+                rows={2}
+                value={source.organization}
+                variant="outlined"
+              />
+              <TextField
+                name="about"
+                disabled={!isEditing} 
+                fullWidth
+                label="About"
+                margin="normal"
+                multiline
+                onChange={this.handleInputChange}
+                rows={4}
+                value={source.about}
+                variant="outlined"
+              />
+              <Button 
+                color="primary"
+                fullWidth
+                onClick={isEditing ? this.handleConfirmButton : this.toggleEdit}
+              >
+                {isEditing ? 'Confirm' : 'Edit profile'}
+              </Button>
+              <Button 
+                color="primary"
+                fullWidth
+                onClick={this.togglePopup}
+              >
+                Edit email/password
+              </Button>
+            </div>
           </div>
         </div>
         { showPopup ? <EditPopup close={this.togglePopup} id={profile.id} /> : null }
@@ -120,17 +215,19 @@ Profile.propTypes = {
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      number: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  getProfile: PropTypes.func.isRequired,
   updateProfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  profile: state.profile,
+  profile: state.selectedProfile,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getProfile: (id) => dispatch({ type: 'GET_PROFILE', payload: {id, selected: true} }),
   updateProfile: (data) => dispatch({ type: 'UPDATE_PROFILE_INFO', payload: data }),
 });
 

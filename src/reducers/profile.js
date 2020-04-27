@@ -10,6 +10,9 @@ const profileReducer = (state = defaultState, action) => {
     case 'SET_PROFILE': {
       return { ...state, ...action.payload };
     }
+    case 'CLEAR_SYSTEM': {
+      return defaultState;
+    }
     default:
       return state;
   }

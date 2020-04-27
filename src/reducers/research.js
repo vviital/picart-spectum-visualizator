@@ -17,7 +17,8 @@ const researchReducer = (state = defaultState, action) => {
         [action.payload.key]: action.payload.value,
       };
     }
-    case 'CLEAR_RESEARCH': {
+    case 'CLEAR_RESEARCH':
+    case 'CLEAR_SYSTEM': {
       return defaultState;
     }
     default:

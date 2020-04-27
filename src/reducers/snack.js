@@ -15,6 +15,9 @@ const snackReducer = (state = defaultState, action) => {
         open: false,
       };
     }
+    case 'CLEAR_SYSTEM': {
+      return defaultState;
+    }
     default:
       return state;
   }

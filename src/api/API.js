@@ -36,7 +36,8 @@ class API {
   }
 
   async updateProfile(payload) {
-    return ClientAuth.patch(this.buildURL(`profiles/${payload.id}`), payload);
+    const res = await ClientAuth.patch(this.buildURL(`profiles/${payload.id}`), payload);
+    return res.data;
   }
 
   async updateEmail(payload) {
@@ -45,7 +46,8 @@ class API {
       confirmationPassword: password,
       email,
     };
-    return ClientAuth.put(this.buildURL(`profiles/${id}/email`), options);
+    const res = await ClientAuth.put(this.buildURL(`profiles/${id}/email`), options);
+    return res.data;
   }
 
   async updatePassword(payload) {
@@ -54,7 +56,8 @@ class API {
       confirmationPassword: password,
       password: newPassword,
     };
-    return ClientAuth.put(this.buildURL(`profiles/${id}/password`), options);
+    const res = await ClientAuth.put(this.buildURL(`profiles/${id}/password`), options);
+    return res.data;
   }
 
   async getResearches(options = {}) {
@@ -156,6 +159,14 @@ class API {
 
   async getComparison(id) {
     const res = await ClientAuth.get(this.buildURL(`comparisons/${id}`));
+    return res.data;
+  }
+
+  async uploadImage(imageBlob) {
+    const form = new FormData();
+    form.append('file', imageBlob);
+
+    const res = await ClientAuth.post(this.buildURL('images'), form);
     return res.data;
   }
 }

@@ -1,10 +1,13 @@
 const defaultState = {
-  items: [],
+  name: '',
+  surname: '',
+  email: '',
+  login: '',
 };
 
-const researchesReducer = (state = defaultState, action) => {
+const profileReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case 'SET_EXPERIMENTS': {
+    case 'SET_SELECTED_PROFILE': {
       return { ...state, ...action.payload };
     }
     case 'CLEAR_SYSTEM': {
@@ -14,4 +17,4 @@ const researchesReducer = (state = defaultState, action) => {
       return state;
   }
 };
-export default researchesReducer;
+export default profileReducer;

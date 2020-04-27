@@ -18,7 +18,8 @@ const researchReducer = (state = defaultState, action) => {
     case 'SET_COMPARISON': {
       return { ...state, ...action.payload };
     }
-    case 'CLEAR_COMPARISON': {
+    case 'CLEAR_COMPARISON':
+    case 'CLEAR_SYSTEM': {
       return defaultState;
     }
     default:

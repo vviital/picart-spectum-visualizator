@@ -21,6 +21,9 @@ const filesReducer = (state = defaultState, action) => {
     case 'CLEAR_FILE': {
       return {...state, currentFile: ''};
     }
+    case 'CLEAR_SYSTEM': {
+      return defaultState;
+    }
     default:
       return state;
   }

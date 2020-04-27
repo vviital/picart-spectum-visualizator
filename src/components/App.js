@@ -38,7 +38,7 @@ class App extends React.Component {
           )}
         />
         <Route
-          path="/users/:number"
+          path="/users/:id"
           render={() => (
             <WithAuth content={<Layout content={<Profile />} />} />
           )}
