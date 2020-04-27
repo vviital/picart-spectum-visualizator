@@ -4,9 +4,9 @@ import { CardActionArea, CardContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import '../styles/userCard.css';
-
 import {getLinkToProfilePhoto, sizes} from './utils';
+
+import '../styles/userCard.css';
 
 class UserCard extends React.PureComponent {
   render() {
@@ -17,11 +17,8 @@ class UserCard extends React.PureComponent {
           <Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
             <CardContent>
               <img src={getLinkToProfilePhoto(user, sizes.MEDIUM)} alt="" className="user-card-avatar" />
-              <Typography variant="h5">
-                {user.name}
-              </Typography>
-              <Typography>
-                {user.email}
+              <Typography variant="h6" style={{paddingTop: 12}}>
+                {user.name} {user.surname}
               </Typography>
             </CardContent>
           </Link>

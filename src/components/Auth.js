@@ -63,7 +63,7 @@ class Auth extends React.PureComponent {
                   required
                   fullWidth
                   id="email"
-                  label="Email or login"
+                  label="Email"
                   name="email"
                   autoComplete="email"
                   autoFocus

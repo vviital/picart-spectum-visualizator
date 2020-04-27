@@ -33,7 +33,7 @@ function* getToken(action) {
     yield call(getUser, res);
     yield call(showSnack, 'success', 'Successfully logged in! Welcome back!');
   } catch (err) {
-    yield handleError(err, 'Incorrect login/password!');
+    yield handleError(err, 'Incorrect email/password!');
   }
 }
 
@@ -45,6 +45,15 @@ function* logout() {
   yield call(ls.clear);
   yield call(clearAllData);
   yield call(showSnack, 'success', 'Successfully logged out! Bye!');
+}
+
+function* createProfile(action) {
+  try {
+    const profile = yield call(api.createProfile.bind(api), action.payload);
+    yield call(getProfiles);
+  } catch (err) {
+    yield handleError(err);
+  }
 }
 
 function* getProfile(action) {
@@ -342,6 +351,7 @@ function* actionWatcher() {
   yield takeEvery('CLEAR_LOCAL_STORAGE', logout);
   yield takeEvery('APP_INIT', appInit);
   yield takeEvery('GET_USER', getUser);
+  yield takeEvery('CREATE_PROFILE', createProfile);
   yield takeEvery('GET_PROFILE', getProfile);
   yield takeEvery('GET_PROFILES', getProfiles);
   yield takeEvery('UPDATE_PROFILE_INFO', updateProfile);

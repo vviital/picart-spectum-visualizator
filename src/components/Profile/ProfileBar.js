@@ -33,7 +33,6 @@ class ProfileBar extends React.PureComponent {
 ProfileBar.propTypes = {
   profile: PropTypes.shape({
     id: PropTypes.string,
-    login: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     roles: PropTypes.array,
     surname: PropTypes.string.isRequired,

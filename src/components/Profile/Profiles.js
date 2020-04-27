@@ -3,14 +3,18 @@ import { connect } from 'react-redux';
 import lodash from 'lodash';
 import PropTypes from 'prop-types';
 import UserCard from './UserCard';
-import '../styles/profiles.css';
+
 import Search from '../Search';
+import ProfileTemplate from './ProfileTemplate';
+
+import '../styles/profiles.css';
 
 class Profiles extends React.PureComponent {
   constructor(props) {
     super(props);
     
     this.onSearch = this.onSearch.bind(this);
+    this.createProfile = this.createProfile.bind(this);
   }
 
   componentDidMount() {
@@ -22,11 +26,16 @@ class Profiles extends React.PureComponent {
     this.props.getProfiles();
   }
 
+  createProfile(profile) {
+    this.props.createProfile(profile);
+  }
+
   render() {
     const { profiles } = this.props;
 
     return (
       <div className="profiles-content">
+        <ProfileTemplate onCreate={this.createProfile} />
         <Search
           onSearch={this.onSearch}
           onValueChange={this.props.onProfilesQueryChange}
@@ -43,16 +52,18 @@ class Profiles extends React.PureComponent {
 }
 
 Profiles.propTypes = {
-  profiles: PropTypes.shape({}).isRequired,
+  createProfile: PropTypes.func.isRequired,
   getProfiles: PropTypes.func.isRequired,
+  profiles: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
   profiles: state.profiles,
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  createProfile: (payload) => dispatch({type: 'CREATE_PROFILE', payload}),
   getProfiles: () => dispatch({ type: 'GET_PROFILES' }),
   onProfilesQueryChange: (value) => dispatch({ type: 'PROFILES_QUERY_CHANGE', payload: {value}}),
 });

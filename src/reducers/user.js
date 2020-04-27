@@ -1,7 +1,6 @@
 const defaultState = {
   id: '',
   email: '',
-  login: '',
 };
 
 const userReducer = (state = defaultState, action) => {

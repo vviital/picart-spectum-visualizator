@@ -84,6 +84,37 @@ class Profile extends React.PureComponent {
     this.setProfileData('imageBlob', blob);
   }
 
+  renderButtons() {
+    const { isAdmin, isCurrentUser, profile } = this.props;
+    const isOperationsSupported = isAdmin || isCurrentUser;
+    if (!isOperationsSupported) {
+      return null;
+    }
+
+    const {isEditing} = this.state;
+
+    return <React.Fragment>
+      <Button 
+        color="primary"
+        fullWidth
+        onClick={isEditing ? this.handleConfirmButton : this.toggleEdit}
+      >
+        {isEditing ? 'Confirm' : 'Edit profile'}
+      </Button>
+      {
+        !isEditing && (
+          <Button 
+            color="primary"
+            fullWidth
+            onClick={this.togglePopup}
+          >
+            Edit email/password
+          </Button>
+        )
+      }
+    </React.Fragment>
+  }
+
   render() {
     const { profile } = this.props;
     const { profileData, showPopup, isEditing } = this.state;
@@ -178,24 +209,7 @@ class Profile extends React.PureComponent {
                 value={source.about}
                 variant="outlined"
               />
-              <Button 
-                color="primary"
-                fullWidth
-                onClick={isEditing ? this.handleConfirmButton : this.toggleEdit}
-              >
-                {isEditing ? 'Confirm' : 'Edit profile'}
-              </Button>
-              {
-                !isEditing && (
-                  <Button 
-                    color="primary"
-                    fullWidth
-                    onClick={this.togglePopup}
-                  >
-                    Edit email/password
-                  </Button>
-                )
-              }
+              {this.renderButtons()}
             </div>
           </div>
         </div>
@@ -206,9 +220,10 @@ class Profile extends React.PureComponent {
 }
 
 Profile.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
+  isCurrentUser: PropTypes.bool.isRequired,
   profile: PropTypes.shape({
     id: PropTypes.string,
-    login: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     title: PropTypes.string,
     roles: PropTypes.array,
@@ -228,6 +243,8 @@ Profile.propTypes = {
 
 const mapStateToProps = (state) => ({
   profile: state.selectedProfile,
+  isAdmin: _.includes(state.profile.roles, 'admin'),
+  isCurrentUser: state.profile.id === state.selectedProfile.id
 });
 
 const mapDispatchToProps = (dispatch) => ({

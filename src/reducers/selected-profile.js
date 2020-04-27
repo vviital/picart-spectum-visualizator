@@ -2,7 +2,6 @@ const defaultState = {
   name: '',
   surname: '',
   email: '',
-  login: '',
 };
 
 const profileReducer = (state = defaultState, action) => {

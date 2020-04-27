@@ -1,0 +1,16 @@
+.user-template-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-template-card {
+  width: 240px;
+  height: 288px;
+  margin: 10px 10px;
+}
+
+.user-template-card-area {
+  width: 100%;
+  height: 100%;
+}

@@ -24,6 +24,11 @@ class API {
     return res.data.token;
   }
 
+  async createProfile(profile) {
+    const res = await ClientAuth.post(this.buildURL('profiles'), profile);
+    return res.data;
+  }
+
   async getProfile(id) {
     const res = await ClientAuth.get(this.buildURL(`profiles/${id}`));
     return res.data;
